@@ -39,14 +39,14 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr ng-repeat="st in storeTypes">
+                        <tr ng-repeat="st in listRewardsCtrl.rewards.records">
                                 <td>
                                         <div class="lightBoxGallery">
-                                                <a href="img/img/gallery/1.jpg" title="Image from Unsplash" data-gallery=""><img src="img/img/gallery/2.jpg" style="width:100px; height:100px"></a>
+                                                <a href="img/gallery/mw.jpg" title="Image from Unsplash" data-gallery=""><img src="img/gallery/mw.jpg" style="width:100px; height:100px"></a>
                                         </div>
                                 </td>
-                            <td>ss</td>
-                            <td>ss</td>
+                                <td>{{st.name}}</td>
+                                <td>{{st.points}}</td>
                             <td class="text-right">
                                 <div class="btn-group">
                                     <button class="btn-white btn btn-xs">Edit</button>

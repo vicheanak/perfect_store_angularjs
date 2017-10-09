@@ -9,7 +9,7 @@
                 <a>Users</a>
             </li>
             <li class="active">
-                <strong>Users</strong>
+                <strong>Admin</strong>
             </li>
         </ol>
     </div>
@@ -36,26 +36,23 @@
                             <th>Name</th>
                             <th>Phone</th>
                             <th>Password</th>
-                            <th>Role</th>
                             <th>Status</th>
                             <th class="text-right" data-sort-ignore="true">Action</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr ng-repeat="person in persons">
-                            <td>{{ person.id }}</td>
-                            <td>{{ person.firstName }}</td>
-                            <td>{{person.phone}}</td>
-                            <td>secret</td>
-                            <td>{{person.role}}</td>
+                        <tr ng-repeat="person in listAdminsCtrl.admins.records">
+                          <td>{{person.id}}</td>
+                          <td>{{person.fullname}}</td>
+                          <td>{{person.phone}}</td>
+                          <td>{{person.password}}</td>
                             <td>
-                                    <button class="btn-white btn btn-xs">Active</button>
+                                    <button class="btn-white btn btn-xs">Open</button>
                             </td>
                             <td class="text-right">
                                 <div class="btn-group">
                                     <button class="btn-white btn btn-xs">View</button>
                                     <button class="btn-white btn btn-xs">Edit</button>
-                                    <button class="btn-white btn btn-xs">Delete</button>
                                 </div>
                             </td>
                         </tr>

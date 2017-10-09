@@ -1,6 +1,8 @@
 function HostServices() {
+  var hostName = 'https://api.unilever.store';
+  var hostName = 'http://localhost:3000';
   return {
-    name: 'https://api.unilever.store',
+    name: hostName,
   };
 }
 angular

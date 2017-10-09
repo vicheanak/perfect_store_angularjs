@@ -34,13 +34,15 @@
                         <tr>
                             <th>ID</th>
                             <th>Store Type</th>
+                            <th>Status</th>
                             <th class="text-right" data-sort-ignore="true">Action</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr ng-repeat="st in storeTypes">
-                            <td>ss</td>
-                            <td>ss</td>
+                        <tr ng-repeat="st in listDisplayTypesCtrl.displayTypes.records">
+                          <td>{{st.id}}</td>
+                          <td>{{st.name}}</td>
+                          <td>{{st.status}}</td>
                             <td class="text-right">
                                 <div class="btn-group">
                                     <button class="btn-white btn btn-xs">Edit</button>

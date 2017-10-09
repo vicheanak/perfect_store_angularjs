@@ -40,15 +40,15 @@
                         </tr>
                         </thead>
                         <tbody>
-                          <tr ng-repeat="st in storeTypes">
+                          <tr ng-repeat="st in listDisplaysCtrl.displays.records">
                             <td>
                               <div class="lightBoxGallery">
-                                <a href="img/gallery/1.jpg" title="Image from Unsplash" data-gallery=""><img src="img/gallery/{{st.imgurl}}" style="height:100px;"></a>
+                                <a href="img/gallery/d1.png" title="Image from Unsplash" data-gallery=""><img src="img/gallery/d1.png" style="height:100px;"></a>
                               </div>
                             </td>
-                            <td>ss</td>
-                            <td>ss</td>
-                            <td>qq</td>
+                            <td>{{st.name}}</td>
+                            <td>{{st.points}}</td>
+                            <td>Self Hanger</td>
                             <td class="text-right">
                               <div class="btn-group">
                                 <button class="btn-white btn btn-xs">Edit</button>
