@@ -3,7 +3,9 @@
   "version": "2.7.1",
   "description": "INSPINIA - Responsive Admin Theme",
   "dependencies": {
-    "grunt": "^0.4.5"
+    "grunt": "^0.4.5",
+    "grunt-pm2-deploy": "^0.2.0",
+    "livereload-js": "^2.2.2"
   },
   "devDependencies": {
     "grunt": "^0.4.5",
