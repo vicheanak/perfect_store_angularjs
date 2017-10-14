@@ -45,18 +45,18 @@
               </tr>
             </thead>
             <tbody>
-              <tr ng-repeat="person in listStoresRewardsCtrl">
-                <td>sss</td>
-                <td>TV 51 Inches</td>
-                <td>qq</td>
+              <tr ng-repeat="person in listStoresRewardsCtrl.storesRewards.records">
+		      <td>{{person.id}}</td>
+		      <td>Microwave</td>
+		      <td>Store 1</td>
                 <td>092223223</td>
                 <td>HPC Gold</td>
                 <td>Seyha</td>
                 <td>093889223</td>
-                <td>19/9/2017</td>
-                <td>
-                  <button class="btn-{{person.status}} btn btn-xs">Waiting</button>
-                </td>
+		<td>{{person.createdDate}}</td>
+		<td>
+			<button class="btn-green btn btn-xs">{{person.status == 1 ? 'Ordered' : 'Delivered'}}</button>
+		</td>
                 <td class="text-right">
                   <div class="btn-group">
                     <button class="btn-white btn btn-xs">Store</button>
