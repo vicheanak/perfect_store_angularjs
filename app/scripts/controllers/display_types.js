@@ -1,4 +1,4 @@
-function listDisplayTypesCtrl($scope,DTOptionsBuilder,_displayTypes){
+function listDisplayTypesCtrl($scope,DTOptionsBuilder,_displayTypes, _isAuth, $localStorage, $location){
   $scope.dtOptions = DTOptionsBuilder.newOptions()
     .withDOM('<"html5buttons"B>lTfgitp')
     .withButtons([
@@ -17,7 +17,26 @@ function listDisplayTypesCtrl($scope,DTOptionsBuilder,_displayTypes){
         }
       }
     ]);
-  this.displayTypes = _displayTypes;
+
+  var self = this;
+
+  $scope.token = $localStorage.token || "";
+
+  _isAuth($scope.token).then(function(respond){
+    if (respond == null){
+      $location.path('/login');
+    }
+    else{
+      _displayTypes().then(function(records){
+        self.displayTypes = records;
+      });
+    }
+  });
+
+  this.showEdit = function(id){
+    $location.path("displays/display_types/"+id);
+  }
+
 }
 
 listDisplayTypesCtrl.resolve = {
@@ -39,23 +58,37 @@ listDisplayTypesCtrl.resolve = {
     }]);
   },
   _displayTypes: function(DisplayTypesServices){
-    return DisplayTypesServices.all();
+    return DisplayTypesServices.all;
+  },
+  _isAuth: function(UsersServices) {
+    return UsersServices.isAuth; 
   },
 }
 
-function addDisplayTypeCtrl($scope, _createDisplayType, Upload, $window) {
+function addDisplayTypeCtrl($scope, _createDisplayType, $window, _isAdmin, $localStorage, $location) {
   var self = this;
   this.param = {};
+  this.param.status = false;
+
+  $scope.token = $localStorage.token || "";
+  _isAdmin($scope.token).then(function(respond){
+    if (respond == null){
+      $location.path('/login');
+    }
+    else{
+
+    }
+  });
 
   this.save = function(){
-    var fileReader = new FileReader();
-    fileReader.readAsDataURL(self.file);
-    fileReader.onload = function (e) {
-      var dataUrl = e.target.result;
-      var base64Data = dataUrl.substr(dataUrl.indexOf('base64,') + 'base64,'.length);
-      self.param.imageUrl = base64Data;
-      _createDisplayType(self.param);
-    };
+    _createDisplayType(self.param).then(function(success){
+      if (success.status == 200){
+        $location.path("displays/list_display_types");
+      }
+      else{
+        console.log(success.status);
+      }
+    });
   }
 }
 
@@ -73,22 +106,44 @@ addDisplayTypeCtrl.resolve = {
   },
   _createDisplayType: function(DisplayTypesServices){
     return DisplayTypesServices.create;
-  }
+  },
+  _isAdmin: function(UsersServices) {
+    return UsersServices.isAuth; 
+  },
 }
 
-function editDisplayTypeCtrl($scope, _editDisplayType, Upload, $window) {
+function editDisplayTypeCtrl($scope, _editDisplayType, Upload, $window, $stateParams, $location, _getDisplayType, $localStorage, _isAdmin) {
   var self = this;
   this.param = {};
 
+  var id = $stateParams.id;
+
+  _isAdmin($scope.token).then(function(respond){
+    if (respond == null){
+      $location.path('/login');
+    }
+    else{
+      _getDisplayType(id).then(function(data){
+        self.param = data;
+      });
+    }
+  });
+
+
+
+  this.goBack = function(){
+    $location.path("displays/list_display_types");
+  }
+
   this.save = function(){
-    var fileReader = new FileReader();
-    fileReader.readAsDataURL(self.file);
-    fileReader.onload = function (e) {
-      var dataUrl = e.target.result;
-      var base64Data = dataUrl.substr(dataUrl.indexOf('base64,') + 'base64,'.length);
-      self.param.imageUrl = base64Data;
-      _editDisplayType(self.param);
-    };
+    _editDisplayType(this.param).then(function(success){
+      if (success.status == 200){
+        $location.path("displays/list_display_types");
+      }
+      else{
+        console.log(success.status);
+      }
+    });
   }
 }
 
@@ -106,7 +161,14 @@ editDisplayTypeCtrl.resolve = {
   },
   _editDisplayType: function(DisplayTypesServices){
     return DisplayTypesServices.edit;
-  }
+  },
+  _getDisplayType: function(DisplayTypesServices){
+    return DisplayTypesServices.get;
+  },
+  _isAdmin: function(UsersServices) {
+    return UsersServices.isAuth; 
+  },
+
 }
 
 angular

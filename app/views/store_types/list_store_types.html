@@ -36,12 +36,11 @@
                             <tr ng-repeat="s in listStoreTypesCtrl.storeTypes.records">
                               <td>{{s.name}}</td>
                             <td>
-                              <button class="btn-white btn btn-xs">{{s.stauts ? 'Active' : 'Inactive'}}</button>
+                              <button class="btn-white btn btn-xs">{{s.status ? 'Active' : 'Inactive'}}</button>
                             </td>
                                 <td class="text-right">
                                     <div class="btn-group">
-                                        <button class="btn-white btn btn-xs" ng-click="st.delete(s)">Delete</button>
-                                        <button class="btn-white btn btn-xs" ng-click="st.showEdit(s)">Edit</button>
+                                        <button class="btn-white btn btn-xs" ng-click="listStoreTypesCtrl.showEdit(s.id)">Edit</button>
                                     </div>
                                 </td>
                             </tr>

@@ -1,4 +1,4 @@
-function listUsersStoresCtrl($scope,DTOptionsBuilder, _usersStores){
+function listUsersStoresCtrl($scope,DTOptionsBuilder, _usersStores, _isAuth, $location, $localStorage){
   $scope.dtOptions = DTOptionsBuilder.newOptions()
     .withDOM('<"html5buttons"B>lTfgitp')
     .withButtons([
@@ -17,6 +17,28 @@ function listUsersStoresCtrl($scope,DTOptionsBuilder, _usersStores){
         }
       }
     ]);
+  var self = this;
+
+  $scope.token = $localStorage.token || "";
+  _isAuth($scope.token).then(function(respond){
+    if (respond == null){
+      $location.path('/login');
+    }
+    else{
+      _storeTypes().then(function(storeTypes){
+        self.storeTypes = storeTypes;
+      });
+
+      _displayTypes().then(function(displayTypes){
+        self.displayTypes = displayTypes;
+      });
+
+      _displays().then(function(displays){
+        self.displays = displays;
+      });
+    }
+  });
+
   this.usersStores = _usersStores;
 }
 
@@ -43,9 +65,30 @@ listUsersStoresCtrl.resolve = {
   },
 }
 
-function addUsersStoreCtrl($scope, _createUsersStore, Upload, $window) {
+function addUsersStoreCtrl($scope, _createUsersStore, Upload, $window, $location, $localStorage, _isAdmin) {
   var self = this;
   this.param = {};
+
+  $scope.token = $localStorage.token || "";
+  _isAdmin($scope.token).then(function(respond){
+    if (respond == null){
+      $location.path('/login');
+    }
+    else{
+      _storeTypes().then(function(storeTypes){
+        self.storeTypes = storeTypes;
+      });
+
+      _displayTypes().then(function(displayTypes){
+        self.displayTypes = displayTypes;
+      });
+
+      _displays().then(function(displays){
+        self.displays = displays;
+      });
+    }
+  });
+
 
   this.save = function(){
     var fileReader = new FileReader();
@@ -76,9 +119,30 @@ addUsersStoreCtrl.resolve = {
   }
 }
 
-function editUsersStoreCtrl($scope, _editUsersStore, Upload, $window) {
+function editUsersStoreCtrl($scope, _editUsersStore, Upload, $window, _isAdmin, $location, $localStorage) {
   var self = this;
   this.param = {};
+
+
+  $scope.token = $localStorage.token || "";
+  _isAdmin($scope.token).then(function(respond){
+    if (respond == null){
+      $location.path('/login');
+    }
+    else{
+      _storeTypes().then(function(storeTypes){
+        self.storeTypes = storeTypes;
+      });
+
+      _displayTypes().then(function(displayTypes){
+        self.displayTypes = displayTypes;
+      });
+
+      _displays().then(function(displays){
+        self.displays = displays;
+      });
+    }
+  });
 
   this.save = function(){
     var fileReader = new FileReader();
@@ -106,6 +170,9 @@ editUsersStoreCtrl.resolve = {
   },
   _editUsersStore: function(UsersStoresServices){
     return UsersStoresServices.edit;
+  },
+  _isAdmin: function(UsersStoresServices){
+    return UsersStoresServices.isAdmin;
   }
 }
 

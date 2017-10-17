@@ -9,6 +9,7 @@
       'ui.bootstrap',                 // Bootstrap
       'ngSanitize',                   // ngSanitize
       'file-model',                   //File Model
-      'ngFileUpload'
+      'ngFileUpload',
+      'ngStorage'
     ])
 })();

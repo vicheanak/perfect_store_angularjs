@@ -1,6 +1,6 @@
 function DisplaysServices($http, HostServices) {
 
-  var url = HostServices.name + '/displays';
+  var url = HostServices.name + '/displays/';
 
   function all() {
     var config = {
@@ -55,10 +55,24 @@ function DisplaysServices($http, HostServices) {
     );
   };
 
+  function get(id) {
+    var config = {
+      headers : {
+        'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
+      }
+    }
+    var urlId = url + id;
+    return $http.get(urlId, config).then(function (response) {
+      return response.data;
+    });
+  };
+
+
   return {
     all: all,
     create: create,
-    edit: edit
+    edit: edit,
+    get: get
   };
 }
 angular

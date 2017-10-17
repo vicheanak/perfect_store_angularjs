@@ -1,4 +1,4 @@
-function listRewardsCtrl($scope, DTOptionsBuilder, _rewards){
+function listRewardsCtrl($scope, DTOptionsBuilder, _rewards, _isAuth, $location, $localStorage){
   $scope.dtOptions = DTOptionsBuilder.newOptions()
     .withDOM('<"html5buttons"B>lTfgitp')
     .withButtons([
@@ -17,7 +17,21 @@ function listRewardsCtrl($scope, DTOptionsBuilder, _rewards){
         }
       }
     ]);
-  this.rewards = _rewards;
+
+  var self = this;
+
+  $scope.token = $localStorage.token || "";
+  _isAuth($scope.token).then(function(respond){
+    if (respond == null){
+      $location.path('/login');
+    }
+    else{
+      _rewards().then(function(rewards){
+        this.rewards = rewards;
+      });
+    }
+  });
+
 }
 
 listRewardsCtrl.resolve = {
@@ -43,9 +57,18 @@ listRewardsCtrl.resolve = {
   },
 }
 
-function addRewardCtrl($scope, _createReward, Upload, $window) {
+function addRewardCtrl($scope, _createReward, Upload, $window, $location, _isAdmin, $localStorage) {
   var self = this;
   this.param = {};
+
+  $scope.token = $localStorage.token || "";
+  _isAdmin($scope.token).then(function(respond){
+    if (respond == null){
+      $location.path('/login');
+    }
+    else{
+    }
+  });
 
   this.save = function(){
     var fileReader = new FileReader();
@@ -54,7 +77,14 @@ function addRewardCtrl($scope, _createReward, Upload, $window) {
       var dataUrl = e.target.result;
       var base64Data = dataUrl.substr(dataUrl.indexOf('base64,') + 'base64,'.length);
       self.param.imageUrl = base64Data;
-      _createReward(self.param);
+      _createReward(self.param).then(function(success){
+        if (success.status == 200){
+          $location.path("rewards/list_rewards");
+        }
+        else{
+          console.log(success.status);
+        }
+      });
     };
   }
 }
@@ -76,9 +106,29 @@ addRewardCtrl.resolve = {
   }
 }
 
-function editRewardCtrl($scope, _editReward, Upload, $window) {
+function editRewardCtrl($scope, _editReward, _getReward, Upload, $window, _isAdmin, $location, $localStorage) {
   var self = this;
   this.param = {};
+
+
+  this.goBack = function(){
+    $location.path("rewards/list_rewards");
+  }
+
+    var self = this;
+
+  $scope.token = $localStorage.token || "";
+  _isAdmin($scope.token).then(function(respond){
+    if (respond == null){
+      $location.path('/login');
+    }
+    else{
+      _getStore(id).then(function(data){
+        self.param = data;
+      });
+    }
+  });
+
 
   this.save = function(){
     var fileReader = new FileReader();
@@ -87,7 +137,14 @@ function editRewardCtrl($scope, _editReward, Upload, $window) {
       var dataUrl = e.target.result;
       var base64Data = dataUrl.substr(dataUrl.indexOf('base64,') + 'base64,'.length);
       self.param.imageUrl = base64Data;
-      _editReward(self.param);
+      _editReward(self.param).then(function(success){
+        if (success.status == 200){
+          $location.path("rewards/list_rewards");
+        }
+        else{
+          console.log(success.status);
+        }
+      });
     };
   }
 }

@@ -1,6 +1,6 @@
 function StoresServices($http, HostServices) {
 
-  var url = HostServices.name + '/stores';
+  var url = HostServices.name + '/stores/';
 
   function all() {
     var config = {
@@ -15,7 +15,7 @@ function StoresServices($http, HostServices) {
 
   function create (param) {
     var data = param;
-    $http({
+    return $http({
       url: url,
       method: 'POST',
       headers: {
@@ -36,7 +36,7 @@ function StoresServices($http, HostServices) {
 
   function edit (param) {
     var data = param;
-    $http({
+    return $http({
       url: url,
       method: 'PUT',
       headers: {
@@ -55,10 +55,23 @@ function StoresServices($http, HostServices) {
     );
   };
 
+  function get(id) {
+    var config = {
+      headers : {
+        'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
+      }
+    }
+    var urlId = url + id;
+    return $http.get(urlId, config).then(function (response) {
+      return response.data;
+    });
+  };
+
   return {
     all: all,
     create: create,
-    edit: edit
+    edit: edit,
+    get: get
   };
 }
 angular

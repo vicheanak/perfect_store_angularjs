@@ -1,6 +1,6 @@
 function StoreTypesServices($http, HostServices) {
 
-  var url = HostServices.name + '/store_types';
+  var url = HostServices.name + '/store_types/';
 
   function all() {
     var config = {
@@ -24,20 +24,19 @@ function StoreTypesServices($http, HostServices) {
       data: data
     }).then(
       function(success){
-        console.log(success);
         return success;
       },
       function(error){
-        console.log(error);
         return error;
       }
     );
   };
 
   function edit (param) {
+    var urlId = url + param.id;
     var data = param;
-    $http({
-      url: url,
+    return $http({
+      url: urlId,
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
@@ -45,20 +44,32 @@ function StoreTypesServices($http, HostServices) {
       data: data
     }).then(
       function(success){
-        console.log(success);
         return success;
       },
       function(error){
-        console.log(error);
         return error;
       }
     );
   };
 
+  function get(id) {
+    var config = {
+      headers : {
+        'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
+      }
+    }
+    var urlId = url + id;
+    return $http.get(urlId, config).then(function (response) {
+      return response.data;
+    });
+
+  };
+
   return {
     all: all,
     create: create,
-    edit: edit
+    edit: edit,
+    get: get
   };
 }
 angular

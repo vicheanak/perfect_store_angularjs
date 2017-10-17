@@ -1,4 +1,4 @@
-function listDisplaysCtrl($scope,DTOptionsBuilder, _displays){
+function listDisplaysCtrl($scope,DTOptionsBuilder, _displays, _displayTypes, _storeTypes, $location, _isAuth, $localStorage){
   $scope.dtOptions = DTOptionsBuilder.newOptions()
     .withDOM('<"html5buttons"B>lTfgitp')
     .withButtons([
@@ -17,7 +17,33 @@ function listDisplaysCtrl($scope,DTOptionsBuilder, _displays){
         }
       }
     ]);
-  this.displays = _displays;
+
+  var self = this;
+
+  $scope.token = $localStorage.token || "";
+  _isAuth($scope.token).then(function(respond){
+    if (respond == null){
+      $location.path('/login');
+    }
+    else{
+      _storeTypes().then(function(storeTypes){
+        self.storeTypes = storeTypes;
+      });
+
+      _displayTypes().then(function(displayTypes){
+        self.displayTypes = displayTypes;
+      });
+
+      _displays().then(function(displays){
+        self.displays = displays;
+      });
+    }
+  });
+
+
+  this.edit = function(displayId){
+    $location.path('displays/displays/'+displayId);
+  }
 }
 
 listDisplaysCtrl.resolve = {
@@ -39,13 +65,41 @@ listDisplaysCtrl.resolve = {
     }]);
   },
   _displays: function(DisplaysServices){
-    return DisplaysServices.all();
+    return DisplaysServices.all;
+  },
+  _storeTypes: function(StoreTypesServices){
+    return StoreTypesServices.all;
+  },
+  _displayTypes: function(DisplayTypesServices){
+    return DisplayTypesServices.all;
+  },
+  _isAuth: function(UsersServices) {
+    return UsersServices.isAuth; 
   },
 }
 
-function addDisplayCtrl($scope, _createDisplay, Upload, $window) {
+function addDisplayCtrl($scope, _createDisplay, _storeTypes, _displayTypes, Upload, $window, $localStorage, $location, _isAdmin) {
   var self = this;
   this.param = {};
+
+
+  $scope.token = $localStorage.token || "";
+
+  _isAdmin($scope.token).then(function(respond){
+    if (respond == null){
+      $location.path('/login');
+    }
+    else{
+      _storeTypes().then(function(storeTypes){
+        self.storeTypes = storeTypes.records;
+      });
+
+      _displayTypes().then(function(displayTypes){
+        self.displayTypes = displayTypes.records;
+      });
+    }
+  });
+
 
   this.save = function(){
     var fileReader = new FileReader();
@@ -54,7 +108,14 @@ function addDisplayCtrl($scope, _createDisplay, Upload, $window) {
       var dataUrl = e.target.result;
       var base64Data = dataUrl.substr(dataUrl.indexOf('base64,') + 'base64,'.length);
       self.param.imageUrl = base64Data;
-      _createDisplay(self.param);
+      _createDisplay(self.param).then(function(success){
+        if (success.status == 200){
+          $location.path("displays/list_displays");
+        }
+        else{
+          console.log(success.status);
+        }
+      });
     };
   }
 }
@@ -73,12 +134,48 @@ addDisplayCtrl.resolve = {
   },
   _createDisplay: function(DisplaysServices){
     return DisplaysServices.create;
-  }
+  },
+  _storeTypes: function(StoreTypesServices){
+    return StoreTypesServices.all;
+  },
+  _displayTypes: function(DisplayTypesServices){
+    return DisplayTypesServices.all;
+  },
+  _isAdmin: function(UsersServices) {
+    return UsersServices.isAdmin; 
+  },
 }
 
-function editDisplayCtrl($scope, _editDisplay, Upload, $window) {
+function editDisplayCtrl($scope, _editDisplay, _getStore, _storeTypes, _displayTypes, Upload, $window, _isAdmin, $localStorage, $location) {
   var self = this;
   this.param = {};
+  var id = $stateParams.id;
+
+  $scope.token = $localStorage.token || "";
+
+  _isAdmin($scope.token).then(function(respond){
+    if (respond == null){
+      $location.path('/login');
+    }
+    else{
+      _displayTypes().then(function(displayTypes){
+        self.displayTypes = displayTypes;
+      });
+
+      _storeTypes().then(function(storeTypes){
+        self.storeTypes = storeTypes
+      });
+
+      _getDisplays().then(function(displays){
+        self.displays = displays;
+      });
+    }
+  });
+
+
+  this.goBack = function(){
+    $location.path("stores/list_store_types");
+  }
 
   this.save = function(){
     var fileReader = new FileReader();
@@ -87,7 +184,14 @@ function editDisplayCtrl($scope, _editDisplay, Upload, $window) {
       var dataUrl = e.target.result;
       var base64Data = dataUrl.substr(dataUrl.indexOf('base64,') + 'base64,'.length);
       self.param.imageUrl = base64Data;
-      _editDisplay(self.param);
+      _editDisplay(self.param).then(function(success){
+        if (success.status == 200){
+          $location.path("displays/list_displays");
+        }
+        else{
+          console.log(success.status);
+        }
+      });
     };
   }
 }
@@ -106,7 +210,19 @@ editDisplayCtrl.resolve = {
   },
   _editDisplay: function(DisplaysServices){
     return DisplaysServices.edit;
-  }
+  },
+  _getDisplay: function(DisplaysServices){
+    return DisplaysServices.get;
+  },
+  _storeTypes: function(StoreTypesServices){
+    return StoreTypesServices.all;
+  },
+  _displayTypes: function(DisplayTypesServices){
+    return DisplayTypesServices.all;
+  },
+  _isAuth: function(UsersServices) {
+    return UsersServices.isAuth; 
+  },
 }
 
 angular

@@ -1,4 +1,4 @@
-function listStoresCtrl($scope,DTOptionsBuilder, _stores, $location){
+function listStoresCtrl($scope,DTOptionsBuilder, _stores, _storeTypes, $location, _isAuth, $localStorage){
   $scope.dtOptions = DTOptionsBuilder.newOptions()
     .withDOM('<"html5buttons"B>lTfgitp')
     .withButtons([
@@ -18,7 +18,25 @@ function listStoresCtrl($scope,DTOptionsBuilder, _stores, $location){
       }
     ]);
 
-  this.stores = _stores;
+  var self = this;
+
+
+  $scope.token = $localStorage.token || "";
+  _isAuth($scope.token).then(function(respond){
+    if (respond == null){
+      $location.path('/login');
+    }
+    else{
+      _storeTypes().then(function(storeTypes){
+        self.storeTypes = storeTypes;
+      });
+
+      _stores().then(function(stores){
+        self.stores = stores;
+      });
+    }
+  });
+
 
   this.edit = function(storeId){
     $location.path('stores/edit_store/'+storeId);
@@ -44,24 +62,45 @@ listStoresCtrl.resolve = {
     }]);
   },
   _stores: function(StoresServices){
-    return StoresServices.all();
+    return StoresServices.all;
   },
+  _storeTypes: function(StoreTypesServices){
+    return StoreTypesServices.all;
+  },
+  _isAuth: function(UsersServices){
+    return UsersServices.isAuth
+  }
 }
 
-function addStoreCtrl($scope, _createStore, Upload, $window) {
+function addStoreCtrl($scope, _createStore, _storeTypes, Upload, $window, $location, $localStorage, _isAdmin) {
   var self = this;
   this.param = {};
 
+  $scope.token = $localStorage.token || "";
+  _isAdmin($scope.token).then(function(respond){
+    if (respond == null){
+      $location.path('/login');
+    }
+    else{
+      _storeTypes().then(function(storeTypes){
+        self.storeTypes = storeTypes.records;
+        self.param.storeTypeId = 1;
+      });
+    }
+  });
+
+
   this.save = function(){
-    var fileReader = new FileReader();
-    fileReader.readAsDataURL(self.file);
-    fileReader.onload = function (e) {
-      var dataUrl = e.target.result;
-      var base64Data = dataUrl.substr(dataUrl.indexOf('base64,') + 'base64,'.length);
-      self.param.imageUrl = base64Data;
-      _createStore(self.param);
-    };
+    _createStore(self.param).then(function(success){
+      if (success.status == 200){
+        //$location.path("stores/list_stores");
+      }
+      else{
+        console.log(success.status);
+      }
+    });
   }
+
 }
 
 addStoreCtrl.resolve = {
@@ -78,24 +117,57 @@ addStoreCtrl.resolve = {
   },
   _createStore: function(StoresServices){
     return StoresServices.create;
+  },
+  _storeTypes: function(StoreTypesServices){
+    return StoreTypesServices.all;
+  },
+  _isAdmin: function(UsersServices){
+    return UsersServices.isAdmin;
   }
+
 }
 
-function editStoreCtrl($scope, _editStore, Upload, $window, $stateParams) {
+function editStoreCtrl($scope, _editStore, _getStore, _storeTypes, Upload, $window, $stateParams, _isAdmin, $localStorage, $location) {
   var self = this;
   this.param = {};
-  console.log($stateParams.id);
+  var id = $stateParams.id;
+
+
+  $scope.token = $localStorage.token || "";
+  _isAdmin($scope.token).then(function(respond){
+    if (respond == null){
+      $location.path('/login');
+    }
+    else{
+      _storeTypes().then(function(storeTypes){
+        self.storeTypes = storeTypes.records;
+      });
+
+      _getStore(id).then(function(data){
+        self.param = data;
+        self.storeTypeId = self.param.storeTypeIdStores;
+        console.log(data);
+      });
+    }
+  });
+
+
+
+  this.goBack = function(){
+    $location.path("stores/list_store_types");
+  }
 
   this.save = function(){
-    var fileReader = new FileReader();
-    fileReader.readAsDataURL(self.file);
-    fileReader.onload = function (e) {
-      var dataUrl = e.target.result;
-      var base64Data = dataUrl.substr(dataUrl.indexOf('base64,') + 'base64,'.length);
-      self.param.imageUrl = base64Data;
-      _editStore(self.param);
-    };
+    _editStore(this.param).then(function(success){
+      if (success.status == 200){
+        $location.path("stores/list_stores");
+      }
+      else{
+        console.log(success.status);
+      }
+    });
   }
+
 }
 
 editStoreCtrl.resolve = {
@@ -112,6 +184,15 @@ editStoreCtrl.resolve = {
   },
   _editStore: function(StoresServices){
     return StoresServices.edit;
+  },
+  _getStore: function(StoresServices){
+    return StoresServices.get;
+  },
+  _storeTypes: function(StoreTypesServices){
+    return StoreTypesServices.all;
+  },
+  isAdmin: function(UsersServices){
+    return UsersServices.isAdmin;
   }
 }
 

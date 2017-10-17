@@ -1,6 +1,6 @@
 function StorePointsServices($http, HostServices) {
 
-  var url = HostServices.name + '/store_points';
+  var url = HostServices.name + '/store_points/';
 
   function all() {
     var config = {
@@ -55,10 +55,23 @@ function StorePointsServices($http, HostServices) {
     );
   };
 
+  function get(id) {
+    var config = {
+      headers : {
+        'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
+      }
+    }
+    var urlId = url + id;
+    return $http.get(urlId, config).then(function (response) {
+      return response.data;
+    });
+  };
+
   return {
     all: all,
     create: create,
-    edit: edit
+    edit: edit,
+    get: get
   };
 }
 angular

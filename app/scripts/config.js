@@ -184,7 +184,7 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider) {
       data: {
         pageTitle: 'Edit Store Type'
       },
-      controller: 'editStoreTypeCtrl as editStoreCtrl',
+      controller: 'editStoreTypeCtrl as editStoreTypeCtrl',
       resolve: editStoreTypeCtrl.resolve
     })
     .state('users', {

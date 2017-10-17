@@ -1,4 +1,4 @@
-function listAuditorsCtrl($scope, DTOptionsBuilder, _auditors){
+function listAuditorsCtrl($scope, DTOptionsBuilder, _stores, _auditors, _isAuth, $localStorage, $location){
   $scope.dtOptions = DTOptionsBuilder.newOptions()
     .withDOM('<"html5buttons"B>lTfgitp')
     .withButtons([
@@ -17,7 +17,27 @@ function listAuditorsCtrl($scope, DTOptionsBuilder, _auditors){
         }
       }
     ]);
-  this.auditors = _auditors;
+
+  var self = this;
+  $scope.token = $localStorage.token || "";
+
+  _isAuth($scope.token).then(function(respond){
+    if (respond == null){
+      $location.path('/login');
+    }
+    else{
+      _auditors().then(function(auditors){
+        self.auditors = _auditors;
+      });
+      _stores().then(function(stores){
+        self.stores = _stores;
+      });
+    }
+  });
+
+  this.edit = function(auditorId){
+    $location.path('auditors/edit_auditor/'+auditorId);
+  }
 }
 
 listAuditorsCtrl.resolve = {
@@ -39,23 +59,48 @@ listAuditorsCtrl.resolve = {
     }]);
   },
   _auditors: function(UsersServices){
-    return UsersServices.allAuditors();
+    return UsersServices.allAuditors;
+  },
+  _stores: function(StoresServices){
+    return StoresServices.all;
+  },
+  _isAuth: function(UsersServices) {
+    return UsersServices.isAuth; 
   },
 }
 
-function addAuditorCtrl($scope, _createAuditor, Upload, $window) {
+function addAuditorCtrl($scope, _createAuditor, _stores, Upload, $window, _isAdmin, $localStorage, $location) {
   var self = this;
   this.param = {};
 
+  $scope.token = $localStorage.token || "";
+
+  var self = this;
+  _isAdmin($scope.token).then(function(respond){
+    if (respond == null){
+      $location.path('/login');
+    }
+    else{
+      _stores().then(function(stores){
+        self.stores = stores.records;
+      });
+    }
+  });
+
+
+  this.goBack = function(){
+    $location.path("auditors/list_auditors");
+  }
+
   this.save = function(){
-    var fileReader = new FileReader();
-    fileReader.readAsDataURL(self.file);
-    fileReader.onload = function (e) {
-      var dataUrl = e.target.result;
-      var base64Data = dataUrl.substr(dataUrl.indexOf('base64,') + 'base64,'.length);
-      self.param.imageUrl = base64Data;
-      _createAuditor(self.param);
-    };
+    _createAuditor(self.param).then(function(success){
+      if (success.status == 200){
+        $location.path("auditors/list_auditors");
+      }
+      else{
+        console.log(success.status);
+      }
+    });
   }
 }
 
@@ -73,22 +118,52 @@ addAuditorCtrl.resolve = {
   },
   _createAuditor: function(UsersServices){
     return UsersServices.createAuditor;
-  }
+  },
+  _stores: function(StoresServices){
+    return StoresServices.all;
+  },
+  _isAdmin: function(UsersServices) {
+    return UsersServices.isAdmin; 
+  },
 }
 
-function editAuditorCtrl($scope, _editAuditor, Upload, $window) {
+function editAuditorCtrl($scope, _editAuditor, _getAuditor, _stores, Upload, $window, $stateParams, _isAdmin, $localStorage, $location) {
   var self = this;
   this.param = {};
+  var id = $stateParams.id;
+
+  $scope.token = $localStorage.token || "";
+
+  var self = this;
+  _isAdmin($scope.token).then(function(respond){
+    if (respond == null){
+      $location.path('/login');
+    }
+    else{
+      _stores().then(function(stores){
+        self.stores = stores.records;
+      });
+
+      _getAuditor(id).then(function(data){
+        self.param = data;
+      });
+    }
+  });
+
+
+  this.goBack = function(){
+    $location.path("auditors/list_auditors");
+  }
 
   this.save = function(){
-    var fileReader = new FileReader();
-    fileReader.readAsDataURL(self.file);
-    fileReader.onload = function (e) {
-      var dataUrl = e.target.result;
-      var base64Data = dataUrl.substr(dataUrl.indexOf('base64,') + 'base64,'.length);
-      self.param.imageUrl = base64Data;
-      _editAuditor(self.param);
-    };
+    _editAuditor(this.param).then(function(success){
+      if (success.status == 200){
+        $location.path("auditors/list_auditors");
+      }
+      else{
+        console.log(success.status);
+      }
+    });
   }
 }
 
@@ -106,7 +181,16 @@ editAuditorCtrl.resolve = {
   },
   _editAuditor: function(UsersServices){
     return UsersServices.editAuditor;
-  }
+  },
+  _getAuditor: function(UsersServices){
+    return UsersServices.get;
+  },
+  _stores: function(StoresServices){
+    return StoresServices.all;
+  },
+  _isAdmin: function(UsersServices) {
+    return UsersServices.isAuth; 
+  },
 }
 
 angular

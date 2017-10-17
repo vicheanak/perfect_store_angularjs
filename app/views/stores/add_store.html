@@ -32,46 +32,53 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label">Store Type</label>
                             <div class="col-sm-10">
-                                <select name="{{key}}" class="form-control m-b"  ng-options="p.$id as p.name for p in as.storeTypes" ng-model="value.Role"></select>
+                              <select ng-model="addStoreCtrl.param.storeTypeId" class="form-control m-b" ng-options="storeType.id as storeType.name for storeType in addStoreCtrl.storeTypes">
+                              </select>
                             </div>
                         </div>
                         <div class="hr-line-dashed"></div>
                         <div class="form-group"><label class="col-sm-2 control-label">Name *</label>
-                            <div class="col-sm-10"><input type="text" class="form-control">
+                            <div class="col-sm-10">
+                              <input ng-model="addStoreCtrl.param.name" type="text" class="form-control">
                             </div>
                         </div>
                         <div class="hr-line-dashed"></div>
                         <div class="form-group"><label class="col-sm-2 control-label">Phone *</label>
-                            <div class="col-sm-10"><input type="text" class="form-control">
+                            <div class="col-sm-10">
+                              <input ng-model="addStoreCtrl.param.phone" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group"><label class="col-sm-2 control-label">Location</label>
+                            <div class="col-sm-10">
+                              <input type="text" ng-model="addStoreCtrl.param.location" class="form-control">
                             </div>
                         </div>
                         <div class="hr-line-dashed"></div>
                         <div class="form-group"><label class="col-sm-2 control-label">Username *</label>
-                            <div class="col-sm-10"><input type="password" class="form-control">
+                            <div class="col-sm-10">
+                              <input ng-model="addStoreCtrl.param.username" class="form-control">
                             </div>
                         </div>
                         <div class="hr-line-dashed"></div>
                         <div class="form-group"><label class="col-sm-2 control-label">Password *</label>
-                            <div class="col-sm-10"><input type="password" class="form-control">
-                            </div>
-                        </div>
-                        <div class="hr-line-dashed"></div>
-                        <div class="form-group"><label class="col-sm-2 control-label">Address</label>
-                            <div class="col-sm-10"><input type="text" class="form-control">
+                            <div class="col-sm-10">
+                              <input ng-model="addStoreCtrl.param.password" type="password" class="form-control">
                             </div>
                         </div>
                         <div class="hr-line-dashed"></div>
                         <div class="form-group"><label class="col-sm-2 control-label">Status</label>
                             <div class="col-sm-10">
-                                <label> <input icheck type="checkbox" ng-model="main.checkThree">
+                                <label>
+                                  <input icheck type="checkbox" ng-model="addStoreCtrl.param.status" >
                                     Active </label>
                                 </div>
                             </div>
                             <div class="hr-line-dashed"></div>
                             <div class="form-group">
                                 <div class="col-sm-4 col-sm-offset-2">
-                                    <button class="btn btn-white" type="submit">Cancel</button>
-                                    <button class="btn btn-primary" type="submit">Save changes</button>
+                                    <button class="btn btn-white" ng-click="addStoreCtrl.goBack()" type="submit">Cancel</button>
+                                    <button class="btn btn-primary" ng-click="addStoreCtrl.save()" type="submit">Save changes</button>
                                 </div>
                             </div>
                         </form>

@@ -1,4 +1,4 @@
-function listAdminsCtrl($scope,DTOptionsBuilder, _admins){
+function listAdminsCtrl($scope,DTOptionsBuilder, _admins, _isAdmin, $location, $localStorage){
   $scope.dtOptions = DTOptionsBuilder.newOptions()
     .withDOM('<"html5buttons"B>lTfgitp')
     .withButtons([
@@ -17,7 +17,22 @@ function listAdminsCtrl($scope,DTOptionsBuilder, _admins){
         }
       }
     ]);
-  this.admins = _admins;
+
+    var self = this;
+
+  $scope.token = $localStorage.token || "";
+  _isAdmin($scope.token).then(function(respond){
+    if (respond == null){
+      $location.path('/login');
+    }
+    else{
+      _admins().then(function(admins){
+        this.admins = admins;
+      });
+    }
+  });
+
+
 }
 
 listAdminsCtrl.resolve = {
@@ -39,23 +54,46 @@ listAdminsCtrl.resolve = {
     }]);
   },
   _admins: function(UsersServices){
-    return UsersServices.allAdmins();
+    return UsersServices.allAdmins;
   },
+  _isAdmin: function(UsersServices){
+    return UsersServices.isAdmin
+  }
 }
 
-function addAdminCtrl($scope, _createAdmin, Upload, $window) {
+function addAdminCtrl($scope, _createAdmin, Upload, $window, $location, $localStorage, _isAdmin) {
   var self = this;
   this.param = {};
 
+  this.goBack = function(){
+    $location.path('users/list_admins');
+  }
+
+  var self = this;
+
+  $scope.token = $localStorage.token || "";
+  _isAdmin($scope.token).then(function(respond){
+    if (respond == null){
+      $location.path('/login');
+    }
+    else{
+      _storeTypes().then(function(storeTypes){
+        self.storeTypes = storeTypes;
+      });
+
+      _displayTypes().then(function(displayTypes){
+        self.displayTypes = displayTypes;
+      });
+
+      _displays().then(function(displays){
+        self.displays = displays;
+      });
+    }
+  });
+
+
   this.save = function(){
-    var fileReader = new FileReader();
-    fileReader.readAsDataURL(self.file);
-    fileReader.onload = function (e) {
-      var dataUrl = e.target.result;
-      var base64Data = dataUrl.substr(dataUrl.indexOf('base64,') + 'base64,'.length);
-      self.param.imageUrl = base64Data;
-      _createAdmin(self.param);
-    };
+    _createAdmin(self.param);
   }
 }
 
@@ -73,12 +111,36 @@ addAdminCtrl.resolve = {
   },
   _createAdmin: function(UsersServices){
     return UsersServices.createAdmin;
+  },
+  _isAdmin: function(UsersServices){
+    return UsersServices.isAdmin;
   }
 }
 
-function editAdminCtrl($scope, _editAdmin, Upload, $window) {
+function editAdminCtrl($scope, _editAdmin, Upload, $window, $localStorage, $location, _isAdmin) {
   var self = this;
   this.param = {};
+
+
+  $scope.token = $localStorage.token || "";
+  _isAdmin($scope.token).then(function(respond){
+    if (respond == null){
+      $location.path('/login');
+    }
+    else{
+      _storeTypes().then(function(storeTypes){
+        self.storeTypes = storeTypes;
+      });
+
+      _displayTypes().then(function(displayTypes){
+        self.displayTypes = displayTypes;
+      });
+
+      _displays().then(function(displays){
+        self.displays = displays;
+      });
+    }
+  });
 
   this.save = function(){
     var fileReader = new FileReader();
@@ -106,6 +168,9 @@ editAdminCtrl.resolve = {
   },
   _editAdmin: function(UsersServices){
     return UsersServices.editAdmin;
+  },
+  _isAdmin: function(UsersServices){
+    return UsersServices.isAdmin;
   }
 }
 
@@ -128,7 +193,18 @@ function listViewersCtrl($scope,DTOptionsBuilder, _viewers){
         }
       }
     ]);
-  this.viewers = _viewers;
+  $scope.token = $localStorage.token || "";
+  _isAdmin($scope.token).then(function(respond){
+    if (respond == null){
+      $location.path('/login');
+    }
+    else{
+      _viewers().then(function(viewers){
+        this.viewers = _viewers;
+      });
+    }
+  });
+
 }
 
 listViewersCtrl.resolve = {
@@ -150,13 +226,25 @@ listViewersCtrl.resolve = {
     }]);
   },
   _viewers: function(UsersServices){
-    return UsersServices.allViewers();
+    return UsersServices.allViewers;
   },
+  _isAdmin: function(UsersServices){
+    return UsersServices.isAdmin;
+  }
 }
 
-function addViewerCtrl($scope, _createViewer, Upload, $window) {
+function addViewerCtrl($scope, _createViewer, Upload, $window, $location, $localStorage, _isAdmin) {
   var self = this;
   this.param = {};
+
+  $scope.token = $localStorage.token || "";
+  _isAdmin($scope.token).then(function(respond){
+    if (respond == null){
+      $location.path('/login');
+    }
+    else{
+    }
+  });
 
   this.save = function(){
     var fileReader = new FileReader();
@@ -184,12 +272,24 @@ addViewerCtrl.resolve = {
   },
   _createViewer: function(UsersServices){
     return UsersServices.createViewer;
+  },
+  isAdmin: function(UsersServices){
+    return UsersServices.isAdmin;
   }
 }
 
-function editViewerCtrl($scope, _editViewer, Upload, $window) {
+function editViewerCtrl($scope, _editViewer, Upload, $window, $location, _isAdmin, $localStorage) {
   var self = this;
   this.param = {};
+
+  $scope.token = $localStorage.token || "";
+  _isAdmin($scope.token).then(function(respond){
+    if (respond == null){
+      $location.path('/login');
+    }
+    else{
+    }
+  });
 
   this.save = function(){
     var fileReader = new FileReader();
@@ -217,8 +317,31 @@ editViewerCtrl.resolve = {
   },
   _editViewer: function(UsersServices){
     return UsersServices.editViewer;
+  },
+  _isAdmin: function(UsersServices){
+    return UsersServices.isAdmin
   }
 }
+
+function usersCtrl($scope, $location, UsersServices, $localStorage) {
+  var self = this;
+  this.param = {};
+
+  this.logout = function(){
+    var param = {};
+    UsersServices.outAuth($localStorage.token).then(function(success){
+      if (success.status == 200){
+        $localStorage.token = "";
+        $location.path("login");
+      }
+      else{
+        console.log(success.status);
+      }
+
+    });
+  }
+}
+
 angular
   .module('inspinia')
   .controller('listAdminsCtrl', listAdminsCtrl)
@@ -227,3 +350,4 @@ angular
   .controller('listViewersCtrl', listViewersCtrl)
   .controller('addViewerCtrl', addViewerCtrl)
   .controller('editViewerCtrl', editViewerCtrl)
+  .controller('usersCtrl', usersCtrl)

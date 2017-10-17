@@ -1,4 +1,4 @@
-function listStoresRewardsCtrl($scope,DTOptionsBuilder, _storesRewards){
+function listStoresRewardsCtrl($scope,DTOptionsBuilder, _storesRewards, _isAuth, $localStorage, $location){
   $scope.dtOptions = DTOptionsBuilder.newOptions()
     .withDOM('<"html5buttons"B>lTfgitp')
     .withButtons([
@@ -17,7 +17,20 @@ function listStoresRewardsCtrl($scope,DTOptionsBuilder, _storesRewards){
         }
       }
     ]);
-  this.storesRewards = _storesRewards;
+
+  $scope.token = $localStorage.token || "";
+
+  var self = this;
+  _isAuth($scope.token).then(function(respond){
+    if (respond == null){
+      $location.path('/login');
+    }
+    else{
+      self.storesRewards = _storesRewards;
+    }
+  });
+
+
 }
 
 listStoresRewardsCtrl.resolve = {
@@ -40,6 +53,9 @@ listStoresRewardsCtrl.resolve = {
   },
   _storesRewards: function(StoresRewardsServices){
     return StoresRewardsServices.all();
+  },
+  _isAuth: function(UsersServices) {
+    return UsersServices.isAuth; 
   },
 }
 

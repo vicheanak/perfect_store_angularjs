@@ -1,17 +1,49 @@
-function loginCtrl($scope, $location){
+function loginCtrl($scope, $location, _isAuth, _auth, $localStorage){
+
+  var self = this;
+  this.param = {};
+
+  $scope.token = $localStorage.token || false;
+
+  _isAuth($scope.token).then(function(respond){
+    if (respond){
+      if (respond.id){
+        $location.path('/stores/stores_rewards')
+      }
+    }
+  });
+
+  $scope.$watch('token', function() {
+    $localStorage.token = $scope.token;
+  });
+
   this.login = function(){
-    $location.path('stores/list_stores');
+    this.failedAuthMessage = '';
+    _auth(this.username, this.password).then(function(data){
+      if (data.err){
+        self.failedAuthMessage = data.err;
+      }
+      else{
+        $localStorage.token = data.token;
+        $location.path('/stores/stores_rewards')
+      }
+    });
   }
+
+  this.forgetPassword = function(){
+    console.log('forget password');
+  }
+
 }
 
 loginCtrl.resolve = {
-  isAuth: function(UsersServices) {
-    return UsersServices.isAuth(); 
+  _isAuth: function(UsersServices) {
+    return UsersServices.isAuth; 
   },
-  auth: function(UsersServices) {
+  _auth: function(UsersServices) {
     return UsersServices.auth; 
   },
-  outAuth: function(UsersServices){
+  _outAuth: function(UsersServices){
     return UsersServices.outAuth;
   }
 }
