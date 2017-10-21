@@ -15,11 +15,12 @@ function DisplayTypesServices($http, HostServices) {
 
   function create (param) {
     var data = param;
-    $http({
+    return $http({
       url: url,
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Token': data.token
       },
       data: data
     }).then(
@@ -36,11 +37,13 @@ function DisplayTypesServices($http, HostServices) {
 
   function edit (param) {
     var data = param;
-    $http({
-      url: url,
+    var editDisplayTypeUrl = url + param.id;
+    return $http({
+      url: editDisplayTypeUrl,
       method: 'PUT',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Token': data.token
       },
       data: data
     }).then(

@@ -19,7 +19,8 @@ function StorePointsServices($http, HostServices) {
       url: url,
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Token': data.token
       },
       data: data
     }).then(
@@ -40,7 +41,8 @@ function StorePointsServices($http, HostServices) {
       url: url,
       method: 'PUT',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Token': data.token
       },
       data: data
     }).then(

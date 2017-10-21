@@ -1,22 +1,22 @@
 function listDisplaysCtrl($scope,DTOptionsBuilder, _displays, _displayTypes, _storeTypes, $location, _isAuth, $localStorage){
   $scope.dtOptions = DTOptionsBuilder.newOptions()
-    .withDOM('<"html5buttons"B>lTfgitp')
-    .withButtons([
-      {extend: 'copy'},
-      {extend: 'csv'},
-      {extend: 'excel', title: 'ExampleFile'},
-      {extend: 'pdf', title: 'ExampleFile'},
+  .withDOM('<"html5buttons"B>lTfgitp')
+  .withButtons([
+    {extend: 'copy'},
+    {extend: 'csv'},
+    {extend: 'excel', title: 'ExampleFile'},
+    {extend: 'pdf', title: 'ExampleFile'},
 
-      {extend: 'print',
-        customize: function (win){
-          $(win.document.body).addClass('white-bg');
-          $(win.document.body).css('font-size', '10px');
-          $(win.document.body).find('table')
-            .addClass('compact')
-            .css('font-size', 'inherit');
-        }
-      }
-    ]);
+    {extend: 'print',
+    customize: function (win){
+      $(win.document.body).addClass('white-bg');
+      $(win.document.body).css('font-size', '10px');
+      $(win.document.body).find('table')
+      .addClass('compact')
+      .css('font-size', 'inherit');
+    }
+  }
+  ]);
 
   var self = this;
 
@@ -36,13 +36,14 @@ function listDisplaysCtrl($scope,DTOptionsBuilder, _displays, _displayTypes, _st
 
       _displays().then(function(displays){
         self.displays = displays;
+        console.log(self.displays);
       });
     }
   });
 
 
-  this.edit = function(displayId){
-    $location.path('displays/displays/'+displayId);
+  this.showEdit = function(displayId){
+    $location.path('displays/edit_display/'+displayId);
   }
 }
 
@@ -74,7 +75,7 @@ listDisplaysCtrl.resolve = {
     return DisplayTypesServices.all;
   },
   _isAuth: function(UsersServices) {
-    return UsersServices.isAuth; 
+    return UsersServices.isAuth;
   },
 }
 
@@ -82,6 +83,9 @@ function addDisplayCtrl($scope, _createDisplay, _storeTypes, _displayTypes, Uplo
   var self = this;
   this.param = {};
 
+  this.goBack = function(){
+    $location.path("displays/list_displays");
+  }
 
   $scope.token = $localStorage.token || "";
 
@@ -102,6 +106,7 @@ function addDisplayCtrl($scope, _createDisplay, _storeTypes, _displayTypes, Uplo
 
 
   this.save = function(){
+    console.log('save --> ', self.param);
     var fileReader = new FileReader();
     fileReader.readAsDataURL(self.file);
     fileReader.onload = function (e) {
@@ -142,48 +147,64 @@ addDisplayCtrl.resolve = {
     return DisplayTypesServices.all;
   },
   _isAdmin: function(UsersServices) {
-    return UsersServices.isAdmin; 
+    return UsersServices.isAdmin;
   },
 }
 
-function editDisplayCtrl($scope, _editDisplay, _getStore, _storeTypes, _displayTypes, Upload, $window, _isAdmin, $localStorage, $location) {
+function editDisplayCtrl($scope, _editDisplay, _getDisplay, _storeTypes, _displayTypes, Upload, $window, _isAuth, $localStorage, $location, $stateParams) {
   var self = this;
   this.param = {};
   var id = $stateParams.id;
 
   $scope.token = $localStorage.token || "";
 
-  _isAdmin($scope.token).then(function(respond){
+
+
+  _isAuth($scope.token).then(function(respond){
     if (respond == null){
       $location.path('/login');
     }
     else{
-      _displayTypes().then(function(displayTypes){
-        self.displayTypes = displayTypes;
-      });
+     _storeTypes().then(function(storeTypes){
+      self.storeTypes = storeTypes.records;
+    });
 
-      _storeTypes().then(function(storeTypes){
-        self.storeTypes = storeTypes
-      });
+     _displayTypes().then(function(displayTypes){
+      self.displayTypes = displayTypes.records;
+    });
 
-      _getDisplays().then(function(displays){
-        self.displays = displays;
-      });
-    }
-  });
+     _getDisplay(id).then(function(display){
+      self.param = display;
+      self.param.storeTypeId = self.param.storeTypeIdDisplays;
+      self.param.displayTypeId = self.param.displayTypeIdDisplays;
+    });
+   }
+ });
 
 
   this.goBack = function(){
-    $location.path("stores/list_store_types");
+    $location.path("stores/list_displays");
   }
 
   this.save = function(){
-    var fileReader = new FileReader();
-    fileReader.readAsDataURL(self.file);
-    fileReader.onload = function (e) {
-      var dataUrl = e.target.result;
-      var base64Data = dataUrl.substr(dataUrl.indexOf('base64,') + 'base64,'.length);
-      self.param.imageUrl = base64Data;
+    if (self.file){
+      var fileReader = new FileReader();
+      fileReader.readAsDataURL(self.file);
+      fileReader.onload = function (e) {
+        var dataUrl = e.target.result;
+        var base64Data = dataUrl.substr(dataUrl.indexOf('base64,') + 'base64,'.length);
+        self.param.imageUrl = base64Data;
+        _editDisplay(self.param).then(function(success){
+          if (success.status == 200){
+            $location.path("displays/list_displays");
+          }
+          else{
+            console.log(success.status);
+          }
+        });
+      };
+    }
+    else{
       _editDisplay(self.param).then(function(success){
         if (success.status == 200){
           $location.path("displays/list_displays");
@@ -192,7 +213,7 @@ function editDisplayCtrl($scope, _editDisplay, _getStore, _storeTypes, _displayT
           console.log(success.status);
         }
       });
-    };
+    }
   }
 }
 
@@ -221,12 +242,12 @@ editDisplayCtrl.resolve = {
     return DisplayTypesServices.all;
   },
   _isAuth: function(UsersServices) {
-    return UsersServices.isAuth; 
+    return UsersServices.isAuth;
   },
 }
 
 angular
-  .module('inspinia')
-  .controller('listDisplaysCtrl', listDisplaysCtrl)
-  .controller('addDisplayCtrl', addDisplayCtrl)
-  .controller('editDisplayCtrl', editDisplayCtrl)
+.module('inspinia')
+.controller('listDisplaysCtrl', listDisplaysCtrl)
+.controller('addDisplayCtrl', addDisplayCtrl)
+.controller('editDisplayCtrl', editDisplayCtrl)

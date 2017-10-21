@@ -19,7 +19,8 @@ function StoresServices($http, HostServices) {
       url: url,
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Token': data.token
       },
       data: data
     }).then(
@@ -36,11 +37,13 @@ function StoresServices($http, HostServices) {
 
   function edit (param) {
     var data = param;
+    var editUrl = url + param.id;
     return $http({
-      url: url,
+      url: editUrl,
       method: 'PUT',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Token': data.token
       },
       data: data
     }).then(

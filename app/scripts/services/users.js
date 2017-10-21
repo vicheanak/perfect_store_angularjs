@@ -6,9 +6,9 @@ function UsersServices($http, HostServices) {
   var url = HostServices.name + '/users/';
   var logoutUrl = HostServices.name + '/logout/';
   var isAuthUrl = HostServices.name + '/is_auth/';
-  var isAdminUrl = HostServices.name + '/is_admin';
-  var isViewerUrl = HostServices.name + '/is_viewer';
-  var isAuditorUrl = HostServices.name + '/is_auditor';
+  var isAdminUrl = HostServices.name + '/is_admin/';
+  var isViewerUrl = HostServices.name + '/is_viewer/';
+  var isAuditorUrl = HostServices.name + '/is_auditor/';
   var authUrl = HostServices.name + '/auth/';
 
   function allAuditors() {
@@ -17,7 +17,7 @@ function UsersServices($http, HostServices) {
         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
       }
     }
-    return $http.get(url, config).then(function (response) {
+    return $http.get(auditorUrl, config).then(function (response) {
       return response.data;
     });
   }
@@ -25,43 +25,46 @@ function UsersServices($http, HostServices) {
   function createAuditor(param) {
     var data = param;
     param.role = 3;
-    $http({
+    return $http({
       url: auditorUrl,
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Token': data.token
       },
       data: data
     }).then(
-      function(success){
-        console.log(success);
-        return success;
-      },
-      function(error){
-        console.log(error);
-        return error;
-      }
+    function(success){
+      console.log(success);
+      return success;
+    },
+    function(error){
+      console.log(error);
+      return error;
+    }
     );
   };
 
   function editAuditor(param) {
     var data = param;
-    $http({
-      url: auditorUrl,
+    var editAuditorUrl = auditorUrl + data.id;
+    return $http({
+      url: editAuditorUrl,
       method: 'PUT',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Token': data.token
       },
       data: data
     }).then(
-      function(success){
-        console.log(success);
-        return success;
-      },
-      function(error){
-        console.log(error);
-        return error;
-      }
+    function(success){
+      console.log(success);
+      return success;
+    },
+    function(error){
+      console.log(error);
+      return error;
+    }
     );
   };
 
@@ -73,6 +76,11 @@ function UsersServices($http, HostServices) {
     }
     var urlId = auditorUrl + id;
     return $http.get(urlId, config).then(function (response) {
+      var storeIds = []
+      for (var i = 0; i < response.data.USERS_STOREs.length; i ++){
+        storeIds.push(response.data.USERS_STOREs[i].storeIdUsersStores);
+      }
+      response.data.storeIds = storeIds;
       return response.data;
     });
   };
@@ -96,39 +104,42 @@ function UsersServices($http, HostServices) {
       url: adminUrl,
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Token': data.token
       },
       data: data
     }).then(
-      function(success){
-        console.log(success);
-        return success;
-      },
-      function(error){
-        console.log(error);
-        return error;
-      }
+    function(success){
+      console.log(success);
+      return success;
+    },
+    function(error){
+      console.log(error);
+      return error;
+    }
     );
   };
 
   function editAdmin(param) {
     var data = param;
+    var editAdminUrl = adminUrl + param.id;
     return $http({
-      url: adminUrl,
+      url: editAdminUrl,
       method: 'PUT',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Token': data.token
       },
       data: data
     }).then(
-      function(success){
-        console.log(success);
-        return success;
-      },
-      function(error){
-        console.log(error);
-        return error;
-      }
+    function(success){
+      console.log(success);
+      return success;
+    },
+    function(error){
+      console.log(error);
+      return error;
+    }
     );
   };
 
@@ -150,51 +161,54 @@ function UsersServices($http, HostServices) {
         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
       }
     }
-    return $http.get(url, config).then(function (response) {
+    return $http.get(viewerUrl, config).then(function (response) {
       return response.data;
     });
   }
 
   function createViewer(param) {
     var data = param;
-    param.role = 2;
+    param.role = 1;
     return $http({
       url: viewerUrl,
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Token': data.token
       },
       data: data
     }).then(
-      function(success){
-        console.log(success);
-        return success;
-      },
-      function(error){
-        console.log(error);
-        return error;
-      }
+    function(success){
+      console.log(success);
+      return success;
+    },
+    function(error){
+      console.log(error);
+      return error;
+    }
     );
   };
 
   function editViewer(param) {
     var data = param;
+    var editViewerUrl = viewerUrl + param.id;
     return $http({
-      url: viewerUrl,
+      url: editViewerUrl,
       method: 'PUT',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Token': data.token
       },
       data: data
     }).then(
-      function(success){
-        console.log(success);
-        return success;
-      },
-      function(error){
-        console.log(error);
-        return error;
-      }
+    function(success){
+      console.log(success);
+      return success;
+    },
+    function(error){
+      console.log(error);
+      return error;
+    }
     );
   };
 
@@ -212,7 +226,6 @@ function UsersServices($http, HostServices) {
 
 
   function isAuth(token) {
-    console.log('lg token', token);
     var config = {
       headers : {
         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
@@ -225,7 +238,7 @@ function UsersServices($http, HostServices) {
   }
 
   function isAdmin(token) {
-    console.log('lg token', token);
+    console.log('Service token', token);
     var config = {
       headers : {
         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
@@ -262,12 +275,12 @@ function UsersServices($http, HostServices) {
         password: password
       }
     }).then(
-      function(success){
-        return success.data;
-      },
-      function(error){
-        return error;
-      }
+    function(success){
+      return success.data;
+    },
+    function(error){
+      return error;
+    }
     );
   }
 
@@ -282,14 +295,14 @@ function UsersServices($http, HostServices) {
         token: token
       }
     }).then(
-      function(success){
-        console.log(success);
-        return success;
-      },
-      function(error){
-        console.log(error);
-        return error;
-      }
+    function(success){
+      console.log(success);
+      return success;
+    },
+    function(error){
+      console.log(error);
+      return error;
+    }
     );
   }
 
@@ -307,11 +320,13 @@ function UsersServices($http, HostServices) {
     editViewer: editViewer,
     getViewer: getViewer,
     isAuth: isAuth,
+    isAdmin: isAdmin,
+    isViewer: isViewer,
     auth: auth,
     outAuth: outAuth
   };
 }
 angular
-  .module('inspinia')
-  .factory('UsersServices', UsersServices);
+.module('inspinia')
+.factory('UsersServices', UsersServices);
 

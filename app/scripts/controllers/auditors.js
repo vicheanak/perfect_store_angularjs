@@ -1,22 +1,22 @@
 function listAuditorsCtrl($scope, DTOptionsBuilder, _stores, _auditors, _isAuth, $localStorage, $location){
   $scope.dtOptions = DTOptionsBuilder.newOptions()
-    .withDOM('<"html5buttons"B>lTfgitp')
-    .withButtons([
-      {extend: 'copy'},
-      {extend: 'csv'},
-      {extend: 'excel', title: 'ExampleFile'},
-      {extend: 'pdf', title: 'ExampleFile'},
+  .withDOM('<"html5buttons"B>lTfgitp')
+  .withButtons([
+    {extend: 'copy'},
+    {extend: 'csv'},
+    {extend: 'excel', title: 'ExampleFile'},
+    {extend: 'pdf', title: 'ExampleFile'},
 
-      {extend: 'print',
-        customize: function (win){
-          $(win.document.body).addClass('white-bg');
-          $(win.document.body).css('font-size', '10px');
-          $(win.document.body).find('table')
-            .addClass('compact')
-            .css('font-size', 'inherit');
-        }
-      }
-    ]);
+    {extend: 'print',
+    customize: function (win){
+      $(win.document.body).addClass('white-bg');
+      $(win.document.body).css('font-size', '10px');
+      $(win.document.body).find('table')
+      .addClass('compact')
+      .css('font-size', 'inherit');
+    }
+  }
+  ]);
 
   var self = this;
   $scope.token = $localStorage.token || "";
@@ -27,7 +27,8 @@ function listAuditorsCtrl($scope, DTOptionsBuilder, _stores, _auditors, _isAuth,
     }
     else{
       _auditors().then(function(auditors){
-        self.auditors = _auditors;
+        self.auditors = auditors;
+        console.log(self.auditors.records);
       });
       _stores().then(function(stores){
         self.stores = _stores;
@@ -35,7 +36,7 @@ function listAuditorsCtrl($scope, DTOptionsBuilder, _stores, _auditors, _isAuth,
     }
   });
 
-  this.edit = function(auditorId){
+  this.showEdit = function(auditorId){
     $location.path('auditors/edit_auditor/'+auditorId);
   }
 }
@@ -65,15 +66,17 @@ listAuditorsCtrl.resolve = {
     return StoresServices.all;
   },
   _isAuth: function(UsersServices) {
-    return UsersServices.isAuth; 
+    return UsersServices.isAuth;
   },
 }
 
 function addAuditorCtrl($scope, _createAuditor, _stores, Upload, $window, _isAdmin, $localStorage, $location) {
   var self = this;
   this.param = {};
+  this.param.status = true
 
   $scope.token = $localStorage.token || "";
+
 
   var self = this;
   _isAdmin($scope.token).then(function(respond){
@@ -93,6 +96,7 @@ function addAuditorCtrl($scope, _createAuditor, _stores, Upload, $window, _isAdm
   }
 
   this.save = function(){
+    console.log('self param ', self.param);
     _createAuditor(self.param).then(function(success){
       if (success.status == 200){
         $location.path("auditors/list_auditors");
@@ -102,7 +106,11 @@ function addAuditorCtrl($scope, _createAuditor, _stores, Upload, $window, _isAdm
       }
     });
   }
+
+
+
 }
+
 
 addAuditorCtrl.resolve = {
   loadPlugin: function($ocLazyLoad) {
@@ -114,7 +122,59 @@ addAuditorCtrl.resolve = {
       files: ['css/plugins/dropzone/basic.css', 'css/plugins/dropzone/dropzone.css', 'js/plugins/dropzone/dropzone.js']
     },{
       files: ['js/plugins/jasny/jasny-bootstrap.min.js', 'css/plugins/jasny/jasny-bootstrap.min.css']
-    }, ]);
+    },{
+      files: ['js/plugins/moment/moment.min.js']
+    }, {
+      name: 'ui.knob',
+      files: ['js/plugins/jsKnob/jquery.knob.js', 'js/plugins/jsKnob/angular-knob.js']
+    }, {
+      files: ['css/plugins/ionRangeSlider/ion.rangeSlider.css', 'css/plugins/ionRangeSlider/ion.rangeSlider.skinFlat.css', 'js/plugins/ionRangeSlider/ion.rangeSlider.min.js']
+    }, {
+      insertBefore: '#loadBefore',
+      name: 'localytics.directives',
+      files: ['css/plugins/chosen/bootstrap-chosen.css', 'js/plugins/chosen/chosen.jquery.js', 'js/plugins/chosen/chosen.js']
+    }, {
+      name: 'nouislider',
+      files: ['css/plugins/nouslider/jquery.nouislider.css', 'js/plugins/nouslider/jquery.nouislider.min.js', 'js/plugins/nouslider/angular-nouislider.js']
+    }, {
+      name: 'datePicker',
+      files: ['css/plugins/datapicker/angular-datapicker.css', 'js/plugins/datapicker/angular-datepicker.js']
+    }, {
+      files: ['js/plugins/jasny/jasny-bootstrap.min.js']
+    }, {
+      files: ['css/plugins/clockpicker/clockpicker.css', 'js/plugins/clockpicker/clockpicker.js']
+    }, {
+      name: 'ui.switchery',
+      files: ['css/plugins/switchery/switchery.css', 'js/plugins/switchery/switchery.js', 'js/plugins/switchery/ng-switchery.js']
+    }, {
+      name: 'colorpicker.module',
+      files: ['css/plugins/colorpicker/colorpicker.css', 'js/plugins/colorpicker/bootstrap-colorpicker-module.js']
+    }, {
+      name: 'ngImgCrop',
+      files: ['js/plugins/ngImgCrop/ng-img-crop.js', 'css/plugins/ngImgCrop/ng-img-crop.css']
+    }, {
+      serie: true,
+      files: ['js/plugins/daterangepicker/daterangepicker.js', 'css/plugins/daterangepicker/daterangepicker-bs3.css']
+    }, {
+      name: 'daterangepicker',
+      files: ['js/plugins/daterangepicker/angular-daterangepicker.js']
+    }, {
+      files: ['css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css']
+    }, {
+      name: 'ui.select',
+      files: ['js/plugins/ui-select/select.min.js', 'css/plugins/ui-select/select.min.css']
+    }, {
+      files: ['css/plugins/touchspin/jquery.bootstrap-touchspin.min.css', 'js/plugins/touchspin/jquery.bootstrap-touchspin.min.js']
+    }, {
+      name: 'ngTagsInput',
+      files: ['js/plugins/ngTags//ng-tags-input.min.js', 'css/plugins/ngTags/ng-tags-input-custom.min.css']
+    }, {
+      files: ['js/plugins/dualListbox/jquery.bootstrap-duallistbox.js', 'css/plugins/dualListbox/bootstrap-duallistbox.min.css']
+    }, {
+      name: 'frapontillo.bootstrap-duallistbox',
+      files: ['js/plugins/dualListbox/angular-bootstrap-duallistbox.js']
+    }
+    ]);
   },
   _createAuditor: function(UsersServices){
     return UsersServices.createAuditor;
@@ -123,7 +183,7 @@ addAuditorCtrl.resolve = {
     return StoresServices.all;
   },
   _isAdmin: function(UsersServices) {
-    return UsersServices.isAdmin; 
+    return UsersServices.isAdmin;
   },
 }
 
@@ -145,6 +205,7 @@ function editAuditorCtrl($scope, _editAuditor, _getAuditor, _stores, Upload, $wi
       });
 
       _getAuditor(id).then(function(data){
+        console.log(data);
         self.param = data;
       });
     }
@@ -156,6 +217,7 @@ function editAuditorCtrl($scope, _editAuditor, _getAuditor, _stores, Upload, $wi
   }
 
   this.save = function(){
+    console.log('param', this.param);
     _editAuditor(this.param).then(function(success){
       if (success.status == 200){
         $location.path("auditors/list_auditors");
@@ -165,36 +227,89 @@ function editAuditorCtrl($scope, _editAuditor, _getAuditor, _stores, Upload, $wi
       }
     });
   }
+
 }
 
 editAuditorCtrl.resolve = {
   loadPlugin: function($ocLazyLoad) {
-    return $ocLazyLoad.load([{
-      files: ['bower_components/ng-file-upload/FileAPI.min.js','bower_components/ng-file-upload/ng-file-upload.min.js']
-    },{
-      files: ['css/plugins/iCheck/custom.css', 'js/plugins/iCheck/icheck.min.js']
-    },{
-      files: ['css/plugins/dropzone/basic.css', 'css/plugins/dropzone/dropzone.css', 'js/plugins/dropzone/dropzone.js']
-    },{
-      files: ['js/plugins/jasny/jasny-bootstrap.min.js', 'css/plugins/jasny/jasny-bootstrap.min.css']
-    }, ]);
-  },
-  _editAuditor: function(UsersServices){
-    return UsersServices.editAuditor;
-  },
-  _getAuditor: function(UsersServices){
-    return UsersServices.get;
-  },
-  _stores: function(StoresServices){
-    return StoresServices.all;
-  },
-  _isAdmin: function(UsersServices) {
-    return UsersServices.isAuth; 
-  },
+   return $ocLazyLoad.load([{
+    files: ['bower_components/ng-file-upload/FileAPI.min.js','bower_components/ng-file-upload/ng-file-upload.min.js']
+  },{
+    files: ['css/plugins/iCheck/custom.css', 'js/plugins/iCheck/icheck.min.js']
+  },{
+    files: ['css/plugins/dropzone/basic.css', 'css/plugins/dropzone/dropzone.css', 'js/plugins/dropzone/dropzone.js']
+  },{
+    files: ['js/plugins/jasny/jasny-bootstrap.min.js', 'css/plugins/jasny/jasny-bootstrap.min.css']
+  },{
+    files: ['js/plugins/moment/moment.min.js']
+  }, {
+    name: 'ui.knob',
+    files: ['js/plugins/jsKnob/jquery.knob.js', 'js/plugins/jsKnob/angular-knob.js']
+  }, {
+    files: ['css/plugins/ionRangeSlider/ion.rangeSlider.css', 'css/plugins/ionRangeSlider/ion.rangeSlider.skinFlat.css', 'js/plugins/ionRangeSlider/ion.rangeSlider.min.js']
+  }, {
+    insertBefore: '#loadBefore',
+    name: 'localytics.directives',
+    files: ['css/plugins/chosen/bootstrap-chosen.css', 'js/plugins/chosen/chosen.jquery.js', 'js/plugins/chosen/chosen.js']
+  }, {
+    name: 'nouislider',
+    files: ['css/plugins/nouslider/jquery.nouislider.css', 'js/plugins/nouslider/jquery.nouislider.min.js', 'js/plugins/nouslider/angular-nouislider.js']
+  }, {
+    name: 'datePicker',
+    files: ['css/plugins/datapicker/angular-datapicker.css', 'js/plugins/datapicker/angular-datepicker.js']
+  }, {
+    files: ['js/plugins/jasny/jasny-bootstrap.min.js']
+  }, {
+    files: ['css/plugins/clockpicker/clockpicker.css', 'js/plugins/clockpicker/clockpicker.js']
+  }, {
+    name: 'ui.switchery',
+    files: ['css/plugins/switchery/switchery.css', 'js/plugins/switchery/switchery.js', 'js/plugins/switchery/ng-switchery.js']
+  }, {
+    name: 'colorpicker.module',
+    files: ['css/plugins/colorpicker/colorpicker.css', 'js/plugins/colorpicker/bootstrap-colorpicker-module.js']
+  }, {
+    name: 'ngImgCrop',
+    files: ['js/plugins/ngImgCrop/ng-img-crop.js', 'css/plugins/ngImgCrop/ng-img-crop.css']
+  }, {
+    serie: true,
+    files: ['js/plugins/daterangepicker/daterangepicker.js', 'css/plugins/daterangepicker/daterangepicker-bs3.css']
+  }, {
+    name: 'daterangepicker',
+    files: ['js/plugins/daterangepicker/angular-daterangepicker.js']
+  }, {
+    files: ['css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css']
+  }, {
+    name: 'ui.select',
+    files: ['js/plugins/ui-select/select.min.js', 'css/plugins/ui-select/select.min.css']
+  }, {
+    files: ['css/plugins/touchspin/jquery.bootstrap-touchspin.min.css', 'js/plugins/touchspin/jquery.bootstrap-touchspin.min.js']
+  }, {
+    name: 'ngTagsInput',
+    files: ['js/plugins/ngTags//ng-tags-input.min.js', 'css/plugins/ngTags/ng-tags-input-custom.min.css']
+  }, {
+    files: ['js/plugins/dualListbox/jquery.bootstrap-duallistbox.js', 'css/plugins/dualListbox/bootstrap-duallistbox.min.css']
+  }, {
+    name: 'frapontillo.bootstrap-duallistbox',
+    files: ['js/plugins/dualListbox/angular-bootstrap-duallistbox.js']
+  }
+  ]);
+ },
+ _editAuditor: function(UsersServices){
+  return UsersServices.editAuditor;
+},
+_getAuditor: function(UsersServices){
+  return UsersServices.getAuditor;
+},
+_stores: function(StoresServices){
+  return StoresServices.all;
+},
+_isAdmin: function(UsersServices) {
+  return UsersServices.isAuth;
+},
 }
 
 angular
-  .module('inspinia')
-  .controller('listAuditorsCtrl', listAuditorsCtrl)
-  .controller('addAuditorCtrl', addAuditorCtrl)
-  .controller('editAuditorCtrl', editAuditorCtrl)
+.module('inspinia')
+.controller('listAuditorsCtrl', listAuditorsCtrl)
+.controller('addAuditorCtrl', addAuditorCtrl)
+.controller('editAuditorCtrl', editAuditorCtrl)

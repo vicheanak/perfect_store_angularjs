@@ -36,7 +36,7 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider) {
       data: {
         pageTitle: 'Displays'
       },
-      controller: 'listDisplaysCtrl as listDisplaysCtrl', 
+      controller: 'listDisplaysCtrl as listDisplaysCtrl',
       resolve: listDisplaysCtrl.resolve
     })
 
@@ -52,7 +52,7 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider) {
 
     .state('displays.edit_displays', {
       url: "/edit_display/:id",
-      templateUrl: "views/displays_edit_display.html",
+      templateUrl: "views/displays/edit_display.html",
       data: {
         pageTitle: 'Edit Display'
       },

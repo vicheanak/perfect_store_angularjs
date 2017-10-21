@@ -1,24 +1,24 @@
 function listAdminsCtrl($scope,DTOptionsBuilder, _admins, _isAdmin, $location, $localStorage){
   $scope.dtOptions = DTOptionsBuilder.newOptions()
-    .withDOM('<"html5buttons"B>lTfgitp')
-    .withButtons([
-      {extend: 'copy'},
-      {extend: 'csv'},
-      {extend: 'excel', title: 'ExampleFile'},
-      {extend: 'pdf', title: 'ExampleFile'},
+  .withDOM('<"html5buttons"B>lTfgitp')
+  .withButtons([
+    {extend: 'copy'},
+    {extend: 'csv'},
+    {extend: 'excel', title: 'ExampleFile'},
+    {extend: 'pdf', title: 'ExampleFile'},
 
-      {extend: 'print',
-        customize: function (win){
-          $(win.document.body).addClass('white-bg');
-          $(win.document.body).css('font-size', '10px');
-          $(win.document.body).find('table')
-            .addClass('compact')
-            .css('font-size', 'inherit');
-        }
-      }
-    ]);
+    {extend: 'print',
+    customize: function (win){
+      $(win.document.body).addClass('white-bg');
+      $(win.document.body).css('font-size', '10px');
+      $(win.document.body).find('table')
+      .addClass('compact')
+      .css('font-size', 'inherit');
+    }
+  }
+  ]);
 
-    var self = this;
+  var self = this;
 
   $scope.token = $localStorage.token || "";
   _isAdmin($scope.token).then(function(respond){
@@ -27,11 +27,15 @@ function listAdminsCtrl($scope,DTOptionsBuilder, _admins, _isAdmin, $location, $
     }
     else{
       _admins().then(function(admins){
-        this.admins = admins;
+        console.log(admins);
+        self.admins = admins;
       });
     }
   });
 
+  this.showEdit = function(adminId){
+    $location.path('users/edit_admin/'+adminId);
+  }
 
 }
 
@@ -64,6 +68,7 @@ listAdminsCtrl.resolve = {
 function addAdminCtrl($scope, _createAdmin, Upload, $window, $location, $localStorage, _isAdmin) {
   var self = this;
   this.param = {};
+  this.param.status = true
 
   this.goBack = function(){
     $location.path('users/list_admins');
@@ -76,24 +81,19 @@ function addAdminCtrl($scope, _createAdmin, Upload, $window, $location, $localSt
     if (respond == null){
       $location.path('/login');
     }
-    else{
-      _storeTypes().then(function(storeTypes){
-        self.storeTypes = storeTypes;
-      });
-
-      _displayTypes().then(function(displayTypes){
-        self.displayTypes = displayTypes;
-      });
-
-      _displays().then(function(displays){
-        self.displays = displays;
-      });
-    }
   });
 
 
   this.save = function(){
-    _createAdmin(self.param);
+    console.log('self param ', self.param);
+    _createAdmin(self.param).then(function(success){
+      if (success.status == 200){
+        $location.path("users/list_admins");
+      }
+      else{
+        console.log(success.status);
+      }
+    });
   }
 }
 
@@ -117,41 +117,43 @@ addAdminCtrl.resolve = {
   }
 }
 
-function editAdminCtrl($scope, _editAdmin, Upload, $window, $localStorage, $location, _isAdmin) {
+function editAdminCtrl($scope, _editAdmin, _getAdmin, Upload, $window, $stateParams, _isAdmin, $localStorage, $location) {
   var self = this;
   this.param = {};
-
+  var id = $stateParams.id;
 
   $scope.token = $localStorage.token || "";
+
+  var self = this;
   _isAdmin($scope.token).then(function(respond){
     if (respond == null){
       $location.path('/login');
     }
     else{
-      _storeTypes().then(function(storeTypes){
-        self.storeTypes = storeTypes;
-      });
-
-      _displayTypes().then(function(displayTypes){
-        self.displayTypes = displayTypes;
-      });
-
-      _displays().then(function(displays){
-        self.displays = displays;
+      _getAdmin(id).then(function(data){
+        console.log(data);
+        self.param = data;
       });
     }
   });
 
-  this.save = function(){
-    var fileReader = new FileReader();
-    fileReader.readAsDataURL(self.file);
-    fileReader.onload = function (e) {
-      var dataUrl = e.target.result;
-      var base64Data = dataUrl.substr(dataUrl.indexOf('base64,') + 'base64,'.length);
-      self.param.imageUrl = base64Data;
-      _editAdmin(self.param);
-    };
+
+  this.goBack = function(){
+    $location.path("users/list_admins");
   }
+
+  this.save = function(){
+    console.log('param', this.param);
+    _editAdmin(this.param).then(function(success){
+      if (success.status == 200){
+        $location.path("users/list_admins");
+      }
+      else{
+        console.log(success.status);
+      }
+    });
+  }
+
 }
 
 editAdminCtrl.resolve = {
@@ -169,30 +171,35 @@ editAdminCtrl.resolve = {
   _editAdmin: function(UsersServices){
     return UsersServices.editAdmin;
   },
+  _getAdmin: function(UsersServices){
+    return UsersServices.getAdmin;
+  },
   _isAdmin: function(UsersServices){
     return UsersServices.isAdmin;
   }
 }
-
-function listViewersCtrl($scope,DTOptionsBuilder, _viewers){
+function listViewersCtrl($scope,DTOptionsBuilder, _viewers, _isAdmin, $location, $localStorage){
   $scope.dtOptions = DTOptionsBuilder.newOptions()
-    .withDOM('<"html5buttons"B>lTfgitp')
-    .withButtons([
-      {extend: 'copy'},
-      {extend: 'csv'},
-      {extend: 'excel', title: 'ExampleFile'},
-      {extend: 'pdf', title: 'ExampleFile'},
+  .withDOM('<"html5buttons"B>lTfgitp')
+  .withButtons([
+    {extend: 'copy'},
+    {extend: 'csv'},
+    {extend: 'excel', title: 'ExampleFile'},
+    {extend: 'pdf', title: 'ExampleFile'},
 
-      {extend: 'print',
-        customize: function (win){
-          $(win.document.body).addClass('white-bg');
-          $(win.document.body).css('font-size', '10px');
-          $(win.document.body).find('table')
-            .addClass('compact')
-            .css('font-size', 'inherit');
-        }
-      }
-    ]);
+    {extend: 'print',
+    customize: function (win){
+      $(win.document.body).addClass('white-bg');
+      $(win.document.body).css('font-size', '10px');
+      $(win.document.body).find('table')
+      .addClass('compact')
+      .css('font-size', 'inherit');
+    }
+  }
+  ]);
+
+  var self = this;
+
   $scope.token = $localStorage.token || "";
   _isAdmin($scope.token).then(function(respond){
     if (respond == null){
@@ -200,10 +207,15 @@ function listViewersCtrl($scope,DTOptionsBuilder, _viewers){
     }
     else{
       _viewers().then(function(viewers){
-        this.viewers = _viewers;
+        console.log(viewers);
+        self.viewers = viewers;
       });
     }
   });
+
+  this.showEdit = function(viewerId){
+    $location.path('users/edit_viewer/'+viewerId);
+  }
 
 }
 
@@ -229,32 +241,39 @@ listViewersCtrl.resolve = {
     return UsersServices.allViewers;
   },
   _isAdmin: function(UsersServices){
-    return UsersServices.isAdmin;
+    return UsersServices.isAdmin
   }
 }
 
 function addViewerCtrl($scope, _createViewer, Upload, $window, $location, $localStorage, _isAdmin) {
   var self = this;
   this.param = {};
+  this.param.status = true
+
+  this.goBack = function(){
+    $location.path('users/list_viewers');
+  }
+
+  var self = this;
 
   $scope.token = $localStorage.token || "";
   _isAdmin($scope.token).then(function(respond){
     if (respond == null){
       $location.path('/login');
     }
-    else{
-    }
   });
 
+
   this.save = function(){
-    var fileReader = new FileReader();
-    fileReader.readAsDataURL(self.file);
-    fileReader.onload = function (e) {
-      var dataUrl = e.target.result;
-      var base64Data = dataUrl.substr(dataUrl.indexOf('base64,') + 'base64,'.length);
-      self.param.imageUrl = base64Data;
-      _createViewer(self.param);
-    };
+    console.log('self param ', self.param);
+    _createViewer(self.param).then(function(success){
+      if (success.status == 200){
+        $location.path("users/list_viewers");
+      }
+      else{
+        console.log(success.status);
+      }
+    });
   }
 }
 
@@ -273,34 +292,48 @@ addViewerCtrl.resolve = {
   _createViewer: function(UsersServices){
     return UsersServices.createViewer;
   },
-  isAdmin: function(UsersServices){
+  _isAdmin: function(UsersServices){
     return UsersServices.isAdmin;
   }
 }
 
-function editViewerCtrl($scope, _editViewer, Upload, $window, $location, _isAdmin, $localStorage) {
+function editViewerCtrl($scope, _editViewer, _getViewer, Upload, $window, $stateParams, _isAdmin, $localStorage, $location) {
   var self = this;
   this.param = {};
+  var id = $stateParams.id;
 
   $scope.token = $localStorage.token || "";
+
+  var self = this;
   _isAdmin($scope.token).then(function(respond){
     if (respond == null){
       $location.path('/login');
     }
     else{
+      _getViewer(id).then(function(data){
+        console.log(data);
+        self.param = data;
+      });
     }
   });
 
-  this.save = function(){
-    var fileReader = new FileReader();
-    fileReader.readAsDataURL(self.file);
-    fileReader.onload = function (e) {
-      var dataUrl = e.target.result;
-      var base64Data = dataUrl.substr(dataUrl.indexOf('base64,') + 'base64,'.length);
-      self.param.imageUrl = base64Data;
-      _editViewer(self.param);
-    };
+
+  this.goBack = function(){
+    $location.path("users/list_viewers");
   }
+
+  this.save = function(){
+    console.log('param', this.param);
+    _editViewer(this.param).then(function(success){
+      if (success.status == 200){
+        $location.path("users/list_viewers");
+      }
+      else{
+        console.log(success.status);
+      }
+    });
+  }
+
 }
 
 editViewerCtrl.resolve = {
@@ -318,14 +351,37 @@ editViewerCtrl.resolve = {
   _editViewer: function(UsersServices){
     return UsersServices.editViewer;
   },
+  _getViewer: function(UsersServices){
+    return UsersServices.getViewer;
+  },
   _isAdmin: function(UsersServices){
-    return UsersServices.isAdmin
+    return UsersServices.isAdmin;
   }
 }
 
-function usersCtrl($scope, $location, UsersServices, $localStorage) {
+function usersCtrl($scope, $location, UsersServices, $localStorage, UsersServices) {
   var self = this;
   this.param = {};
+  this.isAdmin = false;
+  this.isViewer = false;
+  this.adminUsername = '';
+  this.viewerUsername = '';
+
+
+  $scope.token = $localStorage.token || "";
+  UsersServices.isAdmin($scope.token).then(function(respond){
+    if (respond){
+      self.username = respond.fullname;
+      self.isAdmin = true;
+    }
+  });
+
+  UsersServices.isViewer($scope.token).then(function(respond){
+    if (respond){
+      self.username = respond.fullname;
+      self.isViewer = true;
+    }
+  });
 
   this.logout = function(){
     var param = {};
@@ -337,17 +393,17 @@ function usersCtrl($scope, $location, UsersServices, $localStorage) {
       else{
         console.log(success.status);
       }
-
     });
   }
+
 }
 
 angular
-  .module('inspinia')
-  .controller('listAdminsCtrl', listAdminsCtrl)
-  .controller('addAdminCtrl', addAdminCtrl)
-  .controller('editAdminCtrl', editAdminCtrl)
-  .controller('listViewersCtrl', listViewersCtrl)
-  .controller('addViewerCtrl', addViewerCtrl)
-  .controller('editViewerCtrl', editViewerCtrl)
-  .controller('usersCtrl', usersCtrl)
+.module('inspinia')
+.controller('listAdminsCtrl', listAdminsCtrl)
+.controller('addAdminCtrl', addAdminCtrl)
+.controller('editAdminCtrl', editAdminCtrl)
+.controller('listViewersCtrl', listViewersCtrl)
+.controller('addViewerCtrl', addViewerCtrl)
+.controller('editViewerCtrl', editViewerCtrl)
+.controller('usersCtrl', usersCtrl)

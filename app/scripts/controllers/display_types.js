@@ -34,7 +34,7 @@ function listDisplayTypesCtrl($scope,DTOptionsBuilder,_displayTypes, _isAuth, $l
   });
 
   this.showEdit = function(id){
-    $location.path("displays/display_types/"+id);
+    $location.path("displays/edit_display_type/"+id);
   }
 
 }
@@ -61,7 +61,7 @@ listDisplayTypesCtrl.resolve = {
     return DisplayTypesServices.all;
   },
   _isAuth: function(UsersServices) {
-    return UsersServices.isAuth; 
+    return UsersServices.isAuth;
   },
 }
 
@@ -108,7 +108,7 @@ addDisplayTypeCtrl.resolve = {
     return DisplayTypesServices.create;
   },
   _isAdmin: function(UsersServices) {
-    return UsersServices.isAuth; 
+    return UsersServices.isAuth;
   },
 }
 
@@ -118,6 +118,7 @@ function editDisplayTypeCtrl($scope, _editDisplayType, Upload, $window, $statePa
 
   var id = $stateParams.id;
 
+  $scope.token = $localStorage.token;
   _isAdmin($scope.token).then(function(respond){
     if (respond == null){
       $location.path('/login');
@@ -166,9 +167,8 @@ editDisplayTypeCtrl.resolve = {
     return DisplayTypesServices.get;
   },
   _isAdmin: function(UsersServices) {
-    return UsersServices.isAuth; 
-  },
-
+    return UsersServices.isAuth;
+  }
 }
 
 angular

@@ -3,13 +3,13 @@
     <h2>List Claimed</h2>
     <ol class="breadcrumb">
       <li>
-        <a href="/dashboard">Dashboard</a>
+        <a href="/dashboard">Home</a>
       </li>
       <li>
         <a>Stores</a>
       </li>
       <li class="active">
-        <strong>List Claimed</strong>
+        <strong>Claimed</strong>
       </li>
     </ol>
   </div>
@@ -39,35 +39,31 @@
                 <th>Store Type</th>
                 <th>Auditor</th>
                 <th>Auditor Phone</th>
-                <th>Date</th>
+                <th>Ordered Date</th>
+                <th>Deliveried Date</th>
                 <th>Status</th>
-                <th class="text-right" data-sort-ignore="true">Action</th> 
               </tr>
             </thead>
             <tbody>
-              <tr ng-repeat="person in listStoresRewardsCtrl.storesRewards.records">
-		      <td>{{person.id}}</td>
-		      <td>Microwave</td>
-		      <td>Store 1</td>
-                <td>092223223</td>
-                <td>HPC Gold</td>
-                <td>Seyha</td>
-                <td>093889223</td>
-		<td>{{person.createdDate}}</td>
-		<td>
-			<button class="btn-green btn btn-xs">{{person.status == 1 ? 'Ordered' : 'Delivered'}}</button>
-		</td>
-                <td class="text-right">
-                  <div class="btn-group">
-                    <button class="btn-white btn btn-xs">Store</button>
-                    <button class="btn-white btn btn-xs">Auditor</button>
-                  </div>
-                </td> 
-              </tr>
-            </tbody>
-          </table>
-        </div>
+              <tr ng-repeat="storeReward in listStoresRewardsCtrl.storesRewards.records">
+                <td>{{storeReward.id}}</td>
+                <td>{{storeReward.REWARD.name}}</td>
+                <td>{{storeReward.STORE.name}}</td>
+                <td>{{storeReward.STORE.phone}}</td>
+                <td>{{storeReward.STORE.STORE_TYPE.name}}</td>
+                <td>{{storeReward.STORE.USERS_STOREs[0].USER.fullname}}</td>
+                <td>{{storeReward.STORE.USERS_STOREs[0].USER.phone}}</td>
+                <td>{{storeReward.createdAt | date:"dd/MM/yyyy 'at' h:mma"}}</td>
+                <td>{{storeReward.deliveriedAt | date:"dd/MM/yyyy 'at' h:mma"}}</td>
+                <td>
+                 <button class="{{storeReward.deliveriedAt ? 'btn-primary' : 'btn-warning'}} btn btn-xs">{{storeReward.deliveriedAt ? 'Delivered' : 'Ordered'}}</button>
+               </td>
+
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
+</div>
 </div>

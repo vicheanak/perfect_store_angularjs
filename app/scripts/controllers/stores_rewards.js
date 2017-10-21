@@ -1,22 +1,22 @@
 function listStoresRewardsCtrl($scope,DTOptionsBuilder, _storesRewards, _isAuth, $localStorage, $location){
   $scope.dtOptions = DTOptionsBuilder.newOptions()
-    .withDOM('<"html5buttons"B>lTfgitp')
-    .withButtons([
-      {extend: 'copy'},
-      {extend: 'csv'},
-      {extend: 'excel', title: 'ExampleFile'},
-      {extend: 'pdf', title: 'ExampleFile'},
+  .withDOM('<"html5buttons"B>lTfgitp')
+  .withButtons([
+    {extend: 'copy'},
+    {extend: 'csv'},
+    {extend: 'excel', title: 'ExampleFile'},
+    {extend: 'pdf', title: 'ExampleFile'},
 
-      {extend: 'print',
-        customize: function (win){
-          $(win.document.body).addClass('white-bg');
-          $(win.document.body).css('font-size', '10px');
-          $(win.document.body).find('table')
-            .addClass('compact')
-            .css('font-size', 'inherit');
-        }
-      }
-    ]);
+    {extend: 'print',
+    customize: function (win){
+      $(win.document.body).addClass('white-bg');
+      $(win.document.body).css('font-size', '10px');
+      $(win.document.body).find('table')
+      .addClass('compact')
+      .css('font-size', 'inherit');
+    }
+  }
+  ]);
 
   $scope.token = $localStorage.token || "";
 
@@ -26,7 +26,11 @@ function listStoresRewardsCtrl($scope,DTOptionsBuilder, _storesRewards, _isAuth,
       $location.path('/login');
     }
     else{
-      self.storesRewards = _storesRewards;
+      _storesRewards().then(function(storesRewards){
+        self.storesRewards = storesRewards;
+        console.log('lg ', self.storesRewards);
+      });
+
     }
   });
 
@@ -52,13 +56,13 @@ listStoresRewardsCtrl.resolve = {
     }]);
   },
   _storesRewards: function(StoresRewardsServices){
-    return StoresRewardsServices.all();
+    return StoresRewardsServices.all;
   },
   _isAuth: function(UsersServices) {
-    return UsersServices.isAuth; 
+    return UsersServices.isAuth;
   },
 }
 
 angular
-  .module('inspinia')
-  .controller('listStoresRewardsCtrl', listStoresRewardsCtrl)
+.module('inspinia')
+.controller('listStoresRewardsCtrl', listStoresRewardsCtrl)

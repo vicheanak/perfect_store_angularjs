@@ -61,6 +61,9 @@ listStoreTypesCtrl.resolve = {
   _storeTypes: function(StoreTypesServices){
     return StoreTypesServices.all;
   },
+  _isAuth: function(UsersServices){
+    return UsersServices.isAuth;
+  }
 }
 
 function addStoreTypeCtrl($scope, _createStoreType, $window, $location, _isAdmin, $localStorage) {

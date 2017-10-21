@@ -20,6 +20,7 @@ function loginCtrl($scope, $location, _isAuth, _auth, $localStorage){
   this.login = function(){
     this.failedAuthMessage = '';
     _auth(this.username, this.password).then(function(data){
+      console.log(data);
       if (data.err){
         self.failedAuthMessage = data.err;
       }

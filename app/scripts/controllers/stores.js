@@ -1,22 +1,22 @@
 function listStoresCtrl($scope,DTOptionsBuilder, _stores, _storeTypes, $location, _isAuth, $localStorage){
   $scope.dtOptions = DTOptionsBuilder.newOptions()
-    .withDOM('<"html5buttons"B>lTfgitp')
-    .withButtons([
-      {extend: 'copy'},
-      {extend: 'csv'},
-      {extend: 'excel', title: 'ExampleFile'},
-      {extend: 'pdf', title: 'ExampleFile'},
+  .withDOM('<"html5buttons"B>lTfgitp')
+  .withButtons([
+    {extend: 'copy'},
+    {extend: 'csv'},
+    {extend: 'excel', title: 'ExampleFile'},
+    {extend: 'pdf', title: 'ExampleFile'},
 
-      {extend: 'print',
-        customize: function (win){
-          $(win.document.body).addClass('white-bg');
-          $(win.document.body).css('font-size', '10px');
-          $(win.document.body).find('table')
-            .addClass('compact')
-            .css('font-size', 'inherit');
-        }
-      }
-    ]);
+    {extend: 'print',
+    customize: function (win){
+      $(win.document.body).addClass('white-bg');
+      $(win.document.body).css('font-size', '10px');
+      $(win.document.body).find('table')
+      .addClass('compact')
+      .css('font-size', 'inherit');
+    }
+  }
+  ]);
 
   var self = this;
 
@@ -28,7 +28,11 @@ function listStoresCtrl($scope,DTOptionsBuilder, _stores, _storeTypes, $location
     }
     else{
       _storeTypes().then(function(storeTypes){
-        self.storeTypes = storeTypes;
+        for (var i = 0; i < storeTypes.length; i ++){
+          if (storeTypes[i].status == true){
+            self.storeTypes = storeTypes;
+          }
+        }
       });
 
       _stores().then(function(stores){
@@ -77,6 +81,8 @@ function addStoreCtrl($scope, _createStore, _storeTypes, Upload, $window, $locat
   this.param = {};
 
   $scope.token = $localStorage.token || "";
+  this.param.token = $scope.token;
+
   _isAdmin($scope.token).then(function(respond){
     if (respond == null){
       $location.path('/login');
@@ -89,11 +95,15 @@ function addStoreCtrl($scope, _createStore, _storeTypes, Upload, $window, $locat
     }
   });
 
+  this.goBack = function(){
+    $location.path("stores/list_stores");
+  }
 
   this.save = function(){
+    console.log(self.param);
     _createStore(self.param).then(function(success){
       if (success.status == 200){
-        //$location.path("stores/list_stores");
+        $location.path("stores/list_stores");
       }
       else{
         console.log(success.status);
@@ -146,7 +156,6 @@ function editStoreCtrl($scope, _editStore, _getStore, _storeTypes, Upload, $wind
       _getStore(id).then(function(data){
         self.param = data;
         self.storeTypeId = self.param.storeTypeIdStores;
-        console.log(data);
       });
     }
   });
@@ -154,10 +163,11 @@ function editStoreCtrl($scope, _editStore, _getStore, _storeTypes, Upload, $wind
 
 
   this.goBack = function(){
-    $location.path("stores/list_store_types");
+    $location.path("stores/list_stores");
   }
 
   this.save = function(){
+    console.log(this.param);
     _editStore(this.param).then(function(success){
       if (success.status == 200){
         $location.path("stores/list_stores");
@@ -191,13 +201,13 @@ editStoreCtrl.resolve = {
   _storeTypes: function(StoreTypesServices){
     return StoreTypesServices.all;
   },
-  isAdmin: function(UsersServices){
+  _isAdmin: function(UsersServices){
     return UsersServices.isAdmin;
   }
 }
 
 angular
-  .module('inspinia')
-  .controller('listStoresCtrl', listStoresCtrl)
-  .controller('addStoreCtrl', addStoreCtrl)
-  .controller('editStoreCtrl', editStoreCtrl)
+.module('inspinia')
+.controller('listStoresCtrl', listStoresCtrl)
+.controller('addStoreCtrl', addStoreCtrl)
+.controller('editStoreCtrl', editStoreCtrl)
