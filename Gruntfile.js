@@ -205,9 +205,13 @@ module.exports = function (grunt) {
     ]);
 
     // Run build version of app
+    //grunt.registerTask('server', [
+        //'build',
+        //'connect:dist:keepalive'
+    //]);
     grunt.registerTask('server', [
         'build',
-        'connect:dist:keepalive'
+        'connect:dist:keepalive',
     ]);
 
     // Build version for production
