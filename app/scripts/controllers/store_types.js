@@ -32,10 +32,8 @@ function listStoreTypesCtrl($scope,DTOptionsBuilder, _storeTypes, $location, _is
     }
   });
 
-
-
   this.showEdit = function(id){
-    $location.path("stores/edit_store_type/"+id);
+    $location.path("settings/edit_store_type/"+id);
   }
 
 }
@@ -66,13 +64,13 @@ listStoreTypesCtrl.resolve = {
   }
 }
 
-function addStoreTypeCtrl($scope, _createStoreType, $window, $location, _isAdmin, $localStorage) {
+function addStoreTypeCtrl($scope, _createStoreType, $window, $location, _isManager, $localStorage) {
   var self = this;
   this.param = {};
   this.param.status = false;
 
   $scope.token = $localStorage.token || "";
-  _isAdmin($scope.token).then(function(respond){
+  _isManager($scope.token).then(function(respond){
     if (respond == null){
       $location.path('/login');
     }
@@ -85,7 +83,7 @@ function addStoreTypeCtrl($scope, _createStoreType, $window, $location, _isAdmin
   this.save = function(){
     _createStoreType(self.param).then(function(success){
       if (success.status == 200){
-        $location.path("stores/list_store_types");
+        $location.path("settings/list_store_types");
       }
       else{
         console.log(success.status);
@@ -109,13 +107,13 @@ addStoreTypeCtrl.resolve = {
   _createStoreType: function(StoreTypesServices){
     return StoreTypesServices.create;
   },
-  _isAdmin: function(UsersServices){
-    return UsersServices.isAdmin
+  _isManager: function(UsersServices){
+    return UsersServices.isManager
 
   }
 }
 
-function editStoreTypeCtrl($scope, $stateParams, _editStoreType, _getStoreType, $window, $location, $localStorage, _isAdmin) {
+function editStoreTypeCtrl($scope, $stateParams, _editStoreType, _getStoreType, $window, $location, $localStorage, _isManager) {
   var self = this;
   this.param = {};
 
@@ -123,12 +121,12 @@ function editStoreTypeCtrl($scope, $stateParams, _editStoreType, _getStoreType, 
 
 
   this.goBack = function(){
-    $location.path("stores/list_store_types");
+    $location.path("settings/list_store_types");
   }
 
 
   $scope.token = $localStorage.token || "";
-  _isAdmin($scope.token).then(function(respond){
+  _isManager($scope.token).then(function(respond){
     if (respond == null){
       $location.path('/login');
     }
@@ -144,7 +142,7 @@ function editStoreTypeCtrl($scope, $stateParams, _editStoreType, _getStoreType, 
   this.save = function(){
     _editStoreType(this.param).then(function(success){
       if (success.status == 200){
-        $location.path("stores/list_store_types");
+        $location.path("settings/list_store_types");
       }
       else{
         console.log(success.status);
@@ -171,8 +169,8 @@ editStoreTypeCtrl.resolve = {
   _getStoreType: function(StoreTypesServices){
     return StoreTypesServices.get;
   },
-  _isAdmin: function(UsersServices){
-    return UsersServices.isAdmin
+  _isManager: function(UsersServices){
+    return UsersServices.isManager
   }
 }
 

@@ -21,7 +21,7 @@ function listRewardsCtrl($scope, DTOptionsBuilder, _rewards, _isAuth, $location,
   var self = this;
 
   this.goToEdit = function(id){
-    $location.path('displays/edit_reward/'+id);
+    $location.path('settings/edit_reward/'+id);
   }
 
   $scope.token = $localStorage.token || "";
@@ -66,12 +66,12 @@ listRewardsCtrl.resolve = {
   }
 }
 
-function addRewardCtrl($scope, _createReward, Upload, $window, $location, _isAdmin, $localStorage) {
+function addRewardCtrl($scope, _createReward, Upload, $window, $location, _isManager, $localStorage) {
   var self = this;
   this.param = {};
 
   $scope.token = $localStorage.token || "";
-  _isAdmin($scope.token).then(function(respond){
+  _isManager($scope.token).then(function(respond){
     if (respond == null){
       $location.path('/login');
     }
@@ -80,7 +80,7 @@ function addRewardCtrl($scope, _createReward, Upload, $window, $location, _isAdm
   });
 
   this.goBack = function(){
-    $location.path("displays/list_rewards");
+    $location.path("settings/list_rewards");
   }
 
   this.save = function(){
@@ -93,7 +93,7 @@ function addRewardCtrl($scope, _createReward, Upload, $window, $location, _isAdm
       self.param.imageUrl = base64Data;
       _createReward(self.param).then(function(success){
         if (success.status == 200){
-          $location.path("displays/list_rewards");
+          $location.path("settings/list_rewards");
         }
         else{
           console.log(success.status);
@@ -118,12 +118,12 @@ addRewardCtrl.resolve = {
   _createReward: function(RewardsServices){
     return RewardsServices.create;
   },
-  _isAdmin: function(UsersServices){
-    return UsersServices.isAdmin;
+  _isManager: function(UsersServices){
+    return UsersServices.isManager;
   }
 }
 
-function editRewardCtrl($scope, _editReward, _getReward, Upload, $window, _isAdmin, $location, $localStorage, $stateParams) {
+function editRewardCtrl($scope, _editReward, _getReward, Upload, $window, _isManager, $location, $localStorage, $stateParams) {
   var self = this;
   this.param = {};
 
@@ -136,7 +136,7 @@ function editRewardCtrl($scope, _editReward, _getReward, Upload, $window, _isAdm
   var self = this;
 
   $scope.token = $localStorage.token || "";
-  _isAdmin($scope.token).then(function(respond){
+  _isManager($scope.token).then(function(respond){
     if (respond == null){
       $location.path('/login');
     }
@@ -200,8 +200,8 @@ editRewardCtrl.resolve = {
   _editReward: function(RewardsServices){
     return RewardsServices.edit;
   },
-  _isAdmin: function(UsersServices){
-    return UsersServices.isAdmin;
+  _isManager: function(UsersServices){
+    return UsersServices.isManager;
   }
 }
 

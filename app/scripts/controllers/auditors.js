@@ -70,7 +70,7 @@ listAuditorsCtrl.resolve = {
   },
 }
 
-function addAuditorCtrl($scope, _createAuditor, _stores, Upload, $window, _isAdmin, $localStorage, $location) {
+function addAuditorCtrl($scope, _createAuditor, _stores, Upload, $window, _isManager, $localStorage, $location) {
   var self = this;
   this.param = {};
   this.param.status = true
@@ -79,7 +79,7 @@ function addAuditorCtrl($scope, _createAuditor, _stores, Upload, $window, _isAdm
 
 
   var self = this;
-  _isAdmin($scope.token).then(function(respond){
+  _isManager($scope.token).then(function(respond){
     if (respond == null){
       $location.path('/login');
     }
@@ -182,12 +182,12 @@ addAuditorCtrl.resolve = {
   _stores: function(StoresServices){
     return StoresServices.all;
   },
-  _isAdmin: function(UsersServices) {
-    return UsersServices.isAdmin;
+  _isManager: function(UsersServices) {
+    return UsersServices.isManager;
   },
 }
 
-function editAuditorCtrl($scope, _editAuditor, _getAuditor, _stores, Upload, $window, $stateParams, _isAdmin, $localStorage, $location) {
+function editAuditorCtrl($scope, _editAuditor, _getAuditor, _stores, Upload, $window, $stateParams, _isManager, $localStorage, $location) {
   var self = this;
   this.param = {};
   var id = $stateParams.id;
@@ -195,7 +195,7 @@ function editAuditorCtrl($scope, _editAuditor, _getAuditor, _stores, Upload, $wi
   $scope.token = $localStorage.token || "";
 
   var self = this;
-  _isAdmin($scope.token).then(function(respond){
+  _isManager($scope.token).then(function(respond){
     if (respond == null){
       $location.path('/login');
     }
@@ -303,7 +303,7 @@ _getAuditor: function(UsersServices){
 _stores: function(StoresServices){
   return StoresServices.all;
 },
-_isAdmin: function(UsersServices) {
+_isManager: function(UsersServices) {
   return UsersServices.isAuth;
 },
 }

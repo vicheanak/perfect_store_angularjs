@@ -79,7 +79,7 @@ listDisplaysCtrl.resolve = {
   },
 }
 
-function addDisplayCtrl($scope, _createDisplay, _storeTypes, _displayTypes, Upload, $window, $localStorage, $location, _isAdmin) {
+function addDisplayCtrl($scope, _createDisplay, _storeTypes, _displayTypes, Upload, $window, $localStorage, $location, _isManager) {
   var self = this;
   this.param = {};
 
@@ -89,7 +89,7 @@ function addDisplayCtrl($scope, _createDisplay, _storeTypes, _displayTypes, Uplo
 
   $scope.token = $localStorage.token || "";
 
-  _isAdmin($scope.token).then(function(respond){
+  _isManager($scope.token).then(function(respond){
     if (respond == null){
       $location.path('/login');
     }
@@ -146,8 +146,8 @@ addDisplayCtrl.resolve = {
   _displayTypes: function(DisplayTypesServices){
     return DisplayTypesServices.all;
   },
-  _isAdmin: function(UsersServices) {
-    return UsersServices.isAdmin;
+  _isManager: function(UsersServices) {
+    return UsersServices.isManager;
   },
 }
 

@@ -41,6 +41,10 @@ module.exports = function (grunt) {
                             connect.static('./js/plugins')
                           ),
                           connect().use(
+                            '/js/bootstrap',
+                            connect.static('./js/bootstrap')
+                          ),
+                          connect().use(
                             '/css/plugins',
                             connect.static('./css/plugins')
                           ),

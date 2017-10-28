@@ -1,4 +1,4 @@
-function listStoresCtrl($scope,DTOptionsBuilder, _stores, _storeTypes, $location, _isAuth, $localStorage){
+function listStoresCtrl($scope,DTOptionsBuilder, _stores, _regions, _storeTypes, $location, _isAuth, $localStorage){
   $scope.dtOptions = DTOptionsBuilder.newOptions()
   .withDOM('<"html5buttons"B>lTfgitp')
   .withButtons([
@@ -6,7 +6,6 @@ function listStoresCtrl($scope,DTOptionsBuilder, _stores, _storeTypes, $location
     {extend: 'csv'},
     {extend: 'excel', title: 'ExampleFile'},
     {extend: 'pdf', title: 'ExampleFile'},
-
     {extend: 'print',
     customize: function (win){
       $(win.document.body).addClass('white-bg');
@@ -20,17 +19,25 @@ function listStoresCtrl($scope,DTOptionsBuilder, _stores, _storeTypes, $location
 
   var self = this;
 
-
   $scope.token = $localStorage.token || "";
   _isAuth($scope.token).then(function(respond){
     if (respond == null){
       $location.path('/login');
     }
     else{
+
       _storeTypes().then(function(storeTypes){
         for (var i = 0; i < storeTypes.length; i ++){
           if (storeTypes[i].status == true){
             self.storeTypes = storeTypes;
+          }
+        }
+      });
+
+      _regions().then(function(regions){
+        for (var i = 0; i < regions.length; i ++){
+          if (regions[i].status == true){
+            self.regions = regions;
           }
         }
       });
@@ -40,7 +47,6 @@ function listStoresCtrl($scope,DTOptionsBuilder, _stores, _storeTypes, $location
       });
     }
   });
-
 
   this.edit = function(storeId){
     $location.path('stores/edit_store/'+storeId);
@@ -71,19 +77,44 @@ listStoresCtrl.resolve = {
   _storeTypes: function(StoreTypesServices){
     return StoreTypesServices.all;
   },
+  _regions: function(RegionsServices){
+    return RegionsServices.all;
+  },
   _isAuth: function(UsersServices){
     return UsersServices.isAuth
   }
 }
 
-function addStoreCtrl($scope, _createStore, _storeTypes, Upload, $window, $location, $localStorage, _isAdmin) {
+function addStoreCtrl($scope, _createStore, _storeTypes, Upload, $window, $location, $localStorage, _isManager, NgMap) {
   var self = this;
   this.param = {};
+
+  this.types = "['establishment']";
+  this.placeChanged = function() {
+    self.place = this.getPlace();
+    self.param.lat = self.place.geometry.location.lat();
+    self.param.lng = self.place.geometry.location.lng();
+    console.log('location', self.place.geometry.location.lat());
+    self.map.setCenter(self.place.geometry.location);
+    self.positions = [{lat:self.param.lat,lng:self.param.lng}];
+  }
+
+  this.placeMarker = function(e){
+    self.param.lat = e.latLng.lat();
+    self.param.lng = e.latLng.lng();
+    self.positions = [];
+    self.positions.push({lat:self.param.lat, lng: self.param.lng});
+    self.map.panTo(e.latLng);
+  }
+
+  NgMap.getMap().then(function(map) {
+    self.map = map;
+  });
 
   $scope.token = $localStorage.token || "";
   this.param.token = $scope.token;
 
-  _isAdmin($scope.token).then(function(respond){
+  _isManager($scope.token).then(function(respond){
     if (respond == null){
       $location.path('/login');
     }
@@ -123,6 +154,9 @@ addStoreCtrl.resolve = {
       files: ['css/plugins/dropzone/basic.css', 'css/plugins/dropzone/dropzone.css', 'js/plugins/dropzone/dropzone.js']
     },{
       files: ['js/plugins/jasny/jasny-bootstrap.min.js', 'css/plugins/jasny/jasny-bootstrap.min.css']
+    },{
+      serie: true,
+      files: ['bower_components/ngmap/build/scripts/ng-map.min.js', 'bower_components/ngmap/data.js']
     }, ]);
   },
   _createStore: function(StoresServices){
@@ -131,20 +165,42 @@ addStoreCtrl.resolve = {
   _storeTypes: function(StoreTypesServices){
     return StoreTypesServices.all;
   },
-  _isAdmin: function(UsersServices){
-    return UsersServices.isAdmin;
+  _isManager: function(UsersServices){
+    return UsersServices.isManager;
   }
 
 }
 
-function editStoreCtrl($scope, _editStore, _getStore, _storeTypes, Upload, $window, $stateParams, _isAdmin, $localStorage, $location) {
+function editStoreCtrl($scope, _editStore, _getStore, _storeTypes, Upload, $window, $stateParams, _isManager, $localStorage, $location, NgMap) {
   var self = this;
   this.param = {};
   var id = $stateParams.id;
 
 
+  this.types = "['establishment']";
+  this.placeChanged = function() {
+    self.place = this.getPlace();
+    self.param.lat = self.place.geometry.location.lat();
+    self.param.lng = self.place.geometry.location.lng();
+    console.log('location', self.place.geometry.location.lat());
+    self.map.setCenter(self.place.geometry.location);
+    self.positions = [{lat:self.param.lat,lng:self.param.lng}];
+  }
+
+  this.placeMarker = function(e){
+    self.param.lat = e.latLng.lat();
+    self.param.lng = e.latLng.lng();
+    self.positions = [];
+    self.positions.push({lat:self.param.lat, lng: self.param.lng});
+    self.map.panTo(e.latLng);
+  }
+
+  NgMap.getMap().then(function(map) {
+    self.map = map;
+  });
+
   $scope.token = $localStorage.token || "";
-  _isAdmin($scope.token).then(function(respond){
+  _isManager($scope.token).then(function(respond){
     if (respond == null){
       $location.path('/login');
     }
@@ -190,7 +246,10 @@ editStoreCtrl.resolve = {
       files: ['css/plugins/dropzone/basic.css', 'css/plugins/dropzone/dropzone.css', 'js/plugins/dropzone/dropzone.js']
     },{
       files: ['js/plugins/jasny/jasny-bootstrap.min.js', 'css/plugins/jasny/jasny-bootstrap.min.css']
-    }, ]);
+    },{
+      serie: true,
+      files: ['bower_components/ngmap/build/scripts/ng-map.min.js', 'bower_components/ngmap/data.js']
+    } ]);
   },
   _editStore: function(StoresServices){
     return StoresServices.edit;
@@ -201,8 +260,8 @@ editStoreCtrl.resolve = {
   _storeTypes: function(StoreTypesServices){
     return StoreTypesServices.all;
   },
-  _isAdmin: function(UsersServices){
-    return UsersServices.isAdmin;
+  _isManager: function(UsersServices){
+    return UsersServices.isManager;
   }
 }
 

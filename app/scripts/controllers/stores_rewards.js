@@ -30,7 +30,6 @@ function listStoresRewardsCtrl($scope,DTOptionsBuilder, _storesRewards, _isAuth,
         self.storesRewards = storesRewards;
         console.log('lg ', self.storesRewards);
       });
-
     }
   });
 

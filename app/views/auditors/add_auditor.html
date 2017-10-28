@@ -1,9 +1,9 @@
 <div class="row wrapper border-bottom white-bg page-heading">
   <div class="col-lg-10">
-    <h2>Add Auditor</h2>
+    <h2><i class="fa fa-user-circle"></i> Add Auditor</h2>
     <ol class="breadcrumb">
       <li>
-        <a href="index.html">Home</a>
+        <a href="index.html">Dashboard</a>
       </li>
       <li>
         <a>Auditors</a>
@@ -30,23 +30,39 @@
           <form class="form-horizontal">
             <div class="hr-line-dashed"></div>
             <div class="form-group"><label class="col-sm-2 control-label">Name *</label>
-              <div class="col-sm-10"><input ng-model="addAuditorCtrl.param.fullname" type="text" class="form-control">
+              <div class="col-sm-10">
+                <div class="input-group m-b">
+                  <span class="input-group-addon"><i class="fa fa-address-book"></i></span>
+                  <input ng-model="addAuditorCtrl.param.fullname" type="text" class="form-control">
+                </div>
               </div>
             </div>
             <div class="hr-line-dashed"></div>
             <div class="form-group"><label class="col-sm-2 control-label">Username *</label>
-              <div class="col-sm-10"><input ng-model="addAuditorCtrl.param.username" type="text" class="form-control">
+              <div class="col-sm-10">
+                <div class="input-group m-b">
+                  <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                  <input ng-model="addAuditorCtrl.param.username" type="text" class="form-control">
+                </div>
               </div>
             </div>
             <div class="hr-line-dashed"></div>
             <div class="form-group">
               <label class="col-sm-2 control-label">Password *</label>
-              <div class="col-sm-10"><input ng-model="addAuditorCtrl.param.password" type="password" class="form-control">
+              <div class="col-sm-10">
+                <div class="input-group m-b">
+                  <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                  <input ng-model="addAuditorCtrl.param.password" type="password" class="form-control">
+                </div>
               </div>
             </div>
             <div class="hr-line-dashed"></div>
             <div class="form-group"><label class="col-sm-2 control-label">Phone *</label>
-              <div class="col-sm-10"><input ng-model="addAuditorCtrl.param.phone" type="text" class="form-control">
+              <div class="col-sm-10">
+                <div class="input-group m-b">
+                  <span class="input-group-addon"><i class="fa fa-phone"></i></span>
+                  <input ng-model="addAuditorCtrl.param.phone" type="text" class="form-control">
+                </div>
               </div>
             </div>
 
@@ -74,8 +90,8 @@
             <div class="hr-line-dashed"></div>
             <div class="form-group">
               <div class="col-sm-4 col-sm-offset-2">
-                <button class="btn btn-white" ng-click="addAuditorCtrl.goBack()" type="submit">Cancel</button>
-                <button class="btn btn-primary" ng-click="addAuditorCtrl.save()" type="submit">Save changes</button>
+                <button class="btn btn-white btn-rounded" ng-click="addAuditorCtrl.goBack()" type="submit">Cancel</button>
+                <button class="btn btn-primary btn-rounded" ng-click="addAuditorCtrl.save()" type="submit">Save changes</button>
               </div>
             </div>
 
@@ -84,99 +100,99 @@
       </div>
     </div>
   </div>
- <!--  <div class="row">
-    <div class="col-lg-12">
-      <div class="ibox">
-        <div class="ibox-title">
-          <h5>Dual Listbox</h5>
-          <div class="ibox-tools">
-            <a class="collapse-link">
-              <i class="fa fa-chevron-up"></i>
-            </a>
-            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-              <i class="fa fa-wrench"></i>
-            </a>
-            <ul class="dropdown-menu dropdown-user">
-              <li><a href="#">Config option 1</a>
-              </li>
-              <li><a href="#">Config option 2</a>
-              </li>
-            </ul>
-            <a class="close-link">
-              <i class="fa fa-times"></i>
-            </a>
-          </div>
-        </div>
-        <div class="ibox-content">
-          <p>
-            Bootstrap Dual Listbox is a responsive dual listbox widget optimized for Twitter Bootstrap. It works on all modern browsers and on touch devices.
-          </p>
-          <select
-          ng-options="store.id as store.name for store in addAuditorCtrl.countries"
-          multiple
-          ng-model="selections"
-          bs-duallistbox
-          ></select>
-        </div>
-      </div>
-    </div>
+<!--  <div class="row">
+<div class="col-lg-12">
+<div class="ibox">
+<div class="ibox-title">
+<h5>Dual Listbox</h5>
+<div class="ibox-tools">
+<a class="collapse-link">
+<i class="fa fa-chevron-up"></i>
+</a>
+<a class="dropdown-toggle" data-toggle="dropdown" href="#">
+<i class="fa fa-wrench"></i>
+</a>
+<ul class="dropdown-menu dropdown-user">
+<li><a href="#">Config option 1</a>
+</li>
+<li><a href="#">Config option 2</a>
+</li>
+</ul>
+<a class="close-link">
+<i class="fa fa-times"></i>
+</a>
+</div>
+</div>
+<div class="ibox-content">
+<p>
+Bootstrap Dual Listbox is a responsive dual listbox widget optimized for Twitter Bootstrap. It works on all modern browsers and on touch devices.
+</p>
+<select
+ng-options="store.id as store.name for store in addAuditorCtrl.countries"
+multiple
+ng-model="selections"
+bs-duallistbox
+></select>
+</div>
+</div>
+</div>
 
-  </div> -->
+</div> -->
 
 
-  <!--<div class="row">
-     <div class="col-lg-4">
-      <div class="ibox float-e-margins">
-        <div class="ibox-title">
-          <h5>HPC GOLD</h5>
-        </div>
-        <div class="ibox-content">
-          <div class="row">
-            <div class="col-sm-12">
-              <div class="i-checks"><label> <input type="checkbox" value=""> <i></i> Option one </label></div>
-              <div class="i-checks"><label> <input type="checkbox" value="" checked=""> <i></i> Option two checked </label></div>
-              <div class="i-checks"><label> <input type="checkbox" value="" disabled="" checked=""> <i></i> Option three checked and disabled </label></div>
-              <div class="i-checks"><label> <input type="checkbox" value="" disabled=""> <i></i> Option four disabled </label></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-lg-4">
-      <div class="ibox float-e-margins">
-        <div class="ibox-title">
-          <h5>SKIN CARE GOLD</h5>
-        </div>
-        <div class="ibox-content">
-          <div class="row">
-            <div class="col-sm-12">
-              <div class="i-checks"><label> <input type="checkbox" value=""> <i></i> Option one </label></div>
-              <div class="i-checks"><label> <input type="checkbox" value="" checked=""> <i></i> Option two checked </label></div>
-              <div class="i-checks"><label> <input type="checkbox" value="" disabled="" checked=""> <i></i> Option three checked and disabled </label></div>
-              <div class="i-checks"><label> <input type="checkbox" value="" disabled=""> <i></i> Option four disabled </label></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-lg-4">
-      <div class="ibox float-e-margins">
-        <div class="ibox-title">
-          <h5>FOOD GOLD</h5>
-        </div>
-        <div class="ibox-content">
-          <div class="row">
-            <div class="col-sm-12">
-              <div class="i-checks"><label> <input type="checkbox" value=""> <i></i> Option one </label></div>
-              <div class="i-checks"><label> <input type="checkbox" value="" checked=""> <i></i> Option two checked </label></div>
-              <div class="i-checks"><label> <input type="checkbox" value="" disabled="" checked=""> <i></i> Option three checked and disabled </label></div>
-              <div class="i-checks"><label> <input type="checkbox" value="" disabled=""> <i></i> Option four disabled </label></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>-->
+<!--<div class="row">
+<div class="col-lg-4">
+<div class="ibox float-e-margins">
+<div class="ibox-title">
+<h5>HPC GOLD</h5>
+</div>
+<div class="ibox-content">
+<div class="row">
+<div class="col-sm-12">
+<div class="i-checks"><label> <input type="checkbox" value=""> <i></i> Option one </label></div>
+<div class="i-checks"><label> <input type="checkbox" value="" checked=""> <i></i> Option two checked </label></div>
+<div class="i-checks"><label> <input type="checkbox" value="" disabled="" checked=""> <i></i> Option three checked and disabled </label></div>
+<div class="i-checks"><label> <input type="checkbox" value="" disabled=""> <i></i> Option four disabled </label></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="col-lg-4">
+<div class="ibox float-e-margins">
+<div class="ibox-title">
+<h5>SKIN CARE GOLD</h5>
+</div>
+<div class="ibox-content">
+<div class="row">
+<div class="col-sm-12">
+<div class="i-checks"><label> <input type="checkbox" value=""> <i></i> Option one </label></div>
+<div class="i-checks"><label> <input type="checkbox" value="" checked=""> <i></i> Option two checked </label></div>
+<div class="i-checks"><label> <input type="checkbox" value="" disabled="" checked=""> <i></i> Option three checked and disabled </label></div>
+<div class="i-checks"><label> <input type="checkbox" value="" disabled=""> <i></i> Option four disabled </label></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="col-lg-4">
+<div class="ibox float-e-margins">
+<div class="ibox-title">
+<h5>FOOD GOLD</h5>
+</div>
+<div class="ibox-content">
+<div class="row">
+<div class="col-sm-12">
+<div class="i-checks"><label> <input type="checkbox" value=""> <i></i> Option one </label></div>
+<div class="i-checks"><label> <input type="checkbox" value="" checked=""> <i></i> Option two checked </label></div>
+<div class="i-checks"><label> <input type="checkbox" value="" disabled="" checked=""> <i></i> Option three checked and disabled </label></div>
+<div class="i-checks"><label> <input type="checkbox" value="" disabled=""> <i></i> Option four disabled </label></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>-->
 
 
 </div>

@@ -1,13 +1,13 @@
 function UsersServices($http, HostServices) {
 
   var auditorUrl = HostServices.name + '/auditors/';
-  var adminUrl = HostServices.name + '/admins/';
-  var viewerUrl = HostServices.name + '/viewers/';
+  var managerUrl = HostServices.name + '/managers/';
+  var regionalUrl = HostServices.name + '/regionals/';
   var url = HostServices.name + '/users/';
   var logoutUrl = HostServices.name + '/logout/';
   var isAuthUrl = HostServices.name + '/is_auth/';
-  var isAdminUrl = HostServices.name + '/is_admin/';
-  var isViewerUrl = HostServices.name + '/is_viewer/';
+  var isManagerUrl = HostServices.name + '/is_manager/';
+  var isRegionalUrl = HostServices.name + '/is_regional/';
   var isAuditorUrl = HostServices.name + '/is_auditor/';
   var authUrl = HostServices.name + '/auth/';
 
@@ -86,22 +86,22 @@ function UsersServices($http, HostServices) {
   };
 
 
-  function allAdmins() {
+  function allManagers() {
     var config = {
       headers : {
         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
       }
     }
-    return $http.get(adminUrl, config).then(function (response) {
+    return $http.get(managerUrl, config).then(function (response) {
       return response.data;
     });
   }
 
-  function createAdmin(param) {
+  function createManager(param) {
     var data = param;
     param.role = 1;
     return $http({
-      url: adminUrl,
+      url: managerUrl,
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -120,11 +120,11 @@ function UsersServices($http, HostServices) {
     );
   };
 
-  function editAdmin(param) {
+  function editManager(param) {
     var data = param;
-    var editAdminUrl = adminUrl + param.id;
+    var editManagerUrl = managerUrl + param.id;
     return $http({
-      url: editAdminUrl,
+      url: editManagerUrl,
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -143,34 +143,34 @@ function UsersServices($http, HostServices) {
     );
   };
 
-  function getAdmin(id) {
+  function getManager(id) {
     var config = {
       headers : {
         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
       }
     }
-    var urlId = adminUrl + id;
+    var urlId = managerUrl + id;
     return $http.get(urlId, config).then(function (response) {
       return response.data;
     });
   };
 
-  function allViewers() {
+  function allRegionals() {
     var config = {
       headers : {
         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
       }
     }
-    return $http.get(viewerUrl, config).then(function (response) {
+    return $http.get(regionalUrl, config).then(function (response) {
       return response.data;
     });
   }
 
-  function createViewer(param) {
+  function createRegional(param) {
     var data = param;
     param.role = 1;
     return $http({
-      url: viewerUrl,
+      url: regionalUrl,
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -189,11 +189,11 @@ function UsersServices($http, HostServices) {
     );
   };
 
-  function editViewer(param) {
+  function editRegional(param) {
     var data = param;
-    var editViewerUrl = viewerUrl + param.id;
+    var editRegionalUrl = regionalUrl + param.id;
     return $http({
-      url: editViewerUrl,
+      url: editRegionalUrl,
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -212,13 +212,13 @@ function UsersServices($http, HostServices) {
     );
   };
 
-  function getViewer(id) {
+  function getRegional(id) {
     var config = {
       headers : {
         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
       }
     }
-    var urlId = viewerUrl + id;
+    var urlId = regionalUrl + id;
     return $http.get(urlId, config).then(function (response) {
       return response.data;
     });
@@ -237,28 +237,28 @@ function UsersServices($http, HostServices) {
     });
   }
 
-  function isAdmin(token) {
-    console.log('Service token', token);
+  function isManager(token) {
+    // console.log('Service token', token);
     var config = {
       headers : {
         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
       }
     }
-    var urlAdminToken = isAdminUrl + token;
-    return $http.get(urlAdminToken, config).then(function (response) {
+    var urlManagerToken = isManagerUrl + token;
+    return $http.get(urlManagerToken, config).then(function (response) {
       return response.data;
     });
   }
 
-  function isViewer(token) {
-    console.log('lg viewer token', token);
+  function isRegional(token) {
+    // console.log('lg regional token', token);
     var config = {
       headers : {
         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
       }
     }
-    var urlViewerToken = isViewerUrl + token;
-    return $http.get(urlViewerToken, config).then(function (response) {
+    var urlRegionalToken = isRegionalUrl + token;
+    return $http.get(urlRegionalToken, config).then(function (response) {
       return response.data;
     });
   }
@@ -311,17 +311,17 @@ function UsersServices($http, HostServices) {
     createAuditor: createAuditor,
     editAuditor: editAuditor,
     getAuditor: getAuditor,
-    allAdmins: allAdmins,
-    createAdmin: createAdmin,
-    editAdmin: editAdmin,
-    getAdmin: getAdmin,
-    allViewers: allViewers,
-    createViewer: createViewer,
-    editViewer: editViewer,
-    getViewer: getViewer,
+    allManagers: allManagers,
+    createManager: createManager,
+    editManager: editManager,
+    getManager: getManager,
+    allRegionals: allRegionals,
+    createRegional: createRegional,
+    editRegional: editRegional,
+    getRegional: getRegional,
     isAuth: isAuth,
-    isAdmin: isAdmin,
-    isViewer: isViewer,
+    isManager: isManager,
+    isRegional: isRegional,
     auth: auth,
     outAuth: outAuth
   };

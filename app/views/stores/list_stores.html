@@ -1,6 +1,6 @@
 <div class="row wrapper border-bottom white-bg page-heading">
   <div class="col-lg-10">
-    <h2>Stores</h2>
+    <h2><i class="fa fa-shopping-bag"></i> Stores</h2>
     <ol class="breadcrumb">
       <li>
         <a href="/dashboard">Dashboard</a>
@@ -51,11 +51,11 @@
                 <td>{{store.STORE_TYPE.name}}</td>
                 <td>{{store.location}}</td>
                 <td>
-                  <button class="btn-white btn btn-xs">{{store.status ? 'Active' : 'Inactive'}}</button>
+                  <button class="btn-white btn-rounded btn btn-xs">{{store.status ? 'Active' : 'Inactive'}}</button>
                 </td>
                 <td class="text-right">
                   <div class="btn-group">
-                    <button ng-click="listStoresCtrl.edit(store.id)" class="btn-primary btn btn-sm">Edit</button>
+                    <button ng-click="listStoresCtrl.edit(store.id)" class="btn-primary btn-rounded btn btn-sm">Edit</button>
                   </div>
                 </td>
               </tr>

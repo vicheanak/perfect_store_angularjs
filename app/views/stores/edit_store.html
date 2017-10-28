@@ -1,9 +1,9 @@
 <div class="row wrapper border-bottom white-bg page-heading">
   <div class="col-lg-10">
-    <h2>Edit Store</h2>
+    <h2><i class="fa fa-shopping-bag"></i> Edit Store</h2>
     <ol class="breadcrumb">
       <li>
-        <a href="index.html">Home</a>
+        <a href="index.html">Dashboard</a>
       </li>
       <li>
         <a>Stores</a>
@@ -30,40 +30,42 @@
           <form method="get" class="form-horizontal">
             <div class="hr-line-dashed"></div>
             <div class="form-group">
+              <label class="col-sm-2 control-label">Region</label>
+              <div class="col-sm-10">
+                <div class="input-group m-b">
+                  <span class="input-group-addon"><i class="fa fa-flag"></i></span>
+                  <select ng-model="editStoreCtrl.param.regionId" class="form-control m-b" ng-options="region.id as region.name for region in editStoreCtrl.regions">
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="hr-line-dashed"></div>
+            <div class="form-group">
               <label class="col-sm-2 control-label">Store Type</label>
               <div class="col-sm-10">
-                <select ng-model="editStoreCtrl.param.storeTypeIdStores" class="form-control m-b" ng-options="storeType.id as storeType.name for storeType in editStoreCtrl.storeTypes">
-                </select>
+                <div class="input-group m-b">
+                  <span class="input-group-addon"><i class="fa fa-shopping-basket"></i></span>
+                  <select ng-model="editStoreCtrl.param.storeTypeId" class="form-control m-b" ng-options="storeType.id as storeType.name for storeType in editStoreCtrl.storeTypes">
+                  </select>
+                </div>
               </div>
             </div>
             <div class="hr-line-dashed"></div>
             <div class="form-group"><label class="col-sm-2 control-label">Name *</label>
               <div class="col-sm-10">
-                <input ng-model="editStoreCtrl.param.name" type="text" class="form-control">
+                <div class="input-group m-b">
+                  <span class="input-group-addon"><i class="fa fa-address-book"></i></span>
+                  <input ng-model="editStoreCtrl.param.name" type="text" class="form-control">
+                </div>
               </div>
             </div>
             <div class="hr-line-dashed"></div>
             <div class="form-group"><label class="col-sm-2 control-label">Phone *</label>
               <div class="col-sm-10">
-                <input ng-model="editStoreCtrl.param.phone" type="text" class="form-control">
-              </div>
-            </div>
-            <div class="hr-line-dashed"></div>
-            <div class="form-group"><label class="col-sm-2 control-label">Location</label>
-              <div class="col-sm-10">
-                <input type="text" ng-model="editStoreCtrl.param.location" class="form-control">
-              </div>
-            </div>
-            <div class="hr-line-dashed"></div>
-            <div class="form-group"><label class="col-sm-2 control-label">Username *</label>
-              <div class="col-sm-10">
-                <input readonly ng-model="editStoreCtrl.param.username" class="form-control">
-              </div>
-            </div>
-            <div class="hr-line-dashed"></div>
-            <div class="form-group"><label class="col-sm-2 control-label">Password *</label>
-              <div class="col-sm-10">
-                <input ng-model="editStoreCtrl.param.password" class="form-control">
+                <div class="input-group m-b">
+                  <span class="input-group-addon"><i class="fa fa-phone"></i></span>
+                  <input ng-model="editStoreCtrl.param.phone" type="text" class="form-control">
+                </div>
               </div>
             </div>
             <div class="hr-line-dashed"></div>
@@ -71,19 +73,57 @@
               <div class="col-sm-10">
                 <label>
                   <input icheck type="checkbox" ng-model="editStoreCtrl.param.status" >
-                  Active </label>
+                Active </label>
               </div>
             </div>
             <div class="hr-line-dashed"></div>
-            <div class="form-group">
-              <div class="col-sm-4 col-sm-offset-2">
-                <button class="btn btn-white" ng-click="editStoreCtrl.goBack()" type="submit">Cancel</button>
-                <button class="btn btn-primary" ng-click="editStoreCtrl.save()" type="submit">Save changes</button>
+            <div class="form-group"><label class="col-sm-2 control-label">Location</label>
+              <div class="col-sm-10">
+                <div class="input-group m-b">
+                  <span class="input-group-addon"><i class="fa fa-map-marker"></i></span>
+                  <input places-auto-complete size=80
+                  ng-model="editStoreCtrl.param.address"
+                  component-restrictions="{country:'kh'}"
+                  types="{{types}}"
+                  on-place-changed="editStoreCtrl.placeChanged()"
+                  class="form-control" />
+                  <!-- <input type="text" ng-model="editStoreCtrl.param.location" class="form-control"> -->
+                </div>
               </div>
             </div>
-          </form>
-        </div>
+            <div class="hr-line-dashed"></div>
+            <div class="form-group"><label class="col-sm-2 control-label">GPS Mark</label>
+              <div class="col-sm-5">
+                <div class="input-group m-b">
+                  <span class="input-group-addon"><i class="fa fa-map-pin"></i> Lat</span>
+                  <input type="text" ng-model="editStoreCtrl.param.lat" class="form-control">
+                </div>
+              </div>
+              <div class="col-sm-5">
+                <div class="input-group m-b">
+                  <span class="input-group-addon"><i class="fa fa-map-pin"></i> Lng</span>
+                  <input type="text" ng-model="editStoreCtrl.param.lng" class="form-control">
+                </div>
+              </div>
+            </div>
+
+            <div class="hr-line-dashed"></div>
+
+            <ng-map on-click="editStoreCtrl.placeMarker()">
+              <marker
+              ng-repeat="pos in editStoreCtrl.positions" position="{{pos.lat}}, {{pos.lng}}">
+            </marker>
+          </ng-map>
+          <div class="hr-line-dashed"></div>
+          <div class="form-group">
+            <div class="col-sm-4 col-sm-offset-2">
+              <button class="btn btn-white" ng-click="editStoreCtrl.goBack()" type="submit">Cancel</button>
+              <button class="btn btn-primary" ng-click="editStoreCtrl.save()" type="submit">Save changes</button>
+            </div>
+          </div>
+        </form>
       </div>
     </div>
   </div>
+</div>
 </div>

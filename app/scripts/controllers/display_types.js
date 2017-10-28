@@ -34,7 +34,7 @@ function listDisplayTypesCtrl($scope,DTOptionsBuilder,_displayTypes, _isAuth, $l
   });
 
   this.showEdit = function(id){
-    $location.path("displays/edit_display_type/"+id);
+    $location.path("settings/edit_display_type/"+id);
   }
 
 }
@@ -65,13 +65,13 @@ listDisplayTypesCtrl.resolve = {
   },
 }
 
-function addDisplayTypeCtrl($scope, _createDisplayType, $window, _isAdmin, $localStorage, $location) {
+function addDisplayTypeCtrl($scope, _createDisplayType, $window, _isManager, $localStorage, $location) {
   var self = this;
   this.param = {};
   this.param.status = false;
 
   $scope.token = $localStorage.token || "";
-  _isAdmin($scope.token).then(function(respond){
+  _isManager($scope.token).then(function(respond){
     if (respond == null){
       $location.path('/login');
     }
@@ -83,7 +83,7 @@ function addDisplayTypeCtrl($scope, _createDisplayType, $window, _isAdmin, $loca
   this.save = function(){
     _createDisplayType(self.param).then(function(success){
       if (success.status == 200){
-        $location.path("displays/list_display_types");
+        $location.path("settings/list_display_types");
       }
       else{
         console.log(success.status);
@@ -107,19 +107,19 @@ addDisplayTypeCtrl.resolve = {
   _createDisplayType: function(DisplayTypesServices){
     return DisplayTypesServices.create;
   },
-  _isAdmin: function(UsersServices) {
+  _isManager: function(UsersServices) {
     return UsersServices.isAuth;
   },
 }
 
-function editDisplayTypeCtrl($scope, _editDisplayType, Upload, $window, $stateParams, $location, _getDisplayType, $localStorage, _isAdmin) {
+function editDisplayTypeCtrl($scope, _editDisplayType, Upload, $window, $stateParams, $location, _getDisplayType, $localStorage, _isManager) {
   var self = this;
   this.param = {};
 
   var id = $stateParams.id;
 
   $scope.token = $localStorage.token;
-  _isAdmin($scope.token).then(function(respond){
+  _isManager($scope.token).then(function(respond){
     if (respond == null){
       $location.path('/login');
     }
@@ -133,13 +133,13 @@ function editDisplayTypeCtrl($scope, _editDisplayType, Upload, $window, $statePa
 
 
   this.goBack = function(){
-    $location.path("displays/list_display_types");
+    $location.path("settings/list_display_types");
   }
 
   this.save = function(){
     _editDisplayType(this.param).then(function(success){
       if (success.status == 200){
-        $location.path("displays/list_display_types");
+        $location.path("settings/list_display_types");
       }
       else{
         console.log(success.status);
@@ -166,7 +166,7 @@ editDisplayTypeCtrl.resolve = {
   _getDisplayType: function(DisplayTypesServices){
     return DisplayTypesServices.get;
   },
-  _isAdmin: function(UsersServices) {
+  _isManager: function(UsersServices) {
     return UsersServices.isAuth;
   }
 }

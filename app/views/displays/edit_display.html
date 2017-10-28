@@ -1,9 +1,9 @@
 <div class="row wrapper border-bottom white-bg page-heading">
   <div class="col-lg-10">
-    <h2>Edit Display</h2>
+    <h2><i class="fa fa-image"></i> Edit Display</h2>
     <ol class="breadcrumb">
       <li>
-        <a href="index.html">Home</a>
+        <a href="index.html">Dashboard</a>
       </li>
       <li>
         <a>Displays</a>
@@ -32,28 +32,40 @@
             <div class="form-group">
               <label class="col-sm-2 control-label">Display Type</label>
               <div class="col-sm-10">
-                <select ng-model="editDisplayCtrl.param.displayTypeId" class="form-control m-b" ng-options="displayType.id as displayType.name for displayType in editDisplayCtrl.displayTypes">
-                </select>
+                <div class="input-group m-b">
+                  <span class="input-group-addon"><i class="fa fa-shopping-basket"></i></span>
+                  <select ng-model="editDisplayCtrl.param.displayTypeId" class="form-control m-b" ng-options="displayType.id as displayType.name for displayType in editDisplayCtrl.displayTypes">
+                  </select>
+                </div>
               </div>
             </div>
             <div class="hr-line-dashed"></div>
             <div class="form-group">
               <label class="col-sm-2 control-label">Store Type</label>
               <div class="col-sm-10">
-                <select ng-model="editDisplayCtrl.param.storeTypeId" class="form-control m-b" ng-options="storeType.id as storeType.name for storeType in editDisplayCtrl.storeTypes">
-                </select>
+                <div class="input-group m-b">
+                  <span class="input-group-addon"><i class="fa fa-shopping-basket"></i></span>
+                  <select ng-model="editDisplayCtrl.param.storeTypeId" class="form-control m-b" ng-options="storeType.id as storeType.name for storeType in editDisplayCtrl.storeTypes">
+                  </select>
+                </div>
               </div>
             </div>
             <div class="hr-line-dashed"></div>
             <div class="form-group"><label class="col-sm-2 control-label">Display Name *</label>
               <div class="col-sm-10">
-                <input type="text" class="form-control" ng-model="editDisplayCtrl.param.name">
+                <div class="input-group m-b">
+                  <span class="input-group-addon"><i class="fa fa-shopping-basket"></i></span>
+                  <input type="text" class="form-control" ng-model="editDisplayCtrl.param.name">
+                </div>
               </div>
             </div>
             <div class="hr-line-dashed"></div>
             <div class="form-group"><label class="col-sm-2 control-label">Point *</label>
               <div class="col-sm-10">
-                <input type="text" class="form-control" ng-model="editDisplayCtrl.param.points">
+                <div class="input-group m-b">
+                  <span class="input-group-addon"><i class="fa fa-ticket"></i></span>
+                  <input type="text" class="form-control" ng-model="editDisplayCtrl.param.points">
+                </div>
               </div>
             </div>
             <div class="hr-line-dashed"></div>
@@ -91,8 +103,8 @@
             </div>
             <div class="form-group">
               <div class="col-sm-4 col-sm-offset-2">
-                <button class="btn btn-white" ng-click="editDisplayCtrl.goBack()" type="submit">Cancel</button>
-                <button class="btn btn-primary" ng-click="editDisplayCtrl.save()" type="submit">Save changes</button>
+                <button class="btn btn-white btn-rounded" ng-click="editDisplayCtrl.goBack()" type="submit">Cancel</button>
+                <button class="btn btn-primary btn-rounded" ng-click="editDisplayCtrl.save()" type="submit">Save changes</button>
               </div>
             </div>
           </form>

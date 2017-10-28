@@ -5,6 +5,8 @@
 
         <div class="profile-element" uib-dropdown>
           <a uib-dropdown-toggle href>
+            <!-- <img alt="image" class="img-circle" src="../../img/unilever_logo.png"/> -->
+            <img  src="../../img/unilever_logo.png" style="width: 40px; height: 45px;" />
             <span class="clear">
               <span class="block m-t-xs">
                 <strong class="font-bold">Welcome, {{usersCtrl.username}}</strong>
@@ -22,44 +24,77 @@
 
       </li>
 
+      <li ng-class="{active: $state.includes('stores.dashboard')}">
+        <a ui-sref="stores.dashboard"><i class="fa fa-tachometer"></i> <span class="nav-label">DASHBOARD</span> </a>
+      </li>
       <li ng-class="{active: $state.includes('stores')}">
         <a href="#"><i class="fa fa-shopping-bag"></i> <span class="nav-label">STORES</span><span class="fa arrow"></span></a>
         <ul class="nav nav-second-level collapse" ng-class="{in: $state.includes('stores')}">
           <li ui-sref-active="active"><a ui-sref="stores.stores_rewards"><i class="fa fa-comment-o"></i>Claimed<span class="label label-info pull-right">2</span></a></li>
           <li ui-sref-active="active"><a ui-sref="stores.list_stores"><i class="fa fa-shopping-bag"></i>Stores</a></li>
-          <li ui-sref-active="active"><a ui-sref="stores.list_store_types"><i class="fa fa-share-alt"></i>Store Types</a></li>
-          <li ui-sref-active="active" ng-show="usersCtrl.isAdmin"><a ui-sref="stores.add_store"><i class="fa fa-plus-circle"></i>Add Store</a></li>
-          <li ui-sref-active="active"  ng-show="usersCtrl.isAdmin"><a ui-sref="stores.add_store_type"><i class="fa fa-plus-circle"></i>Add Store Type</a></li>
+          <li ui-sref-active="active" ng-show="usersCtrl.isManager"><a ui-sref="stores.add_store"><i class="fa fa-plus-circle"></i>Add Store</a></li>
         </ul>
       </li>
       <li ng-class="{active: $state.includes('displays')}">
-        <a href="#"><i class="fa fa-picture-o"></i> <span class="nav-label">DISPLAYS</span><span class="fa arrow"></span></a>
+        <a href="#"><i class="fa fa-image"></i> <span class="nav-label">DISPLAYS</span><span class="fa arrow"></span></a>
         <ul class="nav nav-second-level collapse" ng-class="{in: $state.includes('displays')}">
-          <li ui-sref-active="active"><a ui-sref="displays.list_rewards"><i class="fa fa-gift"></i>Rewards</a></li>
           <li ui-sref-active="active"><a ui-sref="displays.list_displays"><i class="fa fa-picture-o"></i>Displays</a></li>
-          <li ui-sref-active="active"><a ui-sref="displays.list_display_types"><i class="fa fa-share-alt-square"></i>Display Types</a></li>
-          <li ui-sref-active="active" ng-show="usersCtrl.isAdmin"><a ui-sref="displays.add_reward"><i class="fa fa-plus-circle"></i>Add Reward</a></li>
-          <li ui-sref-active="active" ng-show="usersCtrl.isAdmin"><a ui-sref="displays.add_display"><i class="fa fa-plus-circle"></i>Add Display</a></li>
-          <li ui-sref-active="active" ng-show="usersCtrl.isAdmin"><a ui-sref="displays.add_display_type"><i class="fa fa-plus-circle"></i>Add Display Types</a></li>
+          <li ui-sref-active="active"><a ui-sref="displays.list_conditions"><i class="fa fa-flag"></i>Conditions</a></li>
+          <li ui-sref-active="active" ng-show="usersCtrl.isManager"><a ui-sref="displays.add_display"><i class="fa fa-plus-circle"></i>Add Display</a></li>
+          <li ui-sref-active="active" ng-show="usersCtrl.isManager"><a ui-sref="displays.add_condition"><i class="fa fa-plus-circle"></i>Add Condition</a></li>
         </ul>
       </li>
       <li ng-class="{active: $state.includes('auditors')}">
-        <a href="#"><i class="fa fa-address-book"></i> <span class="nav-label">AUDITORS</span><span class="fa arrow"></span></a>
+        <a href="#"><i class="fa fa-user-circle"></i> <span class="nav-label">AUDITORS</span><span class="fa arrow"></span></a>
         <ul class="nav nav-second-level collapse" ng-class="{in: $state.includes('auditors')}">
-          <li ui-sref-active="active"><a ui-sref="auditors.list_auditors"><i class="fa fa-address-book"></i>Auditors</a></li>
-          <li ui-sref-active="active" ng-show="usersCtrl.isAdmin"><a ui-sref="auditors.add_auditor"><i class="fa fa-plus-circle"></i>Add Auditors</a></li>
+          <li ui-sref-active="active"><a ui-sref="auditors.list_auditors"><i class="fa fa-user-circle"></i>Auditors</a></li>
+          <li ui-sref-active="active" ng-show="usersCtrl.isManager"><a ui-sref="auditors.add_auditor"><i class="fa fa-plus-circle"></i>Add Auditors</a></li>
         </ul>
       </li>
-      <li ng-class="{active: $state.includes('users')}" ng-show="usersCtrl.isAdmin">
-        <a href="#"><i class="fa fa-address-book"></i> <span class="nav-label">USERS</span><span class="fa arrow"></span></a>
-        <ul class="nav nav-second-level collapse" ng-class="{in: $state.includes('users')}">
-          <li ui-sref-active="active"><a ui-sref="users.list_admins"><i class="fa fa-address-book"></i>Admins</a></li>
-          <li ui-sref-active="active"><a ui-sref="users.list_viewers"><i class="fa fa-eye"></i>Viewers</a></li>
-          <li ui-sref-active="active"><a ui-sref="users.add_admin"><i class="fa fa-plus-circle"></i>Add Admin</a></li>
-          <li ui-sref-active="active"><a ui-sref="users.add_viewer"><i class="fa fa-plus-circle"></i>Add Viewer</a></li>
-        </ul>
-      </li>
+      <li ng-class="{active: $state.includes('regionals')}" ng-show="usersCtrl.isManager">
+        <a href="#"><i class="fa fa-user-o"></i> <span class="nav-label">REGIONALS</span><span class="fa arrow"></span></a>
+        <ul class="nav nav-second-level collapse" ng-class="{in: $state.includes('regionals')}">
 
+          <li ui-sref-active="active"><a ui-sref="regionals.list_regionals"><i class="fa fa-user-o"></i>Regionals</a></li>
+          <li ui-sref-active="active"><a ui-sref="regionals.add_regional"><i class="fa fa-plus-circle"></i>Add Regional</a></li>
+        </ul>
+      </li>
+      <li ng-class="{active: $state.includes('managers')}" ng-show="usersCtrl.isManager">
+        <a href="#"><i class="fa fa-user"></i> <span class="nav-label">MANAGERS</span><span class="fa arrow"></span></a>
+        <ul class="nav nav-second-level collapse" ng-class="{in: $state.includes('managers')}">
+          <li ui-sref-active="active"><a ui-sref="managers.list_managers"><i class="fa fa-user"></i>Managers</a></li>
+          <li ui-sref-active="active"><a ui-sref="managers.add_manager"><i class="fa fa-plus-circle"></i>Add Manager</a></li>
+        </ul>
+      </li>
+      <li ng-class="{active: $state.includes('reports')}">
+        <a href="#"><i class="fa fa-bar-chart"></i> <span class="nav-label">REPORTS</span><span class="fa arrow"></span></a>
+        <ul class="nav nav-second-level collapse" ng-class="{in: $state.includes('reports')}">
+          <li ui-sref-active="active"><a ui-sref="reports.claims"><i class="fa fa-send"></i>Claimed</a></li>
+          <li ui-sref-active="active"><a ui-sref="reports.stores"><i class="fa fa-shopping-bag"></i>Stores</a></li>
+          <li ui-sref-active="active"><a ui-sref="reports.displays"><i class="fa fa-image"></i>Displays</a></li>
+          <li ui-sref-active="active"><a ui-sref="reports.auditors"><i class="fa fa-user-circle"></i>Auditors</a></li>
+        </ul>
+      </li>
+      <li ng-class="{active: $state.includes('settings')}">
+        <a href="#"><i class="fa fa-gears"></i> <span class="nav-label">SETTINGS</span><span class="fa arrow"></span></a>
+        <ul class="nav nav-second-level collapse" ng-class="{in: $state.includes('settings')}">
+          <li ui-sref-active="active"><a ui-sref="settings.list_display_types"><i class="fa fa-leaf"></i>Display Types</a></li>
+          <li ui-sref-active="active"><a ui-sref="settings.list_store_types"><i class="fa fa-shopping-basket"></i>Store Types</a></li>
+          <li ui-sref-active="active"><a ui-sref="settings.list_regions"><i class="fa fa-flag"></i>Regions</a></li>
+          <li ui-sref-active="active"><a ui-sref="settings.list_rewards"><i class="fa fa-birthday-cake"></i>Rewards</a></li>
+          <li ui-sref-active="active" ng-show="usersCtrl.isManager"><a ui-sref="settings.add_display_type"><i class="fa fa-plus-circle"></i>Add Display Types</a></li>
+          <li ui-sref-active="active"  ng-show="usersCtrl.isManager"><a ui-sref="settings.add_store_type"><i class="fa fa-plus-circle"></i>Add Store Type</a></li>
+          <li ui-sref-active="active" ng-show="usersCtrl.isManager"><a ui-sref="settings.add_region"><i class="fa fa-plus-circle"></i>Add Region</a></li>
+          <li ui-sref-active="active" ng-show="usersCtrl.isManager"><a ui-sref="settings.add_reward"><i class="fa fa-plus-circle"></i>Add Reward</a></li>
+        </ul>
+      </li>
+      <li ng-class="{active: $state.includes('issues')}">
+        <a href="#"><i class="fa fa-exclamation-triangle"></i> <span class="nav-label">ISSUES</span><span class="fa arrow"></span></a>
+        <ul class="nav nav-second-level collapse" ng-class="{in: $state.includes('issues')}">
+          <li ui-sref-active="active"><a ui-sref="issues.list_issues"><i class="fa fa-exclamation-triangle"></i>Issues</a></li>
+          <li ui-sref-active="active"><a ui-sref="issues.add_issue"><i class="fa fa-plus-circle"></i>Add Issue</a></li>
+        </ul>
+      </li>
     </ul>
 
   </div>

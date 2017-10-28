@@ -1,6 +1,6 @@
 <div class="row wrapper border-bottom white-bg page-heading">
   <div class="col-lg-10">
-    <h2>Display Types</h2>
+    <h2><i class="fa fa-leaf"></i> Display Types</h2>
     <ol class="breadcrumb">
       <li>
         <a href="/dashboard">Dashboard</a>
@@ -33,8 +33,7 @@
             <thead>
               <tr>
                 <th>ID</th>
-                <th>Store Type</th>
-                <th>Status</th>
+                <th>Display Type Name</th>
                 <th class="text-right" data-sort-ignore="true">Action</th>
               </tr>
             </thead>
@@ -42,12 +41,9 @@
               <tr ng-repeat="displayType in listDisplayTypesCtrl.displayTypes.records">
                 <td>{{displayType.id}}</td>
                 <td>{{displayType.name}}</td>
-                <td>
-                  <button class="btn-white btn btn-xs">{{displayType.status ? 'Active' : 'Inactive'}}</button>
-                </td>
                 <td class="text-right">
                   <div class="btn-group">
-                    <button ng-click="listDisplayTypesCtrl.showEdit(displayType.id)" class="btn-primary btn btn-sm">Edit</button>
+                    <button ng-click="listDisplayTypesCtrl.showEdit(displayType.id)" class="btn-primary  btn-rounded btn btn-sm">Edit</button>
                   </div>
                 </td>
               </tr>
