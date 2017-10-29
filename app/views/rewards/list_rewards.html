@@ -26,7 +26,8 @@
             Please use the table below to navigate or filter the results. You can print download the table as <strong>excel and pdf</strong>.
           </h5>
 
-          <div ibox-tools></div>
+           <div ibox-tools link="displays/add_reward" issue="{{location.path()}}">
+          </div>
         </div>
         <div class="ibox-content">
           <table datatable="ng" dt-options="dtOptions"  class="table table-striped table-bordered table-hover dataTables-example">
@@ -45,7 +46,7 @@
                 <td>{{reward.id}}</td>
                 <td>
                   <div class="lightBoxGallery">
-                    <a href="http://{{reward.imageUrl}}" title="{{reward.name}}" data-gallery=""><img ng-src="http://{{reward.imageUrl}}" style="width:100px; height:100px"></a>
+                    <a href="{{reward.imageUrl}}" title="{{reward.name}}" data-gallery=""><img ng-src="{{reward.imageUrl}}" style="width:100px; height:100px"></a>
                   </div>
                 </td>
                 <td>{{reward.name}}</td>
@@ -55,7 +56,7 @@
                 </td>
                 <td class="text-right">
                   <div class="btn-group">
-                    <button class="btn-primary btn btn-rounded btn-sm" ng-click="listRewardsCtrl.goToEdit(reward.id)">Edit</button>
+                    <button class="btn-primary btn btn-rounded btn-sm btn-outline" ng-click="listRewardsCtrl.goToEdit(reward.id)"><i class="fa fa-edit"></i> Edit</button>
                   </div>
                 </td>
               </tr>

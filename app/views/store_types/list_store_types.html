@@ -27,7 +27,8 @@
             Please use the table below to navigate or filter the results. You can print download the table as <strong>excel and pdf</strong>.
           </h5>
 
-          <div ibox-tools></div>
+           <div ibox-tools link="settings/add_store_type" issue="{{location.path()}}">
+          </div>
         </div>
         <div class="ibox-content">
 
@@ -45,7 +46,7 @@
                 <td>{{s.name}}</td>
                 <td class="text-right">
                   <div class="btn-group">
-                    <button class="btn-primary btn-rounded btn btn-sm" ng-click="listStoreTypesCtrl.showEdit(s.id)">Edit</button>
+                    <button class="btn-primary btn-rounded btn btn-sm btn-outline" ng-click="listStoreTypesCtrl.showEdit(s.id)"><i class="fa fa-edit"></i> Edit</button>
                   </div>
                 </td>
               </tr>

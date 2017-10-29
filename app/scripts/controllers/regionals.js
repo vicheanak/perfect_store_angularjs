@@ -33,7 +33,7 @@ function listRegionalsCtrl($scope,DTOptionsBuilder, _regionals, _isManager, $loc
   });
 
   this.showEdit = function(regionalId){
-    $location.path('users/edit_regional/'+regionalId);
+    $location.path('regionals/edit_regional/'+regionalId);
   }
 
 }
@@ -64,13 +64,13 @@ listRegionalsCtrl.resolve = {
   }
 }
 
-function addRegionalCtrl($scope, _createRegional, Upload, $window, $location, $localStorage, _isManager) {
+function addRegionalCtrl($scope, _createRegional, _regions, Upload, $window, $location, $localStorage, _isManager) {
   var self = this;
   this.param = {};
   this.param.status = true
 
   this.goBack = function(){
-    $location.path('users/list_regionals');
+    $location.path('regionals/list_regionals');
   }
 
   var self = this;
@@ -82,12 +82,16 @@ function addRegionalCtrl($scope, _createRegional, Upload, $window, $location, $l
     }
   });
 
+  _regions().then(function(regions){
+    self.regions = regions;
+  });
+
 
   this.save = function(){
     console.log('self param ', self.param);
     _createRegional(self.param).then(function(success){
       if (success.status == 200){
-        $location.path("users/list_regionals");
+        $location.path("regionals/list_regionals");
       }
       else{
         console.log(success.status);
@@ -113,10 +117,13 @@ addRegionalCtrl.resolve = {
   },
   _isManager: function(UsersServices){
     return UsersServices.isManager;
+  },
+  _regions: function(RegionsServices){
+    return RegionsServices.all;
   }
 }
 
-function editRegionalCtrl($scope, _editRegional, _getRegional, Upload, $window, $stateParams, _isManager, $localStorage, $location) {
+function editRegionalCtrl($scope, _editRegional, _getRegional, _regions, Upload, $window, $stateParams, _isManager, $localStorage, $location) {
   var self = this;
   this.param = {};
   var id = $stateParams.id;
@@ -132,20 +139,24 @@ function editRegionalCtrl($scope, _editRegional, _getRegional, Upload, $window, 
       _getRegional(id).then(function(data){
         console.log(data);
         self.param = data;
+        self.param.regionId = self.param.regionIdUsers;
       });
     }
   });
 
+  _regions().then(function(regions){
+    self.regions = regions;
+  });
 
   this.goBack = function(){
-    $location.path("users/list_regionals");
+    $location.path("regionals/list_regionals");
   }
 
   this.save = function(){
     console.log('param', this.param);
     _editRegional(this.param).then(function(success){
       if (success.status == 200){
-        $location.path("users/list_regionals");
+        $location.path("regionals/list_regionals");
       }
       else{
         console.log(success.status);
@@ -172,6 +183,9 @@ editRegionalCtrl.resolve = {
   },
   _getRegional: function(UsersServices){
     return UsersServices.getRegional;
+  },
+  _regions: function(RegionsServices){
+    return RegionsServices.all;
   },
   _isManager: function(UsersServices){
     return UsersServices.isManager;

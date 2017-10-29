@@ -1,6 +1,6 @@
 <div class="row wrapper border-bottom white-bg page-heading">
   <div class="col-lg-10">
-    <h2><i class="fa fa-exclamation-triangle"></i>Add Ticket</h2>
+    <h2><i class="fa fa-exclamation-triangle"></i> Add Ticket</h2>
     <ol class="breadcrumb">
       <li>
         <a href="index.html">Dashboard</a>
@@ -24,7 +24,8 @@
         <div class="ibox-title">
           <h5>Fill in the information below. The field labels marked with * are required input fields.
           </h5>
-          <div ibox-tools></div>
+          <div ibox-tools link="issues/add_issue" issue="{{location.path()}}">
+          </div>
         </div>
         <div class="ibox-content">
           <form method="get" class="form-horizontal">

@@ -9,8 +9,7 @@ function RegionsServices($http, HostServices) {
       }
     }
     return $http.get(url, config).then(function (response) {
-      console.log('map ', response.data);
-      return response.data;
+      return response.data.records;
     });
   }
 

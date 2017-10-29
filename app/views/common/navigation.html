@@ -6,7 +6,7 @@
         <div class="profile-element" uib-dropdown>
           <a uib-dropdown-toggle href>
             <!-- <img alt="image" class="img-circle" src="../../img/unilever_logo.png"/> -->
-            <img  src="../../img/unilever_logo.png" style="width: 40px; height: 45px;" />
+            <img  src="../../img/unilever_logo.png" style="height: 45px;" />
             <span class="clear">
               <span class="block m-t-xs">
                 <strong class="font-bold">Welcome, {{usersCtrl.username}}</strong>
@@ -19,7 +19,7 @@
           </ul>
         </div>
         <div class="logo-element">
-          PS+
+          U
         </div>
 
       </li>
@@ -39,7 +39,7 @@
         <a href="#"><i class="fa fa-image"></i> <span class="nav-label">DISPLAYS</span><span class="fa arrow"></span></a>
         <ul class="nav nav-second-level collapse" ng-class="{in: $state.includes('displays')}">
           <li ui-sref-active="active"><a ui-sref="displays.list_displays"><i class="fa fa-picture-o"></i>Displays</a></li>
-          <li ui-sref-active="active"><a ui-sref="displays.list_conditions"><i class="fa fa-flag"></i>Conditions</a></li>
+          <li ui-sref-active="active"><a ui-sref="displays.list_conditions"><i class="fa fa-gavel"></i>Conditions</a></li>
           <li ui-sref-active="active" ng-show="usersCtrl.isManager"><a ui-sref="displays.add_display"><i class="fa fa-plus-circle"></i>Add Display</a></li>
           <li ui-sref-active="active" ng-show="usersCtrl.isManager"><a ui-sref="displays.add_condition"><i class="fa fa-plus-circle"></i>Add Condition</a></li>
         </ul>

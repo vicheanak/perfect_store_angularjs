@@ -79,6 +79,10 @@ function addIssueCtrl($scope, _createIssue, Upload, $window, $location, _isManag
     }
   });
 
+  self.param.url = $location.search().url;
+
+
+
   this.goBack = function(){
     $location.path("issues/list_issues");
   }

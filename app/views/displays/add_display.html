@@ -3,7 +3,7 @@
     <h2><i class="fa fa-image"></i> Add Display</h2>
     <ol class="breadcrumb">
       <li>
-        <a href="index.html">Home</a>
+        <a href="index.html">Dashboard</a>
       </li>
       <li>
         <a>Displays</a>
@@ -24,7 +24,8 @@
         <div class="ibox-title">
           <h5>Fill in the information below. The field labels marked with * are required input fields.
           </h5>
-          <div ibox-tools></div>
+          <div ibox-tools link="displays/add_display" issue="{{location.path()}}">
+          </div>
         </div>
         <div class="ibox-content">
           <form method="get" class="form-horizontal">

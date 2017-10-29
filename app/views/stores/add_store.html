@@ -24,7 +24,8 @@
         <div class="ibox-title">
           <h5>Fill in the information below. The field labels marked with * are required input fields.
           </h5>
-          <div ibox-tools></div>
+          <div ibox-tools link="stores/add_store" issue="{{location.path()}}">
+          </div>
         </div>
         <div class="ibox-content">
           <form method="get" class="form-horizontal">
@@ -82,7 +83,7 @@
                 <div class="input-group m-b">
                   <span class="input-group-addon"><i class="fa fa-map-marker"></i></span>
                   <input places-auto-complete size=80
-                  ng-model="addStoreCtrl.param.address"
+                  ng-model="addStoreCtrl.param.location"
                   component-restrictions="{country:'kh'}"
                   types="{{types}}"
                   on-place-changed="addStoreCtrl.placeChanged()"

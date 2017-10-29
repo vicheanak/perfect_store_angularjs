@@ -24,7 +24,8 @@
         <div class="ibox-title">
           <h5>Fill in the information below. The field labels marked with * are required input fields.
           </h5>
-          <div ibox-tools></div>
+          <div ibox-tools link="auditors/add_auditor" issue="{{location.path()}}">
+          </div>
         </div>
         <div class="ibox-content">
           <form class="form-horizontal">
@@ -81,7 +82,6 @@
             <div class="hr-line-dashed"></div>
             <div class="form-group"><label class="col-sm-2 control-label">Status</label>
               <div class="col-sm-10">
-
                 <div class="i-checks">
                   <label> <input type="checkbox" ng-model="addAuditorCtrl.param.status"> Active </label>
                 </div>

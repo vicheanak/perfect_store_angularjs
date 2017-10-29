@@ -129,7 +129,7 @@ function editRewardCtrl($scope, _editReward, _getReward, Upload, $window, _isMan
 
 
   this.goBack = function(){
-    $location.path("rewards/list_rewards");
+    $location.path("settings/list_rewards");
   }
 
   var id = $stateParams.id;
@@ -160,7 +160,7 @@ function editRewardCtrl($scope, _editReward, _getReward, Upload, $window, _isMan
         self.param.imageUrl = base64Data;
         _editReward(self.param).then(function(success){
           if (success.status == 200){
-            $location.path("displays/list_rewards");
+            $location.path("settings/list_rewards");
           }
           else{
             console.log(success.status);
@@ -171,7 +171,7 @@ function editRewardCtrl($scope, _editReward, _getReward, Upload, $window, _isMan
     else{
       _editReward(self.param).then(function(success){
         if (success.status == 200){
-          $location.path("displays/list_rewards");
+          $location.path("settings/list_rewards");
         }
         else{
           console.log(success.status);

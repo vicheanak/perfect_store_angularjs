@@ -28,21 +28,18 @@ function listConditionsCtrl($scope,DTOptionsBuilder, _conditions, _displays, $lo
     }
     else{
       _displays().then(function(displays){
-        for (var i = 0; i < displays.length; i ++){
-          if (displays[i].status == true){
-            self.displays = displays;
-          }
-        }
+        self.displays = displays;
       });
 
       _conditions().then(function(conditions){
         self.conditions = conditions;
+        console.log(conditions);
       });
     }
   });
 
 
-  this.edit = function(conditionId){
+  this.goToEdit = function(conditionId){
     $location.path('displays/edit_condition/'+conditionId);
   }
 }
@@ -90,20 +87,34 @@ function addConditionCtrl($scope, _createCondition, _displayTypes, _displays, Up
     else{
       _displays().then(function(displays){
         self.displays = displays.records;
+        self.tempDisplays = displays.records;
         self.param.display = 1;
+      });
+      _displayTypes().then(function(displayTypes){
+        self.displayTypes = displayTypes.records;
+        self.param.displayType = 1;
       });
     }
   });
 
   this.goBack = function(){
-    $location.path("stores/list_stores");
+    $location.path("displays/list_conditions");
   }
+  $scope.$watch('addConditionCtrl.param.displayTypeId', function (newValue, oldValue){
+    if (newValue){
+      var newDisplays = self.tempDisplays.filter(function(itm){
+        return itm.storeTypeIdDisplays == newValue;
+      });
+      self.displays = newDisplays;
+    }
+  });
+
 
   this.save = function(){
     console.log(self.param);
     _createCondition(self.param).then(function(success){
       if (success.status == 200){
-        $location.path("stores/list_stores");
+        $location.path("displays/list_conditions");
       }
       else{
         console.log(success.status);
@@ -131,13 +142,16 @@ addConditionCtrl.resolve = {
   _displays: function(DisplaysServices){
     return DisplaysServices.all;
   },
+  _displayTypes: function(DisplayTypesServices){
+    return DisplayTypesServices.all;
+  },
   _isManager: function(UsersServices){
     return UsersServices.isManager;
   }
 
 }
 
-function editConditionCtrl($scope, _editCondition, _getCondition, _stores, Upload, $window, $stateParams, _isManager, $localStorage, $location) {
+function editConditionCtrl($scope, _editCondition, _getCondition, _displays, _displayTypes, Upload, $window, $stateParams, _isManager, $localStorage, $location) {
   var self = this;
   this.param = {};
   var id = $stateParams.id;
@@ -149,13 +163,40 @@ function editConditionCtrl($scope, _editCondition, _getCondition, _stores, Uploa
       $location.path('/login');
     }
     else{
-      _storeTypes().then(function(storeTypes){
-        self.storeTypes = storeTypes.records;
+      _displayTypes().then(function(displayTypes){
+        self.displayTypes = displayTypes.records;
+        self.tempDisplayTypes = displayTypes.records;
+        _displays().then(function(displays){
+          self.displays = displays.records;
+          self.tempDisplays = displays.records;
+          _getCondition(id).then(function(data){
+            self.param = data;
+            self.param.displayTypeId = data.DISPLAY.DISPLAY_TYPE.id;
+            self.param.displayId = data.displayIdConditions;
+            console.log(self.param);
+
+            self.conditionId = self.param.id;
+            // var newDisplayTypes = self.tempDisplayTypes.filter(function(itm){
+            //   return itm.id == data.DISPLAY.DISPLAY_TYPE.id;
+            // });
+            // self.displayTypes = newDisplayTypes;
+
+            var newDisplays = self.tempDisplays.filter(function(itm){
+              return itm.id == data.displayIdConditions;
+            });
+            self.displays = newDisplays;
+          });
+        });
       });
 
-      _getCondition(id).then(function(data){
-        self.param = data;
-        self.storeTypeId = self.param.storeTypeIdConditions;
+
+      $scope.$watch('editConditionCtrl.param.displayTypeId', function (newValue, oldValue){
+        if (newValue){
+          var newDisplays = self.tempDisplays.filter(function(itm){
+            return itm.storeTypeIdDisplays == newValue;
+          });
+          self.displays = newDisplays;
+        }
       });
     }
   });
@@ -163,14 +204,14 @@ function editConditionCtrl($scope, _editCondition, _getCondition, _stores, Uploa
 
 
   this.goBack = function(){
-    $location.path("stores/list_stores");
+    $location.path("displays/list_conditions");
   }
 
   this.save = function(){
     console.log(this.param);
     _editCondition(this.param).then(function(success){
       if (success.status == 200){
-        $location.path("stores/list_stores");
+        $location.path("displays/list_conditions");
       }
       else{
         console.log(success.status);
@@ -198,8 +239,11 @@ editConditionCtrl.resolve = {
   _getCondition: function(ConditionsServices){
     return ConditionsServices.get;
   },
-  _stores: function(StoresServices){
-    return StoresServices.all;
+  _displays: function(DisplaysServices){
+    return DisplaysServices.all;
+  },
+  _displayTypes: function(DisplayTypesServices){
+    return DisplayTypesServices.all;
   },
   _isManager: function(UsersServices){
     return UsersServices.isManager;

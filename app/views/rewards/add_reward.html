@@ -24,20 +24,27 @@
         <div class="ibox-title">
           <h5>Fill in the information below. The field labels marked with * are required input fields.
           </h5>
-          <div ibox-tools></div>
+         <div ibox-tools link="displays/add_reward" issue="{{location.path()}}">
+          </div>
         </div>
         <div class="ibox-content">
           <form method="get" class="form-horizontal">
             <div class="hr-line-dashed"></div>
             <div class="form-group"><label class="col-sm-2 control-label">Reward Name *</label>
               <div class="col-sm-10">
-                <input type="text" required class="form-control" ng-model="addRewardCtrl.param.name">
+                <div class="input-group m-b">
+                  <span class="input-group-addon"><i class="fa fa-address-book"></i></span>
+                  <input type="text" required class="form-control" ng-model="addRewardCtrl.param.name">
+                </div>
               </div>
             </div>
             <div class="hr-line-dashed"></div>
             <div class="form-group"><label class="col-sm-2 control-label">Points *</label>
               <div class="col-sm-10">
-                <input type="number" required class="form-control" ng-model="addRewardCtrl.param.points">
+                <div class="input-group m-b">
+                  <span class="input-group-addon"><i class="fa fa-ticket"></i></span>
+                  <input type="number" required class="form-control" ng-model="addRewardCtrl.param.points">
+                </div>
               </div>
             </div>
             <div class="hr-line-dashed"></div>
@@ -69,7 +76,7 @@
             <div class="form-group"><label class="col-sm-2 control-label">Status</label>
               <div class="col-sm-10">
                 <label>
-                  <input icheck type="checkbox" ng-model="addRewardCtrl.param.status" >
+                  <input icheck type="checkbox" checked="check" ng-model="addRewardCtrl.param.status" >
                 Active </label>
               </div>
             </div>

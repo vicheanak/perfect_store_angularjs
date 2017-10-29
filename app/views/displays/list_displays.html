@@ -25,14 +25,15 @@
           <h5>
             Please use the table below to navigate or filter the results. You can print download the table as <strong>excel and pdf</strong>.
           </h5>
-
-          <div ibox-tools></div>
+           <div ibox-tools link="displays/add_display" issue="{{location.path()}}">
+          </div>
         </div>
         <div class="ibox-content">
          <table datatable="ng" dt-options="dtOptions"  class="table table-striped table-bordered table-hover dataTables-example">
           <thead>
             <tr>
               <th data-sort-ignore="true"></th>
+              <th>SKU</th>
               <th>Names</th>
               <th>Points</th>
               <th>Display Type</th>
@@ -45,19 +46,20 @@
             <tr ng-repeat="display in listDisplaysCtrl.displays.records">
              <td>
               <div class="lightBoxGallery">
-                <a href="http://{{display.imageUrl}}" title="Image from Unsplash" data-gallery=""><img src="http://{{display.imageUrl}}" style="width:100px; height:100px"></a>
+                <a href="{{display.imageUrl}}" title="Image from Unsplash" data-gallery=""><img src="{{display.imageUrl}}" style="width:100px; height:100px"></a>
               </div>
             </td>
+            <td>{{display.sku}}</td>
             <td>{{display.name}}</td>
             <td>{{display.points}}</td>
             <td>{{display.DISPLAY_TYPE.name}}</td>
             <td>{{display.STORE_TYPE.name}}</td>
             <td>
-              <button class="btn-white btn btn-xs">{{display.status ? 'Active' : 'Inactive'}}</button>
+              {{display.status ? 'Active' : 'Inactive'}}
             </td>
             <td class="text-right">
               <div class="btn-group">
-                <button class="btn-primary btn btn-sm btn-rounded" ng-click="listDisplaysCtrl.showEdit(display.id)">Edit</button>
+                <button class="btn-primary btn btn-sm btn-rounded" ng-click="listDisplaysCtrl.showEdit(display.id)"><i class="fa fa-edit"></i> Edit</button>
               </div>
             </td>
           </tr>

@@ -54,12 +54,16 @@ function pageTitle($rootScope, $timeout) {
  function iboxTools($timeout) {
   return {
     restrict: 'A',
-    scope: true,
+    scope: {
+      link: '@link',
+      issue: '@issue'
+    },
     templateUrl: 'views/common/ibox_tools.html',
-    controller: function ($scope, $element) {
+    controller: function ($scope, $element, $location) {
             // Function for collapse ibox
             $scope.showhide = function () {
               var ibox = $element.closest('div.ibox');
+
               var icon = $element.find('i:first');
               var content = ibox.children('.ibox-content');
               content.slideToggle(200);
@@ -70,6 +74,12 @@ function pageTitle($rootScope, $timeout) {
                   ibox.resize();
                   ibox.find('[id^=map-]').resize();
                 }, 50);
+              },
+              $scope.addNew = function(){
+                $location.path($scope.link);
+              },
+              $scope.goToIssue = function(){
+                $location.path('issues/add_issue').search('url', $scope.issue);
               },
               $scope.closebox = function () {
                 var ibox = $element.closest('div.ibox');

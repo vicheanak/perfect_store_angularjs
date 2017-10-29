@@ -1,6 +1,6 @@
 <div class="row wrapper border-bottom white-bg page-heading">
   <div class="col-lg-10">
-    <h2>Add Condition</h2>
+    <h2><i class="fa fa-gavel"></i> Add Condition</h2>
     <ol class="breadcrumb">
       <li>
         <a href="index.html">Dashboard</a>
@@ -24,7 +24,8 @@
         <div class="ibox-title">
           <h5>Fill in the information below. The field labels marked with * are required input fields.
           </h5>
-          <div ibox-tools></div>
+           <div ibox-tools link="displays/add_condition" issue="{{location.path()}}">
+          </div>
         </div>
         <div class="ibox-content">
           <form method="get" class="form-horizontal">
@@ -34,7 +35,7 @@
               <div class="col-sm-10">
                 <div class="input-group m-b">
                   <span class="input-group-addon"><i class="fa fa-leaf"></i></span>
-                  <select ng-model="addConditionCtrl.param.displayTypeId" class="form-control m-b" ng-options="displayType.id as displayType.name for displayType in addConditionCtrl.displayTypes">
+                  <select ng-model="addConditionCtrl.param.displayTypeId" ng-change="selectDisplay(displayType.id)" class="form-control m-b" ng-options="displayType.id as displayType.name for displayType in addConditionCtrl.displayTypes">
                   </select>
                 </div>
               </div>

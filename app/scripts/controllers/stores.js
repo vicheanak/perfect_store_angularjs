@@ -35,11 +35,8 @@ function listStoresCtrl($scope,DTOptionsBuilder, _stores, _regions, _storeTypes,
       });
 
       _regions().then(function(regions){
-        for (var i = 0; i < regions.length; i ++){
-          if (regions[i].status == true){
-            self.regions = regions;
-          }
-        }
+        console.log('regions');
+        self.regions = regions.records;
       });
 
       _stores().then(function(stores){
@@ -85,7 +82,7 @@ listStoresCtrl.resolve = {
   }
 }
 
-function addStoreCtrl($scope, _createStore, _storeTypes, Upload, $window, $location, $localStorage, _isManager, NgMap) {
+function addStoreCtrl($scope, _createStore, _storeTypes, Upload, $window, $location, $localStorage, _isManager, NgMap, _regions) {
   var self = this;
   this.param = {};
 
@@ -123,6 +120,12 @@ function addStoreCtrl($scope, _createStore, _storeTypes, Upload, $window, $locat
         self.storeTypes = storeTypes.records;
         self.param.storeTypeId = 1;
       });
+      _regions().then(function(regions){
+        console.log('regions');
+        self.regions = regions.records;
+        self.param.regionId = 1;
+      });
+
     }
   });
 
@@ -165,13 +168,16 @@ addStoreCtrl.resolve = {
   _storeTypes: function(StoreTypesServices){
     return StoreTypesServices.all;
   },
+  _regions: function(RegionsServices){
+    return RegionsServices.all;
+  },
   _isManager: function(UsersServices){
     return UsersServices.isManager;
   }
 
 }
 
-function editStoreCtrl($scope, _editStore, _getStore, _storeTypes, Upload, $window, $stateParams, _isManager, $localStorage, $location, NgMap) {
+function editStoreCtrl($scope, _editStore, _getStore, _regions, _storeTypes, Upload, $window, $stateParams, _isManager, $localStorage, $location, NgMap) {
   var self = this;
   this.param = {};
   var id = $stateParams.id;
@@ -197,6 +203,7 @@ function editStoreCtrl($scope, _editStore, _getStore, _storeTypes, Upload, $wind
 
   NgMap.getMap().then(function(map) {
     self.map = map;
+    self.map.panTo({lat:self.param.lat,lng:self.param.lng});
   });
 
   $scope.token = $localStorage.token || "";
@@ -209,9 +216,17 @@ function editStoreCtrl($scope, _editStore, _getStore, _storeTypes, Upload, $wind
         self.storeTypes = storeTypes.records;
       });
 
+      _regions().then(function(regions){
+        self.regions = regions.records;
+      });
+
       _getStore(id).then(function(data){
+        console.log(data);
         self.param = data;
-        self.storeTypeId = self.param.storeTypeIdStores;
+        self.param.storeTypeId = self.param.storeTypeIdStores;
+        self.param.regionId = self.param.regionIdStores;
+        self.positions = [{lat:self.param.lat,lng:self.param.lng}];
+
       });
     }
   });
@@ -259,6 +274,9 @@ editStoreCtrl.resolve = {
   },
   _storeTypes: function(StoreTypesServices){
     return StoreTypesServices.all;
+  },
+  _regions: function(RegionsServices){
+    return RegionsServices.all;
   },
   _isManager: function(UsersServices){
     return UsersServices.isManager;

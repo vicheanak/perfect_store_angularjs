@@ -27,25 +27,24 @@
             Please use the table below to navigate or filter the results. You can print download the table as <strong>excel and pdf</strong>.
           </h5>
 
-          <div ibox-tools></div>
+          <div ibox-tools link="settings/add_region" issue="{{location.path()}}">
+          </div>
         </div>
         <div class="ibox-content">
 
           <table datatable="ng" dt-options="dtOptions"  class="table table-striped table-bordered table-hover dataTables-example">
             <thead>
               <tr>
-                <th>ID</th>
                 <th>Region Name</th>
                 <th class="text-right" data-sort-ignore="true">Action</th>
               </tr>
             </thead>
             <tbody>
               <tr ng-repeat="s in listRegionsCtrl.regions.records">
-                <td>{{s.id}}</td>
                 <td>{{s.name}}</td>
                 <td class="text-right">
                   <div class="btn-group">
-                    <button class="btn-primary btn btn-sm btn-rounded" ng-click="listRegionsCtrl.goToEdit(s.id)">Edit</button>
+                    <button class="btn-primary btn btn-sm btn-rounded btn-outline" ng-click="listRegionsCtrl.goToEdit(s.id)"><i class="fa fa-edit"></i> Edit</button>
                   </div>
                 </td>
               </tr>

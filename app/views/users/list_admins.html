@@ -26,7 +26,10 @@
             Please use the table below to navigate or filter the results. You can print download the table as <strong>excel and pdf</strong>.
           </h5>
 
-          <div ibox-tools></div>
+          <div class="ibox-tools">
+            <button class="btn btn-primary btn-rounded btn-sm" ng-click="addNew()"><i class="fa fa-plus-circle"></i> Add New </button>
+            <button class="btn btn-warning btn-rounded btn-sm" ng-click="reportIssue()"><i class="fa fa-exclamation-triangle"></i>  Issue</button>
+          </div>
         </div>
         <div class="ibox-content">
           <table datatable="ng" dt-options="dtOptions"  class="table table-striped table-bordered table-hover dataTables-example">

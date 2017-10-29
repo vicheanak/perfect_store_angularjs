@@ -115,7 +115,7 @@ function addDisplayCtrl($scope, _createDisplay, _storeTypes, _displayTypes, Uplo
       self.param.imageUrl = base64Data;
       _createDisplay(self.param).then(function(success){
         if (success.status == 200){
-          $location.path("displays/list_displays");
+          // $location.path("displays/list_displays");
         }
         else{
           console.log(success.status);
@@ -174,6 +174,7 @@ function editDisplayCtrl($scope, _editDisplay, _getDisplay, _storeTypes, _displa
     });
 
      _getDisplay(id).then(function(display){
+      console.log('display', display);
       self.param = display;
       self.param.storeTypeId = self.param.storeTypeIdDisplays;
       self.param.displayTypeId = self.param.displayTypeIdDisplays;
@@ -183,7 +184,7 @@ function editDisplayCtrl($scope, _editDisplay, _getDisplay, _storeTypes, _displa
 
 
   this.goBack = function(){
-    $location.path("stores/list_displays");
+    $location.path("displays/list_displays");
   }
 
   this.save = function(){

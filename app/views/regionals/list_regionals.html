@@ -26,13 +26,14 @@
             Please use the table below to navigate or filter the results. You can print download the table as <strong>excel and pdf</strong>.
           </h5>
 
-          <div ibox-tools></div>
+          <div ibox-tools link="regionals/add_regional" issue="{{location.path()}}">
+          </div>
         </div>
         <div class="ibox-content">
           <table datatable="ng" dt-options="dtOptions"  class="table table-striped table-bordered table-hover dataTables-example">
             <thead>
               <tr>
-                <th>ID</th>
+                <th>Region</th>
                 <th>Name</th>
                 <th>Username</th>
                 <th>Phone</th>
@@ -41,17 +42,17 @@
               </tr>
             </thead>
             <tbody>
-              <tr ng-repeat="viewer in listViewersCtrl.viewers.records">
-                <td>{{viewer.id}}</td>
-                <td>{{viewer.fullname}}</td>
-                <td>{{viewer.username}}</td>
-                <td>{{viewer.phone}}</td>
+              <tr ng-repeat="regional in listRegionalsCtrl.regionals.records">
+                <td>{{regional.REGION.name}}</td>
+                <td>{{regional.fullname}}</td>
+                <td>{{regional.username}}</td>
+                <td>{{regional.phone}}</td>
                 <td>
-                  <button class="btn-white btn btn-xs">{{viewer.status ? 'Active' : 'Inactive'}}</button>
+                  <button class="btn-white btn btn-xs">{{regional.status ? 'Active' : 'Inactive'}}</button>
                 </td>
                 <td class="text-right">
                   <div class="btn-group">
-                    <button class="btn-primary btn btn-sm btn-rounded" ng-click="listViewersCtrl.showEdit(viewer.id)">Edit</button>
+                    <button class="btn-primary btn btn-sm btn-rounded btn-outline" ng-click="listRegionalsCtrl.showEdit(regional.id)"><i class="fa fa-edit"></i> Edit</button>
                   </div>
                 </td>
               </tr>

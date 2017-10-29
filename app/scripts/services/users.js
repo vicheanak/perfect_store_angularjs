@@ -219,7 +219,9 @@ function UsersServices($http, HostServices) {
       }
     }
     var urlId = regionalUrl + id;
+    console.log(urlId);
     return $http.get(urlId, config).then(function (response) {
+
       return response.data;
     });
   };

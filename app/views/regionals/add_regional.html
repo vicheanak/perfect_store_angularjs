@@ -24,10 +24,22 @@
         <div class="ibox-title">
           <h5>Fill in the information below. The field labels marked with * are required input fields.
           </h5>
-          <div ibox-tools></div>
+          <div ibox-tools link="regionals/add_regional" issue="{{location.path()}}">
+          </div>
         </div>
         <div class="ibox-content">
           <form class="form-horizontal">
+            <div class="hr-line-dashed"></div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label">Region</label>
+              <div class="col-sm-10">
+                <div class="input-group m-b">
+                  <span class="input-group-addon"><i class="fa fa-flag"></i></span>
+                  <select ng-model="addRegionalCtrl.param.regionId" class="form-control m-b" ng-options="region.id as region.name for region in addRegionalCtrl.regions">
+                  </select>
+                </div>
+              </div>
+            </div>
             <div class="hr-line-dashed"></div>
             <div class="form-group"><label class="col-sm-2 control-label">Fullname *</label>
               <div class="col-sm-10">
@@ -42,7 +54,7 @@
               <div class="col-sm-10">
                 <div class="input-group m-b">
                   <span class="input-group-addon"><i class="fa fa-user"></i></span>
-                  <input ng-model="addRegionalCtrl.param.fullname" type="text" class="form-control">
+                  <input ng-model="addRegionalCtrl.param.username" type="text" class="form-control">
                 </div>
               </div>
             </div>
@@ -52,7 +64,7 @@
               <div class="col-sm-10">
                 <div class="input-group m-b">
                   <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-                  <input ng-model="addRegionalCtrl.param.fullname" type="text" class="form-control">
+                  <input type="password" ng-model="addRegionalCtrl.param.password" type="text" class="form-control">
                 </div>
               </div>
             </div>
@@ -61,7 +73,7 @@
               <div class="col-sm-10">
                 <div class="input-group m-b">
                   <span class="input-group-addon"><i class="fa fa-phone"></i></span>
-                  <input ng-model="addRegionalCtrl.param.fullname" type="text" class="form-control">
+                  <input ng-model="addRegionalCtrl.param.phone" type="text" class="form-control">
                 </div>
               </div>
             </div>
@@ -70,7 +82,7 @@
             <div class="form-group"><label class="col-sm-2 control-label">Status</label>
               <div class="col-sm-10">
                 <label>
-                  <input icheck type="checkbox" ng-model="addViewerCtrl.param.status">
+                  <input icheck type="checkbox" ng-model="addRegionalCtrl.param.status">
                   Active
                 </label>
               </div>
@@ -78,8 +90,8 @@
             <div class="hr-line-dashed"></div>
             <div class="form-group">
               <div class="col-sm-4 col-sm-offset-2">
-                <button class="btn btn-white btn-rounded" ng-click="goBack()" type="submit">Cancel</button>
-                <button class="btn btn-primary btn-rounded" ng-click="addViewerCtrl.save()" type="submit">Save changes</button>
+                <button class="btn btn-white btn-rounded" ng-click="addRegionalCtrl.goBack()" type="submit">Cancel</button>
+                <button class="btn btn-primary btn-rounded" ng-click="addRegionalCtrl.save()" type="submit">Save changes</button>
               </div>
             </div>
           </form>
