@@ -26,9 +26,9 @@ function listStoresRewardsCtrl($scope,DTOptionsBuilder, _storesRewards, _isAuth,
       $location.path('/login');
     }
     else{
-      _storesRewards().then(function(storesRewards){
-        self.storesRewards = storesRewards;
-        console.log('lg ', self.storesRewards);
+      _storesRewards().then(function(claims){
+        self.claims = claims;
+        console.log('lg ', self.claims);
       });
     }
   });

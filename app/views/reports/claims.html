@@ -1,6 +1,6 @@
 <div class="row wrapper border-bottom white-bg page-heading">
   <div class="col-lg-10">
-    <h2>Claims</h2>
+    <h2><i class="fa fa-send"></i> Claims</h2>
     <ol class="breadcrumb">
       <li>
         <a href="/dashboard">Dashboard</a>
@@ -47,18 +47,18 @@
               </tr>
             </thead>
             <tbody>
-              <tr ng-repeat="storeReward in listStoresRewardsCtrl.storesRewards.records">
-                <td>{{storeReward.id}}</td>
-                <td>{{storeReward.REWARD.name}}</td>
-                <td>{{storeReward.STORE.name}}</td>
-                <td>{{storeReward.STORE.phone}}</td>
-                <td>{{storeReward.STORE.STORE_TYPE.name}}</td>
-                <td>{{storeReward.STORE.USERS_STOREs[0].USER.fullname}}</td>
-                <td>{{storeReward.STORE.USERS_STOREs[0].USER.phone}}</td>
-                <td>{{storeReward.createdAt | date:"dd/MM/yyyy 'at' h:mma"}}</td>
-                <td>{{storeReward.deliveriedAt | date:"dd/MM/yyyy 'at' h:mma"}}</td>
+              <tr ng-repeat="claim in claimsReportCtrl.claims.records">
+                <td>{{claim.id}}</td>
+                <td>{{claim.REWARD.name}}</td>
+                <td>{{claim.STORE.name}}</td>
+                <td>{{claim.STORE.phone}}</td>
+                <td>{{claim.STORE.STORE_TYPE.name}}</td>
+                <td>{{claim.STORE.USERS_STOREs[0].USER.fullname}}</td>
+                <td>{{claim.STORE.USERS_STOREs[0].USER.phone}}</td>
+                <td>{{claim.createdAt | date:"dd/MM/yyyy 'at' h:mma"}}</td>
+                <td>{{claim.deliveriedAt | date:"dd/MM/yyyy 'at' h:mma"}}</td>
                 <td>
-                 <button class="{{storeReward.deliveriedAt ? 'btn-primary' : 'btn-warning'}} btn btn-xs">{{storeReward.deliveriedAt ? 'Delivered' : 'Ordered'}}</button>
+                 <button class="{{claim.deliveriedAt ? 'btn-primary' : 'btn-warning'}} btn btn-xs">{{claim.deliveriedAt ? 'Delivered' : 'Ordered'}}</button>
                </td>
 
              </tr>

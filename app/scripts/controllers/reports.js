@@ -1,4 +1,4 @@
-function claimsReportCtrl($scope, DTOptionsBuilder, _rewards, _isAuth, $location, $localStorage){
+function claimsReportCtrl($scope, DTOptionsBuilder, _storesRewards, _isAuth, $location, $localStorage){
   $scope.dtOptions = DTOptionsBuilder.newOptions()
   .withDOM('<"html5buttons"B>lTfgitp')
   .withButtons([
@@ -20,23 +20,21 @@ function claimsReportCtrl($scope, DTOptionsBuilder, _rewards, _isAuth, $location
 
   var self = this;
 
-  this.goToEdit = function(id){
-    $location.path('displays/edit_reward/'+id);
-  }
-
   $scope.token = $localStorage.token || "";
+
+  var self = this;
   _isAuth($scope.token).then(function(respond){
     if (respond == null){
       $location.path('/login');
     }
     else{
-
+      _storesRewards().then(function(claims){
+        self.claims = claims;
+        console.log('lg ', self.claims);
+      });
     }
   });
 
-  _rewards().then(function(rewards){
-    self.rewards = rewards;
-  });
 
 }
 
@@ -58,8 +56,8 @@ claimsReportCtrl.resolve = {
       files: ['js/plugins/dataTables/angular-datatables.buttons.min.js']
     }]);
   },
-  _rewards: function(RegionsServices){
-    return RegionsServices.all;
+  _storesRewards: function(StoresRewardsServices){
+     return StoresRewardsServices.all;
   },
   _isAuth: function(UsersServices){
     return UsersServices.isAuth;
@@ -67,7 +65,7 @@ claimsReportCtrl.resolve = {
 }
 
 
-function storesReportCtrl($scope, DTOptionsBuilder, _rewards, _isAuth, $location, $localStorage){
+function storesReportCtrl($scope,DTOptionsBuilder, _stores, _regions, _storeTypes, $location, _isAuth, $localStorage){
   $scope.dtOptions = DTOptionsBuilder.newOptions()
   .withDOM('<"html5buttons"B>lTfgitp')
   .withButtons([
@@ -75,7 +73,6 @@ function storesReportCtrl($scope, DTOptionsBuilder, _rewards, _isAuth, $location
     {extend: 'csv'},
     {extend: 'excel', title: 'ExampleFile'},
     {extend: 'pdf', title: 'ExampleFile'},
-
     {extend: 'print',
     customize: function (win){
       $(win.document.body).addClass('white-bg');
@@ -89,10 +86,6 @@ function storesReportCtrl($scope, DTOptionsBuilder, _rewards, _isAuth, $location
 
   var self = this;
 
-  this.goToEdit = function(id){
-    $location.path('displays/edit_reward/'+id);
-  }
-
   $scope.token = $localStorage.token || "";
   _isAuth($scope.token).then(function(respond){
     if (respond == null){
@@ -100,13 +93,29 @@ function storesReportCtrl($scope, DTOptionsBuilder, _rewards, _isAuth, $location
     }
     else{
 
+      _storeTypes().then(function(storeTypes){
+        for (var i = 0; i < storeTypes.length; i ++){
+          if (storeTypes[i].status == true){
+            self.storeTypes = storeTypes;
+          }
+        }
+      });
+
+      _regions().then(function(regions){
+        console.log('regions');
+        self.regions = regions.records;
+      });
+
+      _stores().then(function(stores){
+        console.log('store records', stores.records);
+        self.stores = stores;
+      });
     }
   });
 
-  _rewards().then(function(rewards){
-    self.rewards = rewards;
-  });
-
+  this.edit = function(storeId){
+    $location.path('stores/edit_store/'+storeId);
+  }
 }
 
 storesReportCtrl.resolve = {
@@ -127,7 +136,13 @@ storesReportCtrl.resolve = {
       files: ['js/plugins/dataTables/angular-datatables.buttons.min.js']
     }]);
   },
-  _rewards: function(RegionsServices){
+  _stores: function(StoresServices){
+    return StoresServices.reports;
+  },
+  _storeTypes: function(StoreTypesServices){
+    return StoreTypesServices.all;
+  },
+  _regions: function(RegionsServices){
     return RegionsServices.all;
   },
   _isAuth: function(UsersServices){

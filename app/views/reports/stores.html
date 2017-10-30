@@ -25,9 +25,7 @@
           <h5>
             Please use the table below to navigate or filter the results. You can print download the table as <strong>excel and pdf</strong>.
           </h5>
-
-          <div class="ibox-tools">
-            <button class="btn btn-warning btn-rounded btn-sm" ng-click="reportIssue()"><i class="fa fa-exclamation-triangle"></i>  Issue</button>
+           <div ibox-tools link="stores/add_store" issue="{{location.path()}}">
           </div>
         </div>
         <div class="ibox-content">
@@ -37,29 +35,19 @@
                 <th>ID</th>
                 <th>Name</th>
                 <th>Phone</th>
-                <th>Username</th>
                 <th>Store Type</th>
-                <th>Address</th>
-                <th>Status</th>
-                <th class="text-right" data-sort-ignore="true">Action</th>
+                <th>Region</th>
+                <th>Points</th>
               </tr>
             </thead>
             <tbody>
-              <tr ng-repeat="store in listStoresCtrl.stores.records">
+              <tr ng-repeat="store in storesReportCtrl.stores.records">
                 <td>{{store.id}}</td>
                 <td>{{store.name}}</td>
                 <td>{{store.phone}}</td>
-                <td>store{{store.id}}{{store.phone}}</td>
                 <td>{{store.STORE_TYPE.name}}</td>
-                <td>{{store.location}}</td>
-                <td>
-                  <button class="btn-white btn btn-xs">{{store.status ? 'Active' : 'Inactive'}}</button>
-                </td>
-                <td class="text-right">
-                  <div class="btn-group">
-                    <button ng-click="listStoresCtrl.edit(store.id)" class="btn-primary btn btn-sm">Edit</button>
-                  </div>
-                </td>
+                <td>{{store.REGION.name}}</td>
+                <td>{{store.points}}</td>
               </tr>
             </tbody>
           </table>

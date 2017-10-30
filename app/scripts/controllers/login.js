@@ -26,6 +26,7 @@ function loginCtrl($scope, $location, _isAuth, _auth, $localStorage){
       }
       else{
         $localStorage.token = data.token;
+        $localStorage.userId = data.id;
         $location.path('/stores/stores_rewards')
       }
     });
@@ -39,10 +40,10 @@ function loginCtrl($scope, $location, _isAuth, _auth, $localStorage){
 
 loginCtrl.resolve = {
   _isAuth: function(UsersServices) {
-    return UsersServices.isAuth; 
+    return UsersServices.isAuth;
   },
   _auth: function(UsersServices) {
-    return UsersServices.auth; 
+    return UsersServices.auth;
   },
   _outAuth: function(UsersServices){
     return UsersServices.outAuth;

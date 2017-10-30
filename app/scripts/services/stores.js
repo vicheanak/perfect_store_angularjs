@@ -13,6 +13,18 @@ function StoresServices($http, HostServices) {
     });
   }
 
+  function reports() {
+    var reportUrl = url + 'reports';
+    var config = {
+      headers : {
+        'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
+      }
+    }
+    return $http.get(reportUrl, config).then(function (response) {
+      return response.data;
+    });
+  }
+
   function create (param) {
     var data = param;
     return $http({
@@ -24,14 +36,14 @@ function StoresServices($http, HostServices) {
       },
       data: data
     }).then(
-      function(success){
-        console.log(success);
-        return success;
-      },
-      function(error){
-        console.log(error);
-        return error;
-      }
+    function(success){
+      console.log(success);
+      return success;
+    },
+    function(error){
+      console.log(error);
+      return error;
+    }
     );
   };
 
@@ -47,14 +59,14 @@ function StoresServices($http, HostServices) {
       },
       data: data
     }).then(
-      function(success){
-        console.log(success);
-        return success;
-      },
-      function(error){
-        console.log(error);
-        return error;
-      }
+    function(success){
+      console.log(success);
+      return success;
+    },
+    function(error){
+      console.log(error);
+      return error;
+    }
     );
   };
 
@@ -74,10 +86,11 @@ function StoresServices($http, HostServices) {
     all: all,
     create: create,
     edit: edit,
-    get: get
+    get: get,
+    reports: reports
   };
 }
 angular
-  .module('inspinia')
-  .factory('StoresServices', StoresServices);
+.module('inspinia')
+.factory('StoresServices', StoresServices);
 

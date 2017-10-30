@@ -40,11 +40,11 @@
               </tr>
             </thead>
             <tbody>
-              <tr ng-repeat="s in listRegionsCtrl.regions.records">
-                <td>{{s.name}}</td>
+              <tr ng-repeat="region in listRegionsCtrl.regions">
+                <td>{{region.name}}</td>
                 <td class="text-right">
                   <div class="btn-group">
-                    <button class="btn-primary btn btn-sm btn-rounded btn-outline" ng-click="listRegionsCtrl.goToEdit(s.id)"><i class="fa fa-edit"></i> Edit</button>
+                    <button class="btn-primary btn btn-sm btn-rounded btn-outline" ng-click="listRegionsCtrl.goToEdit(region.id)"><i class="fa fa-edit"></i> Edit</button>
                   </div>
                 </td>
               </tr>

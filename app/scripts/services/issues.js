@@ -3,6 +3,7 @@ function IssuesServices($http, HostServices) {
   var url = HostServices.name + '/issues/';
 
   function all() {
+
     var config = {
       headers : {
         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'

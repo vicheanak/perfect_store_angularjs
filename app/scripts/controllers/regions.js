@@ -122,9 +122,8 @@ function editRegionCtrl($scope, _editRegion, _getRegion, Upload, $window, _isMan
   var self = this;
   this.param = {};
 
-
   this.goBack = function(){
-    $location.path("regions/list_regions");
+    $location.path("settings/list_regions");
   }
 
   var id = $stateParams.id;

@@ -246,7 +246,7 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider) {
 
   .state('reports', {
     abstract: true,
-    url: "/issues",
+    url: "/reports",
     templateUrl: "views/common/content.html"
   })
 
@@ -282,7 +282,7 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider) {
   })
 
   .state('reports.auditors', {
-    url: "/edit_issue",
+    url: "/reports_auditors",
     templateUrl: "views/reports/auditors.html",
     data: {
       pageTitle: 'Auditors Report'
@@ -422,13 +422,13 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider) {
   })
 
   .state('issues.list_issues', {
-    url: "/list_tickets",
+    url: "/list_issues",
     templateUrl: "views/issues/list_issues.html",
     data: {
       pageTitle: 'Issues'
     },
     controller: 'listIssuesCtrl as listIssuesCtrl',
-    resolve: listDisplaysCtrl.resolve
+    resolve: listIssuesCtrl.resolve
   })
 
 
@@ -443,17 +443,17 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider) {
   })
 
   .state('issues.edit_issue', {
-    url: "/edit_issue",
+    url: "/edit_issue/:id",
     templateUrl: "views/issues/edit_issue.html",
     data: {
       pageTitle: 'Edit Issue'
     },
     controller: 'editIssueCtrl as editIssueCtrl',
-    resolve: addIssueCtrl.resolve
+    resolve: editIssueCtrl.resolve
   })
 
   .state('issues.detail_issue', {
-    url: "/detail_issue",
+    url: "/detail_issue/:id",
     templateUrl: "views/issues/detail_issue.html",
     data: {
       pageTitle: 'Detail Issue'
