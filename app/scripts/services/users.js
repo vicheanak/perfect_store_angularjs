@@ -234,6 +234,7 @@ function UsersServices($http, HostServices) {
       }
     }
     var urlToken = isAuthUrl + token;
+
     return $http.get(urlToken, config).then(function (response) {
       return response.data;
     });
@@ -247,9 +248,16 @@ function UsersServices($http, HostServices) {
       }
     }
     var urlManagerToken = isManagerUrl + token;
-    return $http.get(urlManagerToken, config).then(function (response) {
-      return response.data;
-    });
+    if (token){
+      return $http.get(urlManagerToken, config).then(function (response) {
+        return response.data;
+      });
+    }
+    else{
+      return new Promise((resolve, reject) => {
+        resolve(false);
+      });
+    }
   }
 
   function isRegional(token) {
@@ -260,9 +268,17 @@ function UsersServices($http, HostServices) {
       }
     }
     var urlRegionalToken = isRegionalUrl + token;
-    return $http.get(urlRegionalToken, config).then(function (response) {
-      return response.data;
-    });
+    if (token){
+      return $http.get(urlRegionalToken, config).then(function (response) {
+        return response.data;
+      });
+    }
+    else{
+      return new Promise((resolve, reject) => {
+        resolve(false);
+      });
+    }
+
   }
 
   function auth(username, password){

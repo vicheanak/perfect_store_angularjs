@@ -30,7 +30,6 @@
       <li ng-class="{active: $state.includes('stores')}">
         <a href="#"><i class="fa fa-shopping-bag"></i> <span class="nav-label">STORES</span><span class="fa arrow"></span></a>
         <ul class="nav nav-second-level collapse" ng-class="{in: $state.includes('stores')}">
-          <li ui-sref-active="active"><a ui-sref="stores.stores_rewards"><i class="fa fa-comment-o"></i>Claimed<span class="label label-info pull-right">2</span></a></li>
           <li ui-sref-active="active"><a ui-sref="stores.list_stores"><i class="fa fa-shopping-bag"></i>Stores</a></li>
           <li ui-sref-active="active" ng-show="usersCtrl.isManager"><a ui-sref="stores.add_store"><i class="fa fa-plus-circle"></i>Add Store</a></li>
         </ul>
@@ -66,15 +65,6 @@
           <li ui-sref-active="active"><a ui-sref="managers.add_manager"><i class="fa fa-plus-circle"></i>Add Manager</a></li>
         </ul>
       </li>
-      <li ng-class="{active: $state.includes('reports')}">
-        <a href="#"><i class="fa fa-bar-chart"></i> <span class="nav-label">REPORTS</span><span class="fa arrow"></span></a>
-        <ul class="nav nav-second-level collapse" ng-class="{in: $state.includes('reports')}">
-          <li ui-sref-active="active"><a ui-sref="reports.claims"><i class="fa fa-send"></i>Claimed</a></li>
-          <li ui-sref-active="active"><a ui-sref="reports.stores"><i class="fa fa-shopping-bag"></i>Stores</a></li>
-          <li ui-sref-active="active"><a ui-sref="reports.displays"><i class="fa fa-image"></i>Displays</a></li>
-          <li ui-sref-active="active"><a ui-sref="reports.auditors"><i class="fa fa-user-circle"></i>Auditors</a></li>
-        </ul>
-      </li>
       <li ng-class="{active: $state.includes('settings')}">
         <a href="#"><i class="fa fa-gears"></i> <span class="nav-label">SETTINGS</span><span class="fa arrow"></span></a>
         <ul class="nav nav-second-level collapse" ng-class="{in: $state.includes('settings')}">
@@ -86,6 +76,15 @@
           <li ui-sref-active="active"  ng-show="usersCtrl.isManager"><a ui-sref="settings.add_store_type"><i class="fa fa-plus-circle"></i>Add Store Type</a></li>
           <li ui-sref-active="active" ng-show="usersCtrl.isManager"><a ui-sref="settings.add_region"><i class="fa fa-plus-circle"></i>Add Region</a></li>
           <li ui-sref-active="active" ng-show="usersCtrl.isManager"><a ui-sref="settings.add_reward"><i class="fa fa-plus-circle"></i>Add Reward</a></li>
+        </ul>
+      </li>
+      <li ng-class="{active: $state.includes('reports')}">
+        <a href="#"><i class="fa fa-bar-chart"></i> <span class="nav-label">REPORTS</span><span class="fa arrow"></span></a>
+        <ul class="nav nav-second-level collapse" ng-class="{in: $state.includes('reports')}">
+          <li ui-sref-active="active"><a ui-sref="reports.claims"><i class="fa fa-send"></i>Claimed</a></li>
+          <li ui-sref-active="active"><a ui-sref="reports.stores"><i class="fa fa-shopping-bag"></i>Stores</a></li>
+          <li ui-sref-active="active"><a ui-sref="reports.displays"><i class="fa fa-image"></i>Displays</a></li>
+          <li ui-sref-active="active"><a ui-sref="reports.auditors"><i class="fa fa-user-circle"></i>Auditors</a></li>
         </ul>
       </li>
       <li ng-class="{active: $state.includes('issues')}">

@@ -172,7 +172,7 @@ function editConditionCtrl($scope, _editCondition, _getCondition, _displays, _di
           _getCondition(id).then(function(data){
             self.param = data;
             self.param.displayTypeId = data.DISPLAY.DISPLAY_TYPE.id;
-            self.param.displayId = data.displayIdConditions;
+            self.param.displayIdConditions = data.DISPLAY.id;
             console.log(self.param);
 
             self.conditionId = self.param.id;

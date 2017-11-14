@@ -6,7 +6,6 @@ function listAdminsCtrl($scope,DTOptionsBuilder, _admins, _isAdmin, $location, $
     {extend: 'csv'},
     {extend: 'excel', title: 'ExampleFile'},
     {extend: 'pdf', title: 'ExampleFile'},
-
     {extend: 'print',
     customize: function (win){
       $(win.document.body).addClass('white-bg');
@@ -369,7 +368,13 @@ function usersCtrl($scope, $location, UsersServices, $localStorage, UsersService
 
 
   $scope.token = $localStorage.token || "";
+
+  if (!$scope.token){
+    $location.path("login");
+  }
+
   UsersServices.isAdmin($scope.token).then(function(respond){
+    console.log(respond);
     if (respond){
       self.username = respond.fullname;
       self.isAdmin = true;
@@ -384,14 +389,16 @@ function usersCtrl($scope, $location, UsersServices, $localStorage, UsersService
   });
 
   this.logout = function(){
+    console.log('logout');
     var param = {};
-    UsersServices.outAuth($localStorage.token).then(function(success){
-      if (success.status == 200){
+    UsersServices.outAuth($localStorage.token).then(function(res){
+
+      if (res.status == 200){
         $localStorage.token = "";
         $location.path("login");
       }
       else{
-        console.log(success.status);
+        console.log(res.status);
       }
     });
   }

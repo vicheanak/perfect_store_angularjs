@@ -93,21 +93,8 @@ function storesReportCtrl($scope,DTOptionsBuilder, _stores, _regions, _storeType
     }
     else{
 
-      _storeTypes().then(function(storeTypes){
-        for (var i = 0; i < storeTypes.length; i ++){
-          if (storeTypes[i].status == true){
-            self.storeTypes = storeTypes;
-          }
-        }
-      });
-
-      _regions().then(function(regions){
-        console.log('regions');
-        self.regions = regions.records;
-      });
-
       _stores().then(function(stores){
-        console.log('store records', stores.records);
+        console.log('store records', stores);
         self.stores = stores;
       });
     }

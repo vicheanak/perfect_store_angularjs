@@ -115,7 +115,7 @@ function addDisplayCtrl($scope, _createDisplay, _storeTypes, _displayTypes, Uplo
       self.param.imageUrl = base64Data;
       _createDisplay(self.param).then(function(success){
         if (success.status == 200){
-          // $location.path("displays/list_displays");
+          $location.path("displays/list_displays");
         }
         else{
           console.log(success.status);

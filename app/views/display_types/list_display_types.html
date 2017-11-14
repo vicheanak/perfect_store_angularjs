@@ -33,14 +33,12 @@
           <table datatable="ng" dt-options="dtOptions"  class="table table-striped table-bordered table-hover dataTables-example">
             <thead>
               <tr>
-                <th>ID</th>
                 <th>Display Type Name</th>
                 <th class="text-right" data-sort-ignore="true">Action</th>
               </tr>
             </thead>
             <tbody>
               <tr ng-repeat="displayType in listDisplayTypesCtrl.displayTypes.records">
-                <td>{{displayType.id}}</td>
                 <td>{{displayType.name}}</td>
                 <td class="text-right">
                   <div class="btn-group">

@@ -21,20 +21,26 @@ function listAuditorsCtrl($scope, DTOptionsBuilder, _stores, _auditors, _isAuth,
   var self = this;
   $scope.token = $localStorage.token || "";
 
-  _isAuth($scope.token).then(function(respond){
-    if (respond == null){
-      $location.path('/login');
-    }
-    else{
-      _auditors().then(function(auditors){
-        self.auditors = auditors;
-        console.log(self.auditors.records);
-      });
-      _stores().then(function(stores){
-        self.stores = _stores;
-      });
-    }
-  });
+  if ($scope.token){
+    _isAuth($scope.token).then(function(respond){
+      if (respond == null){
+        $location.path('/login');
+      }
+      else{
+        _auditors().then(function(auditors){
+
+          self.auditors = auditors;
+        });
+        _stores().then(function(stores){
+          self.stores = _stores;
+        });
+      }
+    });
+  }
+  else{
+    $location.path('/login');
+  }
+
 
   this.showEdit = function(auditorId){
     $location.path('auditors/edit_auditor/'+auditorId);

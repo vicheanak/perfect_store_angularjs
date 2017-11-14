@@ -35,11 +35,11 @@ function listStoresCtrl($scope,DTOptionsBuilder, _stores, _regions, _storeTypes,
       });
 
       _regions().then(function(regions){
-        console.log('regions');
         self.regions = regions.records;
       });
 
       _stores().then(function(stores){
+        console.log(stores);
         self.stores = stores;
       });
     }
@@ -121,8 +121,8 @@ function addStoreCtrl($scope, _createStore, _storeTypes, Upload, $window, $locat
         self.param.storeTypeId = 1;
       });
       _regions().then(function(regions){
-        console.log('regions');
         self.regions = regions.records;
+        console.log('regions', regions);
         self.param.regionId = 1;
       });
 
@@ -136,6 +136,7 @@ function addStoreCtrl($scope, _createStore, _storeTypes, Upload, $window, $locat
   this.save = function(){
     console.log(self.param);
     _createStore(self.param).then(function(success){
+      console.log('SUCCESS', success);
       if (success.status == 200){
         $location.path("stores/list_stores");
       }
@@ -203,7 +204,7 @@ function editStoreCtrl($scope, _editStore, _getStore, _regions, _storeTypes, Upl
 
   NgMap.getMap().then(function(map) {
     self.map = map;
-    self.map.panTo({lat:self.param.lat,lng:self.param.lng});
+    self.map.panTo({lat:parseFloat(self.param.lat),lng:parseFloat(self.param.lng)});
   });
 
   $scope.token = $localStorage.token || "";

@@ -20,18 +20,24 @@ function listStoresRewardsCtrl($scope,DTOptionsBuilder, _storesRewards, _isAuth,
 
   $scope.token = $localStorage.token || "";
 
-  var self = this;
-  _isAuth($scope.token).then(function(respond){
+  if (!$scope.token){
+    $location.path("login");
+  }
+  else{
+   var self = this;
+   _isAuth($scope.token).then(function(respond){
     if (respond == null){
       $location.path('/login');
     }
     else{
-      _storesRewards().then(function(claims){
-        self.claims = claims;
-        console.log('lg ', self.claims);
+      _storesRewards().then(function(storesRewards){
+        self.storesRewards = storesRewards;
+        console.log('lg ', self.storesRewards);
       });
     }
   });
+ }
+
 
 
 }

@@ -131,16 +131,6 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider) {
     resolve: editConditionCtrl.resolve
   })
 
-  .state('stores.stores_rewards', {
-    url: "/stores_rewards",
-    templateUrl: "views/stores_rewards/list_stores_rewards.html",
-    data: {
-      pageTitle: 'Store Claimed'
-    },
-    controller: 'listStoresRewardsCtrl as listStoresRewardsCtrl',
-    resolve: listStoresRewardsCtrl.resolve
-  })
-
 
   .state('managers', {
     abstract: true,
