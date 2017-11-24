@@ -65,7 +65,7 @@
                   </td>
                   <td class="issue-info">
                     <a href="#">
-                      ISSUE-{{issue.id}} - {{issue.topic}}
+                      {{issue.topic}}
                     </a>
 
                     <small>
@@ -73,7 +73,7 @@
                     </small>
                   </td>
                   <td>
-                    <span class="label {{issue.priority == '1' ? 'label-primary' : issue.priority == 2 ? 'label-warning' : 'label-danger'}}">{{issue.priority == '1' ? 'Low' : issue.priority == 2 ? 'Medium' : 'High'}}</span>
+                    <span class="label label-lg {{issue.priority == '1' ? 'label-primary' : issue.priority == 2 ? 'label-warning' : 'label-danger'}}">{{issue.priority == '1' ? 'Low' : issue.priority == 2 ? 'Medium' : 'High'}}</span>
                   </td>
                   <td>
                     {{issue.issuedBy.fullname}}

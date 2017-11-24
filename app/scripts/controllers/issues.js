@@ -110,7 +110,7 @@ function addIssueCtrl($scope, _createIssue, Upload, $window, $location, _isManag
       self.param.imageUrl = base64Data;
       _createIssue(self.param).then(function(success){
         if (success.status == 200){
-          // $location.path("issues/list_issues");
+          $location.path("issues/list_issues");
         }
         else{
           console.log(success.status);
